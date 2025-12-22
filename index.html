@@ -47,37 +47,75 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 #map { width: 100%; height: 100%; background: #e0e0e0; }
 
-/* --- EFEITOS ESPECIAIS NOS TOTENS (O Segredo do Neon) --- */
+/* --- EFEITOS ESPECIAIS NOS TOTENS (CORRIGIDO) --- */
 
-/* Animação de Pulso Verde (Para Totem Ativo) */
-@keyframes pulse-green-glow {
-    0% {
-        filter: drop-shadow(0 0 2px rgba(40, 255, 69, 0.6));
-        transform: scale(1);
-    }
-    50% {
-        filter: drop-shadow(0 0 15px rgba(40, 255, 69, 1)) brightness(1.2);
-        transform: scale(1.05); /* Leve aumento para parecer vivo */
-    }
-    100% {
-        filter: drop-shadow(0 0 2px rgba(40, 255, 69, 0.6));
-        transform: scale(1);
-    }
+/* Container do ícone (remove bordas padrão do leaflet) */
+.custom-totem-icon {
+    background: transparent !important;
+    border: none !important;
 }
 
-.totem-ativo-effect {
-    animation: pulse-green-glow 2s infinite ease-in-out;
-    /* Garante que o clique funcione bem na imagem animada */
-    transform-origin: bottom center; 
+/* Wrapper para organizar imagem e bolinha de status */
+.totem-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end; /* Alinha a base */
+    justify-content: center;
 }
 
-/* Efeito Vermelho Estático (Para Totem Inativo/Erro) */
-.totem-inativo-effect {
-    /* Deixa cinza mas com uma borda/sombra vermelha de alerta */
-    filter: grayscale(100%) drop-shadow(0 0 6px rgba(255, 0, 0, 1));
-    opacity: 0.9;
-    transition: all 0.3s;
+/* A Imagem do Totem */
+.totem-img {
+    width: 35px;
+    height: 55px;
+    object-fit: contain;
+    transition: all 0.3s ease;
 }
+
+/* A "Bolinha de Saúde" (Status LED) */
+.status-dot {
+    position: absolute;
+    bottom: 45px; /* Altura do led */
+    right: -5px;  /* Posição ao lado */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    z-index: 10;
+}
+
+/* ESTILO ATIVO (Verde Neon + Pulso) */
+.ativo .totem-img {
+    filter: drop-shadow(0 0 8px rgba(40, 255, 69, 0.8));
+    animation: floating 3s infinite ease-in-out;
+}
+.ativo .status-dot {
+    background-color: #28a745;
+    box-shadow: 0 0 10px #28a745;
+    animation: blink 1.5s infinite;
+}
+
+/* ESTILO INATIVO (Cinza + Alerta Vermelho) */
+.inativo .totem-img {
+    filter: grayscale(100%) drop-shadow(0 0 4px rgba(255, 0, 0, 0.6));
+    opacity: 0.8;
+}
+.inativo .status-dot {
+    background-color: #dc3545;
+    box-shadow: 0 0 5px #dc3545;
+}
+
+/* Animações */
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
 
 /* QUÍMICA */
 .chem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; padding-bottom: 20px; }
@@ -372,28 +410,30 @@ const centroRural = [-19.8654, -47.9876]; // Área agrícola real
 const map = L.map('map').setView(centroRural, 14); // Zoom ajustado
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
 
-// URL DA SUA ILUSTRAÇÃO (MUDANÇA AQUI: Agora usa sua imagem do GitHub)
+// URL DA SUA ILUSTRAÇÃO
 const totemImageUrl = 'totem.png'; 
 
-// --- NOVOS ÍCONES COM EFEITO NEON/PULSE ---
+// --- FUNÇÃO PARA CRIAR ÍCONES (Técnica divIcon para não sumir) ---
+function criarIcone(status) {
+    // Define a classe CSS baseada no status (ativo/inativo)
+    const classeExtra = status === "ativo" ? "ativo" : "inativo";
+    
+    // HTML interno do marcador: Imagem + Bolinha de Status
+    const htmlInterno = `
+        <div class="totem-wrapper ${classeExtra}">
+            <img src="${totemImageUrl}" class="totem-img">
+            <div class="status-dot"></div>
+        </div>
+    `;
 
-// Ícone Ativo (Verde + Pulso)
-const iconTotemAtivo = L.icon({
-    iconUrl: totemImageUrl,
-    iconSize: [35, 55], 
-    iconAnchor: [17, 55],
-    popupAnchor: [0, -50],
-    className: 'totem-ativo-effect' // <--- AQUI CHAMA A ANIMAÇÃO DO CSS
-});
-
-// Ícone Inativo (Vermelho + Cinza)
-const iconTotemInativo = L.icon({
-    iconUrl: totemImageUrl,
-    iconSize: [35, 55],
-    iconAnchor: [17, 55],
-    popupAnchor: [0, -50],
-    className: 'totem-inativo-effect' // <--- AQUI CHAMA O FILTRO CINZA/VERMELHO
-});
+    return L.divIcon({
+        className: 'custom-totem-icon', // Classe do container Leaflet
+        html: htmlInterno,              // Nosso HTML personalizado
+        iconSize: [40, 60],             // Tamanho total da área do ícone
+        iconAnchor: [20, 55],           // Ponto onde "planta" no chão (centro horizontal, base vertical)
+        popupAnchor: [0, -50]           // Onde o balão de texto abre
+    });
+}
 
 // Lista de 5 Totens (Espalhados na Lavoura)
 const totens = [
@@ -406,8 +446,8 @@ const totens = [
 
 let activeMarker = null;
 totens.forEach(t => {
-    // Escolhe o ícone baseado no status
-    const icone = t.status === "ativo" ? iconTotemAtivo : iconTotemInativo;
+    // Cria o ícone usando a nova função segura
+    const icone = criarIcone(t.status);
     
     const statusTxt = t.status === "ativo" ? "<b style='color:#28a745'>ONLINE E MONITORANDO</b>" : "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
     const m = L.marker(t.coords, {icon: icone}).addTo(map).bindPopup(`<b>📍 ${t.id}</b><br>${statusTxt}`);
@@ -441,7 +481,6 @@ async function atualizar() {
 
         // ATUALIZAÇÃO DA DATA E HORA
         const dataObj = new Date(d.created_at);
-        // Formata para o padrão brasileiro: DD/MM/AAAA HH:MM:SS
         const dataFormatada = dataObj.toLocaleString('pt-BR');
         document.getElementById("lblDataHora").innerText = dataFormatada;
 
