@@ -262,6 +262,16 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
     </div>
     <div class="grid-dash">
       <div class="cards-col">
+        <div class="card" style="border-left: 5px solid #28a745; background:#fff" id="cardStatusTotem">
+            <div class="card-icon" style="background:#e8f5e9; color:#28a745">
+                <i class="fas fa-broadcast-tower"></i>
+            </div>
+            <div class="card-info">
+                <h3 id="lblTotemNome">BUSCANDO...</h3>
+                <span id="lblTotemStatus" style="font-size:14px; color:#28a745; font-weight:800; display:flex; align-items:center; gap:5px"><i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO</span>
+            </div>
+        </div>
+
         <div class="card"><div class="card-icon" style="background:#f0fdf4;color:#28a745"><i class="fas fa-battery-three-quarters"></i></div><div class="card-info"><h3>Bateria</h3><span id="bateria">--</span> <small>V</small></div></div>
         <div class="card"><div class="card-icon" style="background:#e3f2fd;color:#3498db"><i class="fas fa-temperature-high"></i></div><div class="card-info"><h3>Temp. Solo</h3><span id="temp">--</span> <small>°C</small></div></div>
         <div class="card"><div class="card-icon" style="background:#fdf0e7;color:#e67e22"><i class="fas fa-tint"></i></div><div class="card-info"><h3>Umidade</h3><span id="umidade">--</span> <small>%</small></div></div>
@@ -445,6 +455,19 @@ const totens = [
 ];
 
 let activeMarker = null;
+
+// LÓGICA PARA IDENTIFICAR O TOTEM ATIVO E EXIBIR NO CARD
+let totemAtivo = totens.find(t => t.status === 'ativo');
+if(totemAtivo) {
+    document.getElementById('lblTotemNome').innerText = totemAtivo.id.split('(')[0].trim();
+    document.getElementById('lblTotemStatus').innerHTML = '<i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO ONLINE';
+} else {
+    document.getElementById('lblTotemNome').innerText = "SEM SINAL";
+    document.getElementById('lblTotemStatus').innerHTML = "DESCONECTADO";
+    document.getElementById('lblTotemStatus').style.color = "#dc3545";
+    document.getElementById('cardStatusTotem').style.borderLeftColor = "#dc3545";
+}
+
 totens.forEach(t => {
     // Cria o ícone usando a nova função segura
     const icone = criarIcone(t.status);
