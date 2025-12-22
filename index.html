@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agro Plan MAPS | Sistema Integrado</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* --- ESTILOS GERAIS --- */
+:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
+
+/* BARRA LATERAL */
+.sidebar { width: 90px; background: var(--sidebar); display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 1000; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
+.logo { margin-bottom: 20px; padding: 0 5px; display:flex; justify-content:center; width: 100%;}
+.logo-img { max-width: 100%; height: auto; border-radius: 6px; }
+.nav-item { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: #88a69d; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s; font-size: 20px; }
+.nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; transform: scale(1.05); }
+.nav-item.active { background: var(--verde); color: #fff; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4); }
+
+/* ÁREA PRINCIPAL */
+.main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+.header { background: #fff; padding: 15px 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+.header-info h1 { font-size: 18px; font-weight: 800; color: var(--sidebar); text-transform: uppercase; }
+.header-info p { font-size: 12px; color: #666; font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 10px; }
+.status-badge { font-size: 11px; font-weight: 700; color: var(--verde); background: #e9f7ef; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid #c3e6cb; }
+
+/* ABAS */
+.view-section { display: none; height: 100%; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-out; }
+.view-section.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* CARDS E GRIDS */
+.grid-dash { display: flex; gap: 20px; flex: 1; min-height: 400px; }
+.cards-col { min-width: 280px; display: flex; flex-direction: column; gap: 15px; }
+.card { background: #fff; padding: 20px; border-radius: 12px; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.card-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.card-info h3 { font-size: 10px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
+.card-info span { font-size: 22px; font-weight: 700; color: #333; }
+.map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+#map { width: 100%; height: 100%; background: #e0e0e0; }
+
+/* QUÍMICA */
+.chem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; padding-bottom: 20px; }
+.chem-card { background: #fff; padding: 25px; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.chem-header { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
+.chem-value { font-size: 28px; font-weight: 800; color: #333; margin-bottom: 5px; }
+.nutrient-bar { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin-top: 5px; display: flex; }
+.nutrient-fill { height: 100%; transition: width 1s ease-in-out; border-radius: 4px; }
+.bar-low { background: #dc3545; } .bar-ok { background: #28a745; } .bar-high { background: #ffc107; }
+.chem-chart-container { flex: 1; position: relative; min-height: 180px; margin-top: 15px; }
+
+/* BANNER */
+.banner { background: #fff; border-left: 8px solid #ccc; padding: 20px 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.banner-content { display: flex; gap: 20px; align-items: center; }
+.banner-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #eee; color: #999; font-size: 24px; }
+.banner-text h2 { font-size: 16px; font-weight: 800; margin-bottom: 4px; color: #333; }
+.banner-text p { font-size: 13px; color: #666; }
+
+/* ABA 3: FINANCEIRO (ROI) */
+.roi-header { display: flex; justify-content: space-between; align-items: flex-end; background: linear-gradient(135deg, #0f3d30 0%, #1a5c48 100%); padding: 30px; border-radius: 16px; color: white; margin-bottom: 20px; }
+.roi-stat h3 { font-size: 32px; font-weight: 800; color: #2ecc71; }
+.roi-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; flex: 1; }
+.input-label { display: block; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 5px; text-transform: uppercase; }
+.input-field { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-weight: 600; font-size: 15px; color: #333; outline: none; margin-bottom: 15px; }
+.input-field:focus { border-color: var(--verde); }
+.score-circle { width: 140px; height: 140px; border-radius: 50%; border: 10px solid #eee; display: flex; align-items: center; justify-content: center; margin: 20px auto; position: relative; flex-direction: column; }
+
+/* ABA 4: TÉCNICA (AGRÔNOMO) */
+.tec-header { background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%); padding: 25px; border-radius: 16px; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+.tec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+.tec-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.btn-tec { background: var(--azul-tec); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; }
+.btn-tec:hover { background: #1f618d; }
+.history-list { list-style: none; margin-top: 15px; overflow-y: auto; max-height: 250px; }
+.history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+.history-item:last-child { border-bottom: none; }
+.tag-cultura { background: #e3f2fd; color: #2980b9; padding: 4px 8px; border-radius: 12px; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 61, 48, 0.7); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
+.modal-box { background: #fff; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  body { flex-direction: column; height: auto; overflow-y: auto; }
+  .sidebar { width: 100%; height: 60px; flex-direction: row; justify-content: space-around; padding: 0 10px; position: fixed; bottom: 0; left: 0; }
+  .logo { display: none; }
+  .main { padding: 15px; padding-bottom: 80px; }
+  .grid-dash, .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
+  .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="configModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 style="margin-bottom:20px; color:#0f3d30"><i class="fas fa-magic"></i> Configurar Demo</h2>
+        <div style="margin-bottom:15px"><label class="input-label">NOME DO CLIENTE</label><input type="text" id="inputProdutor" class="input-field" placeholder="Ex: Sr. João Silva"></div>
+        <div style="margin-bottom:15px"><label class="input-label">FAZENDA</label><input type="text" id="inputFazenda" class="input-field" placeholder="Ex: Fazenda Santa Fé"></div>
+        <div style="margin-bottom:15px"><label class="input-label">CULTURA PRINCIPAL</label><input type="text" id="inputCulturaGeral" class="input-field" placeholder="Ex: Soja"></div>
+        <button onclick="salvarConfig()" style="width:100%; background:#28a745; color:white; padding:12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">APLICAR</button>
+        <button onclick="fecharConfig()" style="width:100%; background:transparent; color:#999; padding:10px; border:none; margin-top:5px; cursor:pointer;">Cancelar</button>
+    </div>
+</div>
+
+<nav class="sidebar">
+  <div class="logo"><img src="https://i.ibb.co/zVJLBRCB/logo-dashboard.png" class="logo-img"></div>
+  <div id="btn-dash" class="nav-item active" onclick="trocarAba('dash')" title="Painel Físico"><i class="fas fa-th-large"></i></div>
+  <div id="btn-chem" class="nav-item" onclick="trocarAba('chem')" title="Análise Química"><i class="fas fa-flask"></i></div>
+  <div id="btn-roi" class="nav-item" onclick="trocarAba('roi')" title="Financeiro & ROI"><i class="fas fa-chart-line"></i></div>
+  <div id="btn-tec" class="nav-item" onclick="trocarAba('tec')" title="Área Técnica & Aplicação"><i class="fas fa-clipboard-check"></i></div>
+  <div class="nav-item" onclick="abrirConfig()" title="Config"><i class="fas fa-cog"></i></div>
+</nav>
+
+<main class="main">
+  <header class="header">
+    <div class="header-info">
+        <h1 id="lblFazenda">AGRO PLAN MAPS</h1>
+        <p><i class="fas fa-user-circle" style="color:#28a745"></i> <span id="lblProdutor">Visitante</span> | <i class="fas fa-seedling" style="color:#f39c12"></i> <span id="lblCultura">Demonstração</span></p>
+    </div>
+    <div class="status-badge"><i class="fas fa-wifi"></i> ONLINE</div>
+  </header>
+
+  <div id="view-dash" class="view-section active">
+    <div id="banner" class="banner">
+      <div class="banner-content">
+        <div id="bannerIcon" class="banner-icon"><i class="fas fa-sync fa-spin"></i></div>
+        <div class="banner-text"><h2 id="bannerTitle">SINCRONIZANDO...</h2><p id="bannerMsg">Conectando inteligência artificial...</p></div>
+      </div>
+    </div>
+    <div class="grid-dash">
+      <div class="cards-col">
+        <div class="card"><div class="card-icon" style="background:#f0fdf4;color:#28a745"><i class="fas fa-battery-three-quarters"></i></div><div class="card-info"><h3>Bateria</h3><span id="bateria">--</span> <small>V</small></div></div>
+        <div class="card"><div class="card-icon" style="background:#e3f2fd;color:#3498db"><i class="fas fa-temperature-high"></i></div><div class="card-info"><h3>Temp. Solo</h3><span id="temp">--</span> <small>°C</small></div></div>
+        <div class="card"><div class="card-icon" style="background:#fdf0e7;color:#e67e22"><i class="fas fa-tint"></i></div><div class="card-info"><h3>Umidade</h3><span id="umidade">--</span> <small>%</small></div></div>
+      </div>
+      <div class="map-container"><div id="map"></div></div>
+    </div>
+  </div>
+
+  <div id="view-chem" class="view-section">
+    <div class="chem-grid">
+        <div class="chem-card"><div class="chem-header"><h3>pH</h3><i class="fas fa-vial" style="color:#6c757d"></i></div><div class="chem-value" id="val-ph">--</div><div class="nutrient-bar"><div id="bar-ph" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartPH"></canvas></div></div>
+        <div class="chem-card"><div class="chem-header"><h3>Nitrogênio (N)</h3><i class="fas fa-leaf" style="color:#28a745"></i></div><div class="chem-value"><span id="val-n">--</span></div><div class="nutrient-bar"><div id="bar-n" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartN"></canvas></div></div>
+        <div class="chem-card"><div class="chem-header"><h3>Fósforo (P)</h3><i class="fas fa-dna" style="color:#3498db"></i></div><div class="chem-value"><span id="val-p">--</span></div><div class="nutrient-bar"><div id="bar-p" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartP"></canvas></div></div>
+        <div class="chem-card"><div class="chem-header"><h3>Potássio (K)</h3><i class="fas fa-bolt" style="color:#f39c12"></i></div><div class="chem-value"><span id="val-k">--</span></div><div class="nutrient-bar"><div id="bar-k" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartK"></canvas></div></div>
+    </div>
+  </div>
+
+  <div id="view-roi" class="view-section">
+    <div class="roi-header">
+        <div><h2>Relatório de Safra & ROI</h2><p>Projeção baseada na eficiência do solo.</p></div>
+        <div class="roi-stat"><h3 id="lblProjecaoLucro">R$ 0,00</h3><span>Lucro Extra Projetado</span></div>
+    </div>
+    <div class="roi-grid">
+        <div class="card" style="display:block">
+            <h3 style="margin-bottom:20px; color:#555">DADOS COMPARATIVOS</h3>
+            <label class="input-label">Produtividade Anterior (sc/ha)</label><input type="number" id="inputSafraAnt" class="input-field" value="60" oninput="calcularROI()">
+            <label class="input-label">Preço da Saca (R$)</label><input type="number" id="inputPreco" class="input-field" value="130" oninput="calcularROI()">
+            <label class="input-label">Área (ha)</label><input type="number" id="inputAreaRoi" class="input-field" value="100" oninput="calcularROI()">
+        </div>
+        <div class="card" style="display:flex; flex-direction:column; align-items:center;">
+            <h3 style="align-self:flex-start; font-size:14px; color:#777;">AGRO SCORE (SAÚDE DO SOLO)</h3>
+            <div class="score-circle" id="scoreCircle">
+                <span style="font-size:36px; font-weight:800; color:#333" id="lblScore">98</span>
+                <span style="font-size:10px; color:#777">PONTOS</span>
+            </div>
+            <div style="width:100%; height:180px; margin-top:10px;"><canvas id="chartROI"></canvas></div>
+        </div>
+    </div>
+  </div>
+
+  <div id="view-tec" class="view-section">
+    <div class="tec-header">
+        <i class="fas fa-clipboard-check" style="font-size:30px"></i>
+        <div><h2>Área Técnica & Registro de Manejo</h2><p>Controle de aplicações e caderno de campo digital.</p></div>
+    </div>
+    <div class="tec-grid">
+        <div class="tec-card">
+            <h3 style="margin-bottom:15px; color:#2980b9">NOVA APLICAÇÃO</h3>
+            <label class="input-label">Cultura / Talhão</label>
+            <input type="text" id="tecCultura" class="input-field" placeholder="Ex: Soja - Talhão 04">
+            <label class="input-label">Produto / Insumo</label>
+            <input type="text" id="tecProduto" class="input-field" placeholder="Ex: Cloreto de Potássio">
+            <div style="display:flex; gap:10px">
+                <div style="flex:1"><label class="input-label">Dose (kg/ha)</label><input type="number" class="input-field"></div>
+                <div style="flex:1"><label class="input-label">Área (ha)</label><input type="number" class="input-field"></div>
+            </div>
+            <button class="btn-tec" onclick="registrarAplicacao()"><i class="fas fa-save"></i> REGISTRAR NO SISTEMA</button>
+        </div>
+        <div class="tec-card">
+            <h3 style="margin-bottom:15px; color:#555">HISTÓRICO DE MANEJO</h3>
+            <div style="background:#f8f9fa; padding:10px; border-radius:8px; font-size:12px; color:#777; margin-bottom:10px;">
+                <i class="fas fa-info-circle"></i> Registros sincronizados com o Totem 01.
+            </div>
+            <ul class="history-list" id="listaAplicacoes">
+                </ul>
+        </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// --- CONFIGURAÇÃO ---
+function abrirConfig() { document.getElementById('configModal').classList.add('open'); }
+function fecharConfig() { document.getElementById('configModal').classList.remove('open'); }
+function salvarConfig() {
+    const p = document.getElementById('inputProdutor').value || "Visitante";
+    const f = document.getElementById('inputFazenda').value || "Agro Plan";
+    const c = document.getElementById('inputCulturaGeral').value || "Demonstração";
+    document.getElementById('lblProdutor').innerText = p;
+    document.getElementById('lblFazenda').innerText = f.toUpperCase();
+    document.getElementById('lblCultura').innerText = c;
+    fecharConfig();
+}
+
+// --- LÓGICA TÉCNICA (AGRÔNOMO) ---
+function registrarAplicacao() {
+    const cultura = document.getElementById('tecCultura').value || "Talhão Geral";
+    const produto = document.getElementById('tecProduto').value || "Correção de Solo";
+    
+    // Cria o item na lista
+    const lista = document.getElementById('listaAplicacoes');
+    const dataHoje = new Date().toLocaleDateString();
+    
+    const li = document.createElement('li');
+    li.className = 'history-item';
+    li.innerHTML = `
+        <div>
+            <strong style="color:#333; display:block;">${produto}</strong>
+            <span style="color:#999; font-size:11px"><i class="far fa-clock"></i> ${dataHoje}</span>
+        </div>
+        <span class="tag-cultura">${cultura}</span>
+    `;
+    
+    // Adiciona no topo com animação
+    lista.insertBefore(li, lista.firstChild);
+    
+    // Feedback visual
+    alert("✅ Aplicação registrada com sucesso no Caderno de Campo Digital!");
+    
+    // Limpa campos
+    document.getElementById('tecProduto').value = "";
+}
+
+// --- LÓGICA ROI (FINANCEIRO) ---
+let chartROI_Instance = null;
+function calcularROI() {
+    const safraAnt = parseFloat(document.getElementById('inputSafraAnt').value) || 0;
+    const preco = parseFloat(document.getElementById('inputPreco').value) || 0;
+    const area = parseFloat(document.getElementById('inputAreaRoi').value) || 0;
+    
+    const ganho = 0.12; // 12% de eficiência
+    const safraNova = safraAnt * (1 + ganho);
+    const lucro = (safraNova - safraAnt) * area * preco;
+    
+    document.getElementById('lblProjecaoLucro').innerText = lucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    
+    const ctx = document.getElementById('chartROI').getContext('2d');
+    if(chartROI_Instance) chartROI_Instance.destroy();
+    
+    chartROI_Instance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Anterior', 'Projeção'],
+            datasets: [{ label: 'sc/ha', data: [safraAnt, safraNova], backgroundColor: ['#bdc3c7', '#2ecc71'], borderRadius: 6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display:false } }, scales: { y: { beginAtZero: true } } }
+    });
+}
+
+// --- SISTEMA PADRÃO ---
+const map = L.map('map').setView([-19.85,-47.8], 15);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
+L.marker([-19.85,-47.8]).addTo(map).bindPopup("<b>Totem Principal</b>").openPopup();
+
+function trocarAba(aba) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('view-'+aba).classList.add('active');
+    document.getElementById('btn-'+aba).classList.add('active');
+    if(aba === 'dash') setTimeout(() => map.invalidateSize(), 100);
+    if(aba === 'roi') calcularROI();
+}
+
+const SUPABASE_URL = "https://mhbappxhnlpurfqhxpwa.supabase.co";
+const SUPABASE_KEY = "sb_publishable_XgU3v47C8GjZO7E3RURXYA_abPUYDzD";
+let charts = {};
+
+async function atualizar() {
+    try {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/leituras?select=*&order=created_at.desc&limit=15`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+        const dados = await r.json();
+        if(dados.length === 0) return;
+        const d = dados[0];
+
+        // Dash
+        document.getElementById("bateria").innerText = d.bateria_v?.toFixed(1) || "--";
+        document.getElementById("temp").innerText = d.temperatura_solo?.toFixed(1) || "--";
+        document.getElementById("umidade").innerText = d.umidade_solo ? Math.round(d.umidade_solo) : "--";
+        
+        // Banner
+        document.getElementById("bannerTitle").innerText = d.status_titulo || "CONECTADO";
+        document.getElementById("bannerMsg").innerText = d.status_mensagem || "Operação normal.";
+        const cores = { VERDE:"#28a745", AMARELO:"#ffc107", VERMELHO:"#dc3545" };
+        document.getElementById("banner").style.borderLeftColor = cores[d.status_cor] || "#ccc";
+
+        // Química
+        atualizarNutriente("ph", d.ph_solo, 0, 14, 5.5, 6.5);
+        atualizarNutriente("n", d.n_solo, 0, 100, 40, 80);
+        atualizarNutriente("p", d.p_solo, 0, 30, 10, 20);
+        atualizarNutriente("k", d.k_solo, 0, 150, 60, 120);
+
+        // Score
+        let score = 98;
+        if(d.status_cor === "AMARELO") score = 85;
+        if(d.status_cor === "VERMELHO") score = 65;
+        document.getElementById("lblScore").innerText = score;
+        document.getElementById("scoreCircle").style.borderColor = cores[d.status_cor] || "#28a745";
+
+        // Gráficos
+        const hist = dados.reverse();
+        const lbls = hist.map(i => new Date(i.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
+        renderChart("chartPH", lbls, hist.map(i => i.ph_solo), "#6c757d");
+        renderChart("chartN", lbls, hist.map(i => i.n_solo), "#28a745");
+        renderChart("chartP", lbls, hist.map(i => i.p_solo), "#3498db");
+        renderChart("chartK", lbls, hist.map(i => i.k_solo), "#f39c12");
+
+    } catch(e) { console.error(e); }
+}
+
+function atualizarNutriente(id, val, min, max, bMin, bMax) {
+    if(val==null) return;
+    document.getElementById(`val-${id}`).innerText = val.toFixed(1);
+    let pct = ((val - min) / (max - min)) * 100;
+    const bar = document.getElementById(`bar-${id}`);
+    bar.style.width = Math.min(100, Math.max(0, pct)) + "%";
+    bar.className = (val >= bMin && val <= bMax) ? "nutrient-fill bar-ok" : "nutrient-fill bar-low";
+}
+
+function renderChart(id, lbls, data, color) {
+    const ctx = document.getElementById(id).getContext('2d');
+    if(charts[id]) { charts[id].data.labels = lbls; charts[id].data.datasets[0].data = data; charts[id].update(); }
+    else {
+        charts[id] = new Chart(ctx, {
+            type: 'line',
+            data: { labels: lbls, datasets: [{ data: data, borderColor: color, backgroundColor: color+'15', fill: true, tension: 0.4, pointRadius: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+    }
+}
+
+setInterval(atualizar, 3000);
+atualizar();
+</script>
+</body>
+</html>
