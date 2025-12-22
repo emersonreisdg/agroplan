@@ -102,7 +102,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 /* --- RESPONSIVO (CORREÇÃO FINAL MOBILE) --- */
 @media (max-width: 768px) {
   body { flex-direction: column; height: auto; overflow-y: auto; }
-  
+   
   /* Menu Inferior (Mobile) */
   .sidebar { 
       width: 100%; 
@@ -116,7 +116,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
       box-shadow: 0 -4px 10px rgba(0,0,0,0.1); 
       z-index: 9999;
   }
-  
+   
   /* Logo volta a aparecer, ajustado */
   .logo { 
       display: flex !important; 
@@ -126,7 +126,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
       align-items: center; 
       justify-content: center;
   }
-  
+   
   /* Ajuste dos ícones para não brigar com o logo */
   .nav-item { width: 40px; height: 40px; margin-bottom: 0; font-size: 18px; }
 
@@ -143,7 +143,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
       background: #e0e0e0;
       margin-top: 10px;
   } 
-  
+   
   .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
   .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
 }
@@ -165,7 +165,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 
 <nav class="sidebar">
   <div class="logo" onclick="trocarAba('dash')" title="Início"><img src="https://i.ibb.co/zVJLBRCB/logo-dashboard.png" class="logo-img"></div>
-  
+   
   <div id="btn-dash" class="nav-item active" onclick="trocarAba('dash')" title="Painel Físico"><i class="fas fa-th-large"></i></div>
   <div id="btn-chem" class="nav-item" onclick="trocarAba('chem')" title="Análise Química"><i class="fas fa-flask"></i></div>
   <div id="btn-roi" class="nav-item" onclick="trocarAba('roi')" title="Financeiro & ROI"><i class="fas fa-chart-line"></i></div>
@@ -347,8 +347,8 @@ const centroRural = [-19.8654, -47.9876]; // Área agrícola real
 const map = L.map('map').setView(centroRural, 14); // Zoom ajustado
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
 
-// URL DA SUA ILUSTRAÇÃO (Hospedada)
-const totemImageUrl = 'https://i.ibb.co/Bnkf6rz/totem-illustration.png';
+// URL DA SUA ILUSTRAÇÃO (MUDANÇA AQUI: Agora usa sua imagem do GitHub)
+const totemImageUrl = 'totem.png'; 
 
 // Ícone Ativo (Normal, colorido)
 const iconTotemAtivo = L.icon({
