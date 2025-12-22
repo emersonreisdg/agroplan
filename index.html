@@ -12,7 +12,7 @@
 
 <style>
 /* --- ESTILOS GERAIS --- */
-:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; }
+:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; --zap: #25D366; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
 
@@ -77,8 +77,11 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .tec-header { background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%); padding: 25px; border-radius: 16px; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
 .tec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
 .tec-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-.btn-tec { background: var(--azul-tec); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; }
+.btn-tec { background: var(--azul-tec); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; transition:0.3s}
 .btn-tec:hover { background: #1f618d; }
+.btn-zap { background: var(--zap); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn-zap:hover { background: #20b858; }
+
 .history-list { list-style: none; margin-top: 15px; overflow-y: auto; max-height: 250px; }
 .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
 .history-item:last-child { border-bottom: none; }
@@ -242,10 +245,13 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
             <label class="input-label">Produto / Insumo</label>
             <input type="text" id="tecProduto" class="input-field" placeholder="Ex: Cloreto de Potássio">
             <div style="display:flex; gap:10px">
-                <div style="flex:1"><label class="input-label">Dose (kg/ha)</label><input type="number" class="input-field"></div>
-                <div style="flex:1"><label class="input-label">Área (ha)</label><input type="number" class="input-field"></div>
+                <div style="flex:1"><label class="input-label">Dose (kg/ha)</label><input type="number" class="input-field" id="tecDose"></div>
+                <div style="flex:1"><label class="input-label">Área (ha)</label><input type="number" class="input-field" id="tecArea"></div>
             </div>
+            
             <button class="btn-tec" onclick="registrarAplicacao()"><i class="fas fa-save"></i> REGISTRAR NO SISTEMA</button>
+            
+            <button class="btn-zap" onclick="enviarZap()"><i class="fab fa-whatsapp"></i> ENVIAR ORDEM DE COMPRA</button>
         </div>
         <div class="tec-card">
             <h3 style="margin-bottom:15px; color:#555">HISTÓRICO DE MANEJO</h3>
@@ -286,7 +292,27 @@ function registrarAplicacao() {
     li.innerHTML = `<div><strong style="color:#333; display:block;">${produto}</strong><span style="color:#999; font-size:11px"><i class="far fa-clock"></i> ${dataHoje}</span></div><span class="tag-cultura">${cultura}</span>`;
     lista.insertBefore(li, lista.firstChild);
     alert("✅ Aplicação registrada com sucesso no Caderno de Campo Digital!");
-    document.getElementById('tecProduto').value = "";
+}
+
+// --- FUNÇÃO DE ENVIAR PARA O WHATSAPP ---
+function enviarZap() {
+    const produtor = document.getElementById('inputProdutor').value || "Sr. Produtor";
+    const fazenda = document.getElementById('inputFazenda').value || "Fazenda Modelo";
+    const produto = document.getElementById('tecProduto').value || "Insumos Gerais";
+    const dose = document.getElementById('tecDose').value || "--";
+    const area = document.getElementById('tecArea').value || "--";
+
+    // Cria a mensagem bonitinha
+    const texto = `*AGRO PLAN MAPS - ORDEM DE COMPRA*%0A%0A` +
+                  `👤 *Cliente:* ${produtor}%0A` +
+                  `📍 *Fazenda:* ${fazenda}%0A` +
+                  `📦 *Produto Solicitado:* ${produto}%0A` +
+                  `⚖️ *Dose:* ${dose} kg/ha%0A` +
+                  `🚜 *Área:* ${area} ha%0A%0A` +
+                  `_Gerado automaticamente pelo sistema de monitoramento._`;
+
+    // Abre o WhatsApp
+    window.open(`https://wa.me/?text=${texto}`, '_blank');
 }
 
 // --- LÓGICA ROI (FINANCEIRO) ---
