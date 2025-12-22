@@ -18,7 +18,8 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 
 /* BARRA LATERAL */
 .sidebar { width: 90px; background: var(--sidebar); display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 1000; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-.logo { margin-bottom: 20px; padding: 0 5px; display:flex; justify-content:center; width: 100%; cursor: pointer; }
+.logo { margin-bottom: 20px; padding: 0 5px; display:flex; justify-content:center; width: 100%; cursor: pointer; transition: transform 0.2s; }
+.logo:active { transform: scale(0.95); }
 .logo-img { max-width: 100%; height: auto; border-radius: 6px; }
 .nav-item { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: #88a69d; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s; font-size: 20px; }
 .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; transform: scale(1.05); }
@@ -115,6 +116,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 
 <nav class="sidebar">
   <div class="logo" onclick="trocarAba('dash')" title="Início"><img src="https://i.ibb.co/zVJLBRCB/logo-dashboard.png" class="logo-img"></div>
+  
   <div id="btn-dash" class="nav-item active" onclick="trocarAba('dash')" title="Painel Físico"><i class="fas fa-th-large"></i></div>
   <div id="btn-chem" class="nav-item" onclick="trocarAba('chem')" title="Análise Química"><i class="fas fa-flask"></i></div>
   <div id="btn-roi" class="nav-item" onclick="trocarAba('roi')" title="Financeiro & ROI"><i class="fas fa-chart-line"></i></div>
@@ -127,7 +129,14 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
     <div class="header-info">
         <h1 id="lblFazenda">AGRO PLAN MAPS</h1>
         <p><i class="fas fa-user-circle" style="color:#28a745"></i> <span id="lblProdutor">Visitante</span> | <i class="fas fa-seedling" style="color:#f39c12"></i> <span id="lblCultura">Demonstração</span></p>
-        <p style="margin-top: 5px; font-size: 11px; color: #888;"><i class="fas fa-map-marker-alt" style="color:#dc3545"></i> Localização: <b>Uberaba, MG</b> (Fazenda Modelo)</p>
+        
+        <p style="margin-top: 5px; font-size: 11px; color: #888;">
+            <i class="fas fa-map-marker-alt" style="color:#dc3545"></i> Localização: <b>Uberaba, MG</b> (Zona Rural - BR 050)
+        </p>
+
+        <p style="margin-top: 2px; font-size: 11px; color: #555;">
+            <i class="far fa-clock" style="color:#2980b9"></i> Última Análise: <b id="lblDataHora">Aguardando dados...</b>
+        </p>
     </div>
     <div class="status-badge"><i class="fas fa-wifi"></i> ONLINE</div>
   </header>
@@ -261,34 +270,25 @@ function calcularROI() {
 }
 
 // --- SISTEMA PADRÃO (MAPA E DADOS) ---
-// 1. Ícones Personalizados para os marcadores
-const iconAtivo = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-});
-const iconInativo = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-});
-
-// 2. Configuração do Mapa (Centro em Uberaba)
-const centroUberaba = [-19.747, -47.939];
-const map = L.map('map').setView(centroUberaba, 13);
+// 1. Configuração do Mapa (ZONA RURAL DE UBERABA)
+const centroRural = [-19.8654, -47.9876]; // Área agrícola real
+const map = L.map('map').setView(centroRural, 14); // Zoom ajustado
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
 
-// 3. Lista de 5 Totens (Grandeza)
+// Ícones personalizados
+const iconAtivo = L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
+const iconInativo = L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
+
+// Lista de 5 Totens (Espalhados na Lavoura)
 const totens = [
-    { id: "TOTEM-01 (PRINCIPAL)", coords: centroUberaba, status: "ativo" },
-    { id: "TOTEM-02 (NORTE)", coords: [-19.730, -47.939], status: "inativo" },
-    { id: "TOTEM-03 (SUL)", coords: [-19.760, -47.939], status: "inativo" },
-    { id: "TOTEM-04 (LESTE)", coords: [-19.747, -47.920], status: "inativo" },
-    { id: "TOTEM-05 (OESTE)", coords: [-19.747, -47.950], status: "inativo" }
+    { id: "TOTEM-01 (PIVÔ CENTRAL)", coords: [-19.8654, -47.9876], status: "ativo" },
+    { id: "TOTEM-02 (TALHÃO NORTE)", coords: [-19.8550, -47.9876], status: "inativo" },
+    { id: "TOTEM-03 (SEDE)", coords: [-19.8750, -47.9876], status: "inativo" },
+    { id: "TOTEM-04 (DIVISA LESTE)", coords: [-19.8654, -47.9750], status: "inativo" },
+    { id: "TOTEM-05 (RESERVA)", coords: [-19.8654, -48.0000], status: "inativo" }
 ];
 
 let activeMarker = null;
-// 4. Loop para criar os marcadores no mapa
 totens.forEach(t => {
     const icone = t.status === "ativo" ? iconAtivo : iconInativo;
     const statusTxt = t.status === "ativo" ? "<b style='color:#28a745'>ONLINE E MONITORANDO</b>" : "<b style='color:#6c757d'>OFFLINE (Aguardando conexão)</b>";
@@ -304,7 +304,7 @@ function trocarAba(aba) {
     if(aba === 'dash') {
         setTimeout(() => {
             map.invalidateSize();
-            if(activeMarker) activeMarker.openPopup(); // Abre o popup do totem ativo ao voltar
+            if(activeMarker) activeMarker.openPopup(); 
         }, 100);
     }
     if(aba === 'roi') calcularROI();
@@ -320,6 +320,12 @@ async function atualizar() {
         const dados = await r.json();
         if(dados.length === 0) return;
         const d = dados[0];
+
+        // ATUALIZAÇÃO DA DATA E HORA
+        const dataObj = new Date(d.created_at);
+        // Formata para o padrão brasileiro: DD/MM/AAAA HH:MM:SS
+        const dataFormatada = dataObj.toLocaleString('pt-BR');
+        document.getElementById("lblDataHora").innerText = dataFormatada;
 
         // Dash
         document.getElementById("bateria").innerText = d.bateria_v?.toFixed(1) || "--";
