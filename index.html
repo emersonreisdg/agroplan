@@ -89,22 +89,51 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
 .modal-box { background: #fff; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-/* --- RESPONSIVO (CORREÇÃO MOBILE) --- */
+/* --- RESPONSIVO (CORREÇÃO FINAL MOBILE) --- */
 @media (max-width: 768px) {
   body { flex-direction: column; height: auto; overflow-y: auto; }
   
-  /* Menu vira barra inferior */
-  .sidebar { width: 100%; height: 60px; flex-direction: row; justify-content: space-around; padding: 0 10px; position: fixed; bottom: 0; left: 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); }
-  .logo { display: none; } /* Esconde logo no mobile */
+  /* Menu Inferior (Mobile) */
+  .sidebar { 
+      width: 100%; 
+      height: 70px; /* Mais altura para o logo caber */
+      flex-direction: row; 
+      justify-content: space-evenly; 
+      padding: 0 5px; 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.1); 
+      z-index: 9999;
+  }
   
-  /* Área principal ajustada */
-  .main { padding: 15px; padding-bottom: 90px; } 
+  /* Logo volta a aparecer, ajustado */
+  .logo { 
+      display: flex !important; 
+      margin-bottom: 0; 
+      width: 45px; 
+      height: 45px; 
+      align-items: center; 
+      justify-content: center;
+  }
+  
+  /* Ajuste dos ícones para não brigar com o logo */
+  .nav-item { width: 40px; height: 40px; margin-bottom: 0; font-size: 18px; }
 
-  /* CORREÇÃO DO MAPA: Empilha um embaixo do outro */
-  .grid-dash { flex-direction: column; } 
-  .map-container { min-height: 400px; width: 100%; } /* Mapa grande */
+  /* Área principal com margem para o menu não tapar */
+  .main { padding: 15px; padding-bottom: 100px; } 
+
+  /* MAPA VISÍVEL NO MOBILE */
+  .grid-dash { flex-direction: column; display: flex; } 
+  .map-container { 
+      width: 100%; 
+      height: 400px !important; 
+      min-height: 400px; 
+      flex: none; 
+      background: #e0e0e0;
+      margin-top: 10px;
+  } 
   
-  /* Outros grids viram coluna única */
   .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
   .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
 }
@@ -392,6 +421,9 @@ function renderChart(id, lbls, data, color) {
         });
     }
 }
+
+// CORREÇÃO MAPA MOBILE
+setTimeout(() => { map.invalidateSize(); }, 2000);
 
 setInterval(atualizar, 3000);
 atualizar();
