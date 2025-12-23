@@ -45,7 +45,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .card-info h3 { font-size: 10px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
 .card-info span { font-size: 22px; font-weight: 700; color: #333; }
 .map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-#map { width: 100%; height: 100%; background: #e0e0e0; }
+#map { width: 100%; height: 100%; min-height: 100%; background: #e0e0e0; }
 
 /* --- EFEITOS ESPECIAIS NOS TOTENS (CSS ATUALIZADO) --- */
 
@@ -391,6 +391,9 @@ const centroRural = [-19.8654, -47.9876]; // Área agrícola real
 const map = L.map('map').setView(centroRural, 14); // Zoom ajustado
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
 
+// Força o redimensionamento logo após carregar (Correção da tela branca)
+setTimeout(function(){ map.invalidateSize(); }, 500);
+
 // URL DA SUA ILUSTRAÇÃO
 const totemImageUrl = 'totem.png'; 
 
@@ -431,17 +434,27 @@ const totens = [
 let activeMarker = null;
 
 // LÓGICA PARA IDENTIFICAR O TOTEM ATIVO E EXIBIR NO CARD
+// Usamos verificação de segurança (if) para não quebrar a tela se o HTML falhar
 let totemAtivo = totens.find(t => t.status === 'ativo');
-if(totemAtivo) {
-    document.getElementById('lblTotemNome').innerText = totemAtivo.id.split('(')[0].trim();
-    document.getElementById('lblTotemStatus').innerHTML = '<i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO ONLINE';
-} else {
-    document.getElementById('lblTotemNome').innerText = "SEM SINAL";
-    document.getElementById('lblTotemStatus').innerHTML = "DESCONECTADO";
-    document.getElementById('lblTotemStatus').style.color = "#dc3545";
-    document.getElementById('cardStatusTotem').style.borderLeftColor = "#dc3545";
-    document.getElementById('cardStatusIcon').style.color = "#dc3545";
-    document.getElementById('cardStatusIcon').style.background = "#f8d7da";
+const lblNome = document.getElementById('lblTotemNome');
+const lblStatus = document.getElementById('lblTotemStatus');
+const cardTotem = document.getElementById('cardStatusTotem');
+const iconTotem = document.getElementById('cardStatusIcon');
+
+if(lblNome && lblStatus) {
+    if(totemAtivo) {
+        lblNome.innerText = totemAtivo.id.split('(')[0].trim();
+        lblStatus.innerHTML = '<i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO ONLINE';
+    } else {
+        lblNome.innerText = "SEM SINAL";
+        lblStatus.innerHTML = "DESCONECTADO";
+        lblStatus.style.color = "#dc3545";
+        if(cardTotem) cardTotem.style.borderLeftColor = "#dc3545";
+        if(iconTotem) {
+            iconTotem.style.color = "#dc3545";
+            iconTotem.style.background = "#f8d7da";
+        }
+    }
 }
 
 totens.forEach(t => {
@@ -537,4 +550,21 @@ function atualizarNutriente(id, val, min, max, bMin, bMax) {
 
 function renderChart(id, lbls, data, color) {
     const ctx = document.getElementById(id).getContext('2d');
-    if(charts
+    if(charts[id]) { charts[id].data.labels = lbls; charts[id].data.datasets[0].data = data; charts[id].update(); }
+    else {
+        charts[id] = new Chart(ctx, {
+            type: 'line',
+            data: { labels: lbls, datasets: [{ data: data, borderColor: color, backgroundColor: color+'15', fill: true, tension: 0.4, pointRadius: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+    }
+}
+
+// CORREÇÃO MAPA MOBILE
+setTimeout(() => { map.invalidateSize(); }, 2000);
+
+setInterval(atualizar, 3000);
+atualizar();
+</script>
+</body>
+</html>
