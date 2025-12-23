@@ -12,7 +12,7 @@
 
 <style>
 /* --- ESTILOS GERAIS --- */
-:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; --zap: #25D366; }
+:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; --zap: #25D366; --laranja: #ff9800; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
 
@@ -47,73 +47,44 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 #map { width: 100%; height: 100%; background: #e0e0e0; }
 
-/* --- EFEITOS ESPECIAIS NOS TOTENS (CORRIGIDO) --- */
+/* --- EFEITOS ESPECIAIS NOS TOTENS (CSS ATUALIZADO) --- */
 
-/* Container do ícone (remove bordas padrão do leaflet) */
-.custom-totem-icon {
-    background: transparent !important;
-    border: none !important;
-}
+/* Container do ícone */
+.custom-totem-icon { background: transparent !important; border: none !important; }
 
-/* Wrapper para organizar imagem e bolinha de status */
-.totem-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: flex-end; /* Alinha a base */
-    justify-content: center;
-}
+/* Wrapper */
+.totem-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
 
 /* A Imagem do Totem */
-.totem-img {
-    width: 35px;
-    height: 55px;
-    object-fit: contain;
-    transition: all 0.3s ease;
-}
+.totem-img { width: 35px; height: 55px; object-fit: contain; transition: all 0.3s ease; }
 
 /* A "Bolinha de Saúde" (Status LED) */
-.status-dot {
-    position: absolute;
-    bottom: 45px; /* Altura do led */
-    right: -5px;  /* Posição ao lado */
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    z-index: 10;
-}
+.status-dot { position: absolute; bottom: 45px; right: -5px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 10; }
 
-/* ESTILO ATIVO (Verde Neon + Pulso) */
-.ativo .totem-img {
-    filter: drop-shadow(0 0 8px rgba(40, 255, 69, 0.8));
-    animation: floating 3s infinite ease-in-out;
-}
-.ativo .status-dot {
-    background-color: #28a745;
-    box-shadow: 0 0 10px #28a745;
-    animation: blink 1.5s infinite;
-}
+/* --- ESTILO ATIVO (Verde Neon + Pulso) --- */
+.ativo .totem-img { filter: drop-shadow(0 0 8px rgba(40, 255, 69, 0.8)); animation: floating 3s infinite ease-in-out; }
+.ativo .status-dot { background-color: var(--verde); box-shadow: 0 0 10px var(--verde); animation: blink 1.5s infinite; }
 
-/* ESTILO INATIVO (Cinza + Alerta Vermelho) */
-.inativo .totem-img {
-    filter: grayscale(100%) drop-shadow(0 0 4px rgba(255, 0, 0, 0.6));
-    opacity: 0.8;
+/* --- ESTILO INATIVO (Cinza + Vermelho) --- */
+.inativo .totem-img { filter: grayscale(100%) drop-shadow(0 0 4px rgba(255, 0, 0, 0.6)); opacity: 0.8; }
+.inativo .status-dot { background-color: #dc3545; box-shadow: 0 0 5px #dc3545; }
+
+/* --- NOVO: ESTILO ALERTA (Laranja Neon + Pulso Suave) --- */
+.alerta .totem-img {
+    filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.8)); /* Glow Laranja */
+    animation: pulse-orange 3s infinite ease-in-out;
 }
-.inativo .status-dot {
-    background-color: #dc3545;
-    box-shadow: 0 0 5px #dc3545;
+.alerta .status-dot {
+    background-color: var(--laranja);
+    box-shadow: 0 0 10px var(--laranja);
 }
 
 /* Animações */
-@keyframes floating {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-}
-@keyframes blink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+@keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+@keyframes pulse-orange {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.6)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 12px rgba(255, 152, 0, 1)); transform: scale(1.02); }
 }
 
 
@@ -263,7 +234,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
     <div class="grid-dash">
       <div class="cards-col">
         <div class="card" style="border-left: 5px solid #28a745; background:#fff" id="cardStatusTotem">
-            <div class="card-icon" style="background:#e8f5e9; color:#28a745">
+            <div class="card-icon" style="background:#e8f5e9; color:#28a745" id="cardStatusIcon">
                 <i class="fas fa-broadcast-tower"></i>
             </div>
             <div class="card-info">
@@ -423,12 +394,15 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
 // URL DA SUA ILUSTRAÇÃO
 const totemImageUrl = 'totem.png'; 
 
-// --- FUNÇÃO PARA CRIAR ÍCONES (Técnica divIcon para não sumir) ---
+// --- FUNÇÃO PARA CRIAR ÍCONES (ATUALIZADA COM ALERTA LARANJA) ---
 function criarIcone(status) {
-    // Define a classe CSS baseada no status (ativo/inativo)
-    const classeExtra = status === "ativo" ? "ativo" : "inativo";
+    // Define a classe CSS baseada no status
+    let classeExtra = "";
+    if(status === "ativo") classeExtra = "ativo";
+    else if(status === "alerta") classeExtra = "alerta"; // Novo estado
+    else classeExtra = "inativo";
     
-    // HTML interno do marcador: Imagem + Bolinha de Status
+    // HTML interno do marcador
     const htmlInterno = `
         <div class="totem-wrapper ${classeExtra}">
             <img src="${totemImageUrl}" class="totem-img">
@@ -437,18 +411,18 @@ function criarIcone(status) {
     `;
 
     return L.divIcon({
-        className: 'custom-totem-icon', // Classe do container Leaflet
-        html: htmlInterno,              // Nosso HTML personalizado
-        iconSize: [40, 60],             // Tamanho total da área do ícone
-        iconAnchor: [20, 55],           // Ponto onde "planta" no chão (centro horizontal, base vertical)
-        popupAnchor: [0, -50]           // Onde o balão de texto abre
+        className: 'custom-totem-icon',
+        html: htmlInterno,
+        iconSize: [40, 60],
+        iconAnchor: [20, 55],
+        popupAnchor: [0, -50]
     });
 }
 
-// Lista de 5 Totens (Espalhados na Lavoura)
+// Lista de Totens Atualizada (1 Verde, 1 Laranja, 3 Vermelhos)
 const totens = [
     { id: "TOTEM-01 (PIVÔ CENTRAL)", coords: [-19.8654, -47.9876], status: "ativo" },
-    { id: "TOTEM-02 (TALHÃO NORTE)", coords: [-19.8550, -47.9876], status: "inativo" },
+    { id: "TOTEM-02 (TALHÃO SUL)", coords: [-19.8600, -47.9800], status: "alerta" }, // NOVO: Laranja
     { id: "TOTEM-03 (SEDE)", coords: [-19.8750, -47.9876], status: "inativo" },
     { id: "TOTEM-04 (DIVISA LESTE)", coords: [-19.8654, -47.9750], status: "inativo" },
     { id: "TOTEM-05 (RESERVA)", coords: [-19.8654, -48.0000], status: "inativo" }
@@ -466,13 +440,23 @@ if(totemAtivo) {
     document.getElementById('lblTotemStatus').innerHTML = "DESCONECTADO";
     document.getElementById('lblTotemStatus').style.color = "#dc3545";
     document.getElementById('cardStatusTotem').style.borderLeftColor = "#dc3545";
+    document.getElementById('cardStatusIcon').style.color = "#dc3545";
+    document.getElementById('cardStatusIcon').style.background = "#f8d7da";
 }
 
 totens.forEach(t => {
-    // Cria o ícone usando a nova função segura
+    // Cria o ícone usando a nova função atualizada
     const icone = criarIcone(t.status);
     
-    const statusTxt = t.status === "ativo" ? "<b style='color:#28a745'>ONLINE E MONITORANDO</b>" : "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
+    let statusTxt = "";
+    if(t.status === "ativo") {
+        statusTxt = "<b style='color:#28a745'>ONLINE E MONITORANDO</b>";
+    } else if(t.status === "alerta") {
+        statusTxt = "<b style='color:#ff9800'>ALERTA: Trocar bateria em até 4 dias</b>";
+    } else {
+        statusTxt = "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
+    }
+
     const m = L.marker(t.coords, {icon: icone}).addTo(map).bindPopup(`<b>📍 ${t.id}</b><br>${statusTxt}`);
     if(t.status === "ativo") { activeMarker = m; }
 });
@@ -553,21 +537,4 @@ function atualizarNutriente(id, val, min, max, bMin, bMax) {
 
 function renderChart(id, lbls, data, color) {
     const ctx = document.getElementById(id).getContext('2d');
-    if(charts[id]) { charts[id].data.labels = lbls; charts[id].data.datasets[0].data = data; charts[id].update(); }
-    else {
-        charts[id] = new Chart(ctx, {
-            type: 'line',
-            data: { labels: lbls, datasets: [{ data: data, borderColor: color, backgroundColor: color+'15', fill: true, tension: 0.4, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
-        });
-    }
-}
-
-// CORREÇÃO MAPA MOBILE
-setTimeout(() => { map.invalidateSize(); }, 2000);
-
-setInterval(atualizar, 3000);
-atualizar();
-</script>
-</body>
-</html>
+    if(charts
