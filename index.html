@@ -39,7 +39,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 
 /* CARDS E GRIDS */
 .grid-dash { display: flex; gap: 20px; flex: 1; min-height: 400px; }
-.cards-col { min-width: 280px; display: flex; flex-direction: column; gap: 15px; }
+.cards-col { min-width: 300px; max-width: 320px; display: flex; flex-direction: column; gap: 15px; } /* Ajustei largura minima para caber o grafico */
 .card { background: #fff; padding: 20px; border-radius: 12px; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .card-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .card-info h3 { font-size: 10px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
@@ -47,9 +47,15 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 #map { width: 100%; height: 100%; min-height: 100%; background: #e0e0e0; }
 
-/* CLIMA */
-.weather-section { margin-top: 5px; flex-shrink: 0; }
-.weather-card { width: 100%; height: 200px; padding: 15px; display: flex; flex-direction: column; }
+/* CLIMA (Agora dentro do card) */
+.weather-card { 
+    width: 100%; 
+    height: 250px; /* Um pouco mais alto para caber o gráfico */
+    padding: 15px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: stretch; /* Garante que o canvas ocupe a largura */
+}
 
 /* --- EFEITOS ESPECIAIS NOS TOTENS --- */
 .custom-totem-icon { background: transparent !important; border: none !important; }
@@ -122,6 +128,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
   .nav-item { width: 40px; height: 40px; margin-bottom: 0; font-size: 18px; }
   .main { padding: 15px; padding-bottom: 100px; } 
   .grid-dash { flex-direction: column; display: flex; } 
+  .cards-col { max-width: 100%; } /* No mobile, ocupa tudo */
   .map-container { width: 100%; height: 400px !important; min-height: 400px; flex: none; background: #e0e0e0; margin-top: 10px; } 
   .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
   .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
@@ -187,20 +194,18 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
         <div class="card"><div class="card-icon" style="background:#f0fdf4;color:#28a745"><i class="fas fa-battery-three-quarters"></i></div><div class="card-info"><h3>Bateria</h3><span id="bateria">--</span> <small>V</small></div></div>
         <div class="card"><div class="card-icon" style="background:#e3f2fd;color:#3498db"><i class="fas fa-temperature-high"></i></div><div class="card-info"><h3>Temp. Solo</h3><span id="temp">--</span> <small>°C</small></div></div>
         <div class="card"><div class="card-icon" style="background:#fdf0e7;color:#e67e22"><i class="fas fa-tint"></i></div><div class="card-info"><h3>Umidade</h3><span id="umidade">--</span> <small>%</small></div></div>
-      </div>
-      <div class="map-container"><div id="map"></div></div>
-    </div>
-    
-    <div class="weather-section">
+        
         <div class="card weather-card">
              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:#555; font-size:14px; font-weight:800;"><i class="fas fa-cloud-sun-rain" style="color:#2980b9"></i> PREVISÃO CLIMÁTICA (7 DIAS)</h3>
-                <small style="color:#999; font-size:10px">Fonte: Open-Meteo API</small>
+                <h3 style="color:#555; font-size:12px; font-weight:800;"><i class="fas fa-cloud-sun-rain" style="color:#2980b9"></i> CLIMA (7 DIAS)</h3>
              </div>
              <div style="flex:1; position:relative;">
                 <canvas id="chartWeather"></canvas>
              </div>
         </div>
+
+      </div>
+      <div class="map-container"><div id="map"></div></div>
     </div>
   </div>
 
@@ -361,20 +366,21 @@ async function carregarPrevisao() {
                 datasets: [
                     {
                         type: 'line', // Linha para temperatura
-                        label: 'Temp Máx (°C)',
+                        label: 'Temp (°C)',
                         data: temps,
                         borderColor: '#ff9800',
                         backgroundColor: '#ff9800',
                         borderWidth: 2,
                         tension: 0.4,
-                        yAxisID: 'y1'
+                        yAxisID: 'y1',
+                        pointRadius: 1 // Pontos menores
                     },
                     {
                         type: 'bar', // Barra para chuva
                         label: 'Chuva (mm)',
                         data: rains,
                         backgroundColor: '#3498db',
-                        borderRadius: 4,
+                        borderRadius: 3,
                         yAxisID: 'y'
                     }
                 ]
@@ -384,20 +390,20 @@ async function carregarPrevisao() {
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 scales: {
-                    x: { grid: { display: false } },
+                    x: { grid: { display: false }, ticks: { font: { size: 9 } } }, // Fonte menor no X
                     y: { 
                         type: 'linear', display: true, position: 'left', 
-                        title: { display: true, text: 'Chuva (mm)' },
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: { display: false } // Remove números do eixo Y da chuva para limpar visual
                     },
                     y1: { 
                         type: 'linear', display: true, position: 'right', 
-                        title: { display: true, text: 'Temp (°C)' },
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: { display: false } // Remove números do eixo Y da temp
                     }
                 },
                 plugins: {
-                    legend: { position: 'top' }
+                    legend: { display: false } // Remove legenda para economizar espaço lateral
                 }
             }
         });
