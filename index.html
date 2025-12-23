@@ -47,46 +47,28 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 #map { width: 100%; height: 100%; min-height: 100%; background: #e0e0e0; }
 
-/* --- EFEITOS ESPECIAIS NOS TOTENS (CSS ATUALIZADO) --- */
+/* CLIMA */
+.weather-section { margin-top: 5px; flex-shrink: 0; }
+.weather-card { width: 100%; height: 200px; padding: 15px; display: flex; flex-direction: column; }
 
-/* Container do ícone */
+/* --- EFEITOS ESPECIAIS NOS TOTENS --- */
 .custom-totem-icon { background: transparent !important; border: none !important; }
-
-/* Wrapper */
 .totem-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
-
-/* A Imagem do Totem */
 .totem-img { width: 35px; height: 55px; object-fit: contain; transition: all 0.3s ease; }
-
-/* A "Bolinha de Saúde" (Status LED) */
 .status-dot { position: absolute; bottom: 45px; right: -5px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 10; }
 
-/* --- ESTILO ATIVO (Verde Neon + Pulso) --- */
 .ativo .totem-img { filter: drop-shadow(0 0 8px rgba(40, 255, 69, 0.8)); animation: floating 3s infinite ease-in-out; }
 .ativo .status-dot { background-color: var(--verde); box-shadow: 0 0 10px var(--verde); animation: blink 1.5s infinite; }
 
-/* --- ESTILO INATIVO (Cinza + Vermelho) --- */
 .inativo .totem-img { filter: grayscale(100%) drop-shadow(0 0 4px rgba(255, 0, 0, 0.6)); opacity: 0.8; }
 .inativo .status-dot { background-color: #dc3545; box-shadow: 0 0 5px #dc3545; }
 
-/* --- NOVO: ESTILO ALERTA (Laranja Neon + Pulso Suave) --- */
-.alerta .totem-img {
-    filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.8)); /* Glow Laranja */
-    animation: pulse-orange 3s infinite ease-in-out;
-}
-.alerta .status-dot {
-    background-color: var(--laranja);
-    box-shadow: 0 0 10px var(--laranja);
-}
+.alerta .totem-img { filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.8)); animation: pulse-orange 3s infinite ease-in-out; }
+.alerta .status-dot { background-color: var(--laranja); box-shadow: 0 0 10px var(--laranja); }
 
-/* Animações */
 @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
-@keyframes pulse-orange {
-    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.6)); transform: scale(1); }
-    50% { filter: drop-shadow(0 0 12px rgba(255, 152, 0, 1)); transform: scale(1.02); }
-}
-
+@keyframes pulse-orange { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.6)); transform: scale(1); } 50% { filter: drop-shadow(0 0 12px rgba(255, 152, 0, 1)); transform: scale(1.02); } }
 
 /* QUÍMICA */
 .chem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; padding-bottom: 20px; }
@@ -105,7 +87,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .banner-text h2 { font-size: 16px; font-weight: 800; margin-bottom: 4px; color: #333; }
 .banner-text p { font-size: 13px; color: #666; }
 
-/* ABA 3: FINANCEIRO (ROI) */
+/* ROI */
 .roi-header { display: flex; justify-content: space-between; align-items: flex-end; background: linear-gradient(135deg, #0f3d30 0%, #1a5c48 100%); padding: 30px; border-radius: 16px; color: white; margin-bottom: 20px; }
 .roi-stat h3 { font-size: 32px; font-weight: 800; color: #2ecc71; }
 .roi-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; flex: 1; }
@@ -114,7 +96,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .input-field:focus { border-color: var(--verde); }
 .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 10px solid #eee; display: flex; align-items: center; justify-content: center; margin: 20px auto; position: relative; flex-direction: column; }
 
-/* ABA 4: TÉCNICA (AGRÔNOMO) */
+/* TÉCNICA */
 .tec-header { background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%); padding: 25px; border-radius: 16px; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
 .tec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
 .tec-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
@@ -122,7 +104,6 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .btn-tec:hover { background: #1f618d; }
 .btn-zap { background: var(--zap); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; display:flex; align-items:center; justify-content:center; gap:8px; }
 .btn-zap:hover { background: #20b858; }
-
 .history-list { list-style: none; margin-top: 15px; overflow-y: auto; max-height: 250px; }
 .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
 .history-item:last-child { border-bottom: none; }
@@ -133,51 +114,15 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
 .modal-box { background: #fff; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-/* --- RESPONSIVO (CORREÇÃO FINAL MOBILE) --- */
+/* MOBILE */
 @media (max-width: 768px) {
   body { flex-direction: column; height: auto; overflow-y: auto; }
-   
-  /* Menu Inferior (Mobile) */
-  .sidebar { 
-      width: 100%; 
-      height: 70px; /* Mais altura para o logo caber */
-      flex-direction: row; 
-      justify-content: space-evenly; 
-      padding: 0 5px; 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.1); 
-      z-index: 9999;
-  }
-   
-  /* Logo volta a aparecer, ajustado */
-  .logo { 
-      display: flex !important; 
-      margin-bottom: 0; 
-      width: 45px; 
-      height: 45px; 
-      align-items: center; 
-      justify-content: center;
-  }
-   
-  /* Ajuste dos ícones para não brigar com o logo */
+  .sidebar { width: 100%; height: 70px; flex-direction: row; justify-content: space-evenly; padding: 0 5px; position: fixed; bottom: 0; left: 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 9999; }
+  .logo { display: flex !important; margin-bottom: 0; width: 45px; height: 45px; align-items: center; justify-content: center; }
   .nav-item { width: 40px; height: 40px; margin-bottom: 0; font-size: 18px; }
-
-  /* Área principal com margem para o menu não tapar */
   .main { padding: 15px; padding-bottom: 100px; } 
-
-  /* MAPA VISÍVEL NO MOBILE */
   .grid-dash { flex-direction: column; display: flex; } 
-  .map-container { 
-      width: 100%; 
-      height: 400px !important; 
-      min-height: 400px; 
-      flex: none; 
-      background: #e0e0e0;
-      margin-top: 10px;
-  } 
-   
+  .map-container { width: 100%; height: 400px !important; min-height: 400px; flex: none; background: #e0e0e0; margin-top: 10px; } 
   .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
   .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
 }
@@ -199,7 +144,6 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
 
 <nav class="sidebar">
   <div class="logo" onclick="trocarAba('dash')" title="Início"><img src="https://i.ibb.co/zVJLBRCB/logo-dashboard.png" class="logo-img"></div>
-   
   <div id="btn-dash" class="nav-item active" onclick="trocarAba('dash')" title="Painel Físico"><i class="fas fa-th-large"></i></div>
   <div id="btn-chem" class="nav-item" onclick="trocarAba('chem')" title="Análise Química"><i class="fas fa-flask"></i></div>
   <div id="btn-roi" class="nav-item" onclick="trocarAba('roi')" title="Financeiro & ROI"><i class="fas fa-chart-line"></i></div>
@@ -212,11 +156,9 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
     <div class="header-info">
         <h1 id="lblFazenda">AGRO PLAN MAPS</h1>
         <p><i class="fas fa-user-circle" style="color:#28a745"></i> <span id="lblProdutor">Visitante</span> | <i class="fas fa-seedling" style="color:#f39c12"></i> <span id="lblCultura">Demonstração</span></p>
-        
         <p style="margin-top: 5px; font-size: 11px; color: #888;">
             <i class="fas fa-map-marker-alt" style="color:#dc3545"></i> Localização: <b>Uberaba, MG</b> (Zona Rural - BR 050)
         </p>
-
         <p style="margin-top: 2px; font-size: 11px; color: #555;">
             <i class="far fa-clock" style="color:#2980b9"></i> Última Análise: <b id="lblDataHora">Aguardando dados...</b>
         </p>
@@ -242,12 +184,23 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
                 <span id="lblTotemStatus" style="font-size:14px; color:#28a745; font-weight:800; display:flex; align-items:center; gap:5px"><i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO</span>
             </div>
         </div>
-
         <div class="card"><div class="card-icon" style="background:#f0fdf4;color:#28a745"><i class="fas fa-battery-three-quarters"></i></div><div class="card-info"><h3>Bateria</h3><span id="bateria">--</span> <small>V</small></div></div>
         <div class="card"><div class="card-icon" style="background:#e3f2fd;color:#3498db"><i class="fas fa-temperature-high"></i></div><div class="card-info"><h3>Temp. Solo</h3><span id="temp">--</span> <small>°C</small></div></div>
         <div class="card"><div class="card-icon" style="background:#fdf0e7;color:#e67e22"><i class="fas fa-tint"></i></div><div class="card-info"><h3>Umidade</h3><span id="umidade">--</span> <small>%</small></div></div>
       </div>
       <div class="map-container"><div id="map"></div></div>
+    </div>
+    
+    <div class="weather-section">
+        <div class="card weather-card">
+             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="color:#555; font-size:14px; font-weight:800;"><i class="fas fa-cloud-sun-rain" style="color:#2980b9"></i> PREVISÃO CLIMÁTICA (7 DIAS)</h3>
+                <small style="color:#999; font-size:10px">Fonte: Open-Meteo API</small>
+             </div>
+             <div style="flex:1; position:relative;">
+                <canvas id="chartWeather"></canvas>
+             </div>
+        </div>
     </div>
   </div>
 
@@ -299,9 +252,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
                 <div style="flex:1"><label class="input-label">Dose (kg/ha)</label><input type="number" class="input-field" id="tecDose"></div>
                 <div style="flex:1"><label class="input-label">Área (ha)</label><input type="number" class="input-field" id="tecArea"></div>
             </div>
-            
             <button class="btn-tec" onclick="registrarAplicacao()"><i class="fas fa-save"></i> REGISTRAR NO SISTEMA</button>
-            
             <button class="btn-zap" onclick="enviarZap()"><i class="fab fa-whatsapp"></i> ENVIAR ORDEM DE COMPRA</button>
         </div>
         <div class="tec-card">
@@ -309,8 +260,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; h
             <div style="background:#f8f9fa; padding:10px; border-radius:8px; font-size:12px; color:#777; margin-bottom:10px;">
                 <i class="fas fa-info-circle"></i> Registros sincronizados com o Totem 01.
             </div>
-            <ul class="history-list" id="listaAplicacoes">
-                </ul>
+            <ul class="history-list" id="listaAplicacoes"></ul>
         </div>
     </div>
   </div>
@@ -345,15 +295,12 @@ function registrarAplicacao() {
     alert("✅ Aplicação registrada com sucesso no Caderno de Campo Digital!");
 }
 
-// --- FUNÇÃO DE ENVIAR PARA O WHATSAPP ---
 function enviarZap() {
     const produtor = document.getElementById('inputProdutor').value || "Sr. Produtor";
     const fazenda = document.getElementById('inputFazenda').value || "Fazenda Modelo";
     const produto = document.getElementById('tecProduto').value || "Insumos Gerais";
     const dose = document.getElementById('tecDose').value || "--";
     const area = document.getElementById('tecArea').value || "--";
-
-    // Cria a mensagem bonitinha
     const texto = `*AGRO PLAN MAPS - ORDEM DE COMPRA*%0A%0A` +
                   `👤 *Cliente:* ${produtor}%0A` +
                   `📍 *Fazenda:* ${fazenda}%0A` +
@@ -361,8 +308,6 @@ function enviarZap() {
                   `⚖️ *Dose:* ${dose} kg/ha%0A` +
                   `🚜 *Área:* ${area} ha%0A%0A` +
                   `_Gerado automaticamente pelo sistema de monitoramento._`;
-
-    // Abre o WhatsApp
     window.open(`https://wa.me/?text=${texto}`, '_blank');
 }
 
@@ -385,47 +330,110 @@ function calcularROI() {
     });
 }
 
+// --- PREVISÃO DO TEMPO (OPEN-METEO) ---
+let chartWeather_Instance = null;
+async function carregarPrevisao() {
+    // Coordenadas da fazenda (Uberaba)
+    const lat = -19.8654;
+    const lon = -47.9876;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,precipitation_sum&timezone=America%2FSao_Paulo`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Pega os dados dos próximos 7 dias
+        const labels = data.daily.time.map(t => {
+            const d = new Date(t);
+            return d.toLocaleDateString('pt-BR', {weekday: 'short'}); // Seg, Ter, Qua...
+        });
+        const temps = data.daily.temperature_2m_max;
+        const rains = data.daily.precipitation_sum;
+
+        // Renderiza o Gráfico
+        const ctx = document.getElementById('chartWeather').getContext('2d');
+        if(chartWeather_Instance) chartWeather_Instance.destroy();
+
+        chartWeather_Instance = new Chart(ctx, {
+            type: 'bar', // Tipo principal: Barra (para chuva)
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'line', // Linha para temperatura
+                        label: 'Temp Máx (°C)',
+                        data: temps,
+                        borderColor: '#ff9800',
+                        backgroundColor: '#ff9800',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        type: 'bar', // Barra para chuva
+                        label: 'Chuva (mm)',
+                        data: rains,
+                        backgroundColor: '#3498db',
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { 
+                        type: 'linear', display: true, position: 'left', 
+                        title: { display: true, text: 'Chuva (mm)' },
+                        grid: { display: false }
+                    },
+                    y1: { 
+                        type: 'linear', display: true, position: 'right', 
+                        title: { display: true, text: 'Temp (°C)' },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar clima:", error);
+    }
+}
+
 // --- SISTEMA PADRÃO (MAPA E DADOS) ---
-// 1. Configuração do Mapa (ZONA RURAL DE UBERABA)
-const centroRural = [-19.8654, -47.9876]; // Área agrícola real
-const map = L.map('map').setView(centroRural, 14); // Zoom ajustado
+const centroRural = [-19.8654, -47.9876];
+const map = L.map('map').setView(centroRural, 14);
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
 
-// Força o redimensionamento logo após carregar (Correção da tela branca)
 setTimeout(function(){ map.invalidateSize(); }, 500);
 
-// URL DA SUA ILUSTRAÇÃO
 const totemImageUrl = 'totem.png'; 
 
-// --- FUNÇÃO PARA CRIAR ÍCONES (ATUALIZADA COM ALERTA LARANJA) ---
 function criarIcone(status) {
-    // Define a classe CSS baseada no status
     let classeExtra = "";
     if(status === "ativo") classeExtra = "ativo";
-    else if(status === "alerta") classeExtra = "alerta"; // Novo estado
+    else if(status === "alerta") classeExtra = "alerta";
     else classeExtra = "inativo";
     
-    // HTML interno do marcador
     const htmlInterno = `
         <div class="totem-wrapper ${classeExtra}">
             <img src="${totemImageUrl}" class="totem-img">
             <div class="status-dot"></div>
         </div>
     `;
-
-    return L.divIcon({
-        className: 'custom-totem-icon',
-        html: htmlInterno,
-        iconSize: [40, 60],
-        iconAnchor: [20, 55],
-        popupAnchor: [0, -50]
-    });
+    return L.divIcon({ className: 'custom-totem-icon', html: htmlInterno, iconSize: [40, 60], iconAnchor: [20, 55], popupAnchor: [0, -50] });
 }
 
-// Lista de Totens Atualizada (1 Verde, 1 Laranja, 3 Vermelhos)
 const totens = [
     { id: "TOTEM-01 (PIVÔ CENTRAL)", coords: [-19.8654, -47.9876], status: "ativo" },
-    { id: "TOTEM-02 (TALHÃO SUL)", coords: [-19.8600, -47.9800], status: "alerta" }, // NOVO: Laranja
+    { id: "TOTEM-02 (TALHÃO SUL)", coords: [-19.8600, -47.9800], status: "alerta" }, 
     { id: "TOTEM-03 (SEDE)", coords: [-19.8750, -47.9876], status: "inativo" },
     { id: "TOTEM-04 (DIVISA LESTE)", coords: [-19.8654, -47.9750], status: "inativo" },
     { id: "TOTEM-05 (RESERVA)", coords: [-19.8654, -48.0000], status: "inativo" }
@@ -433,13 +441,12 @@ const totens = [
 
 let activeMarker = null;
 
-// LÓGICA PARA IDENTIFICAR O TOTEM ATIVO E EXIBIR NO CARD
-// Usamos verificação de segurança (if) para não quebrar a tela se o HTML falhar
-let totemAtivo = totens.find(t => t.status === 'ativo');
+// Lógica segura para atualizar o card lateral
 const lblNome = document.getElementById('lblTotemNome');
 const lblStatus = document.getElementById('lblTotemStatus');
 const cardTotem = document.getElementById('cardStatusTotem');
 const iconTotem = document.getElementById('cardStatusIcon');
+let totemAtivo = totens.find(t => t.status === 'ativo');
 
 if(lblNome && lblStatus) {
     if(totemAtivo) {
@@ -450,25 +457,16 @@ if(lblNome && lblStatus) {
         lblStatus.innerHTML = "DESCONECTADO";
         lblStatus.style.color = "#dc3545";
         if(cardTotem) cardTotem.style.borderLeftColor = "#dc3545";
-        if(iconTotem) {
-            iconTotem.style.color = "#dc3545";
-            iconTotem.style.background = "#f8d7da";
-        }
+        if(iconTotem) { iconTotem.style.color = "#dc3545"; iconTotem.style.background = "#f8d7da"; }
     }
 }
 
 totens.forEach(t => {
-    // Cria o ícone usando a nova função atualizada
     const icone = criarIcone(t.status);
-    
     let statusTxt = "";
-    if(t.status === "ativo") {
-        statusTxt = "<b style='color:#28a745'>ONLINE E MONITORANDO</b>";
-    } else if(t.status === "alerta") {
-        statusTxt = "<b style='color:#ff9800'>ALERTA: Trocar bateria em até 4 dias</b>";
-    } else {
-        statusTxt = "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
-    }
+    if(t.status === "ativo") statusTxt = "<b style='color:#28a745'>ONLINE E MONITORANDO</b>";
+    else if(t.status === "alerta") statusTxt = "<b style='color:#ff9800'>ALERTA: Trocar bateria em até 4 dias</b>";
+    else statusTxt = "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
 
     const m = L.marker(t.coords, {icon: icone}).addTo(map).bindPopup(`<b>📍 ${t.id}</b><br>${statusTxt}`);
     if(t.status === "ativo") { activeMarker = m; }
@@ -480,10 +478,7 @@ function trocarAba(aba) {
     document.getElementById('view-'+aba).classList.add('active');
     document.getElementById('btn-'+aba).classList.add('active');
     if(aba === 'dash') {
-        setTimeout(() => {
-            map.invalidateSize();
-            if(activeMarker) activeMarker.openPopup(); 
-        }, 100);
+        setTimeout(() => { map.invalidateSize(); if(activeMarker) activeMarker.openPopup(); }, 100);
     }
     if(aba === 'roi') calcularROI();
 }
@@ -499,36 +494,29 @@ async function atualizar() {
         if(dados.length === 0) return;
         const d = dados[0];
 
-        // ATUALIZAÇÃO DA DATA E HORA
         const dataObj = new Date(d.created_at);
-        const dataFormatada = dataObj.toLocaleString('pt-BR');
-        document.getElementById("lblDataHora").innerText = dataFormatada;
+        document.getElementById("lblDataHora").innerText = dataObj.toLocaleString('pt-BR');
 
-        // Dash
         document.getElementById("bateria").innerText = d.bateria_v?.toFixed(1) || "--";
         document.getElementById("temp").innerText = d.temperatura_solo?.toFixed(1) || "--";
         document.getElementById("umidade").innerText = d.umidade_solo ? Math.round(d.umidade_solo) : "--";
         
-        // Banner
         document.getElementById("bannerTitle").innerText = d.status_titulo || "CONECTADO";
         document.getElementById("bannerMsg").innerText = d.status_mensagem || "Operação normal.";
         const cores = { VERDE:"#28a745", AMARELO:"#ffc107", VERMELHO:"#dc3545" };
         document.getElementById("banner").style.borderLeftColor = cores[d.status_cor] || "#ccc";
 
-        // Química
         atualizarNutriente("ph", d.ph_solo, 0, 14, 5.5, 6.5);
         atualizarNutriente("n", d.n_solo, 0, 100, 40, 80);
         atualizarNutriente("p", d.p_solo, 0, 30, 10, 20);
         atualizarNutriente("k", d.k_solo, 0, 150, 60, 120);
 
-        // Score
         let score = 98;
         if(d.status_cor === "AMARELO") score = 85;
         if(d.status_cor === "VERMELHO") score = 65;
         document.getElementById("lblScore").innerText = score;
         document.getElementById("scoreCircle").style.borderColor = cores[d.status_cor] || "#28a745";
 
-        // Gráficos
         const hist = dados.reverse();
         const lbls = hist.map(i => new Date(i.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
         renderChart("chartPH", lbls, hist.map(i => i.ph_solo), "#6c757d");
@@ -560,11 +548,11 @@ function renderChart(id, lbls, data, color) {
     }
 }
 
-// CORREÇÃO MAPA MOBILE
+// Inicializações
 setTimeout(() => { map.invalidateSize(); }, 2000);
-
 setInterval(atualizar, 3000);
 atualizar();
+carregarPrevisao(); // Carrega o clima ao iniciar
 </script>
 </body>
 </html>
