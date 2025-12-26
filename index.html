@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estação MAPS | Agro Plan Systems</title>
-    <meta name="description" content="Estação MAPS: Infraestrutura de monitoramento contínuo de solo. Tecnologia modular e escalável para agricultura de precisão.">
+    <title>Estação MAPS | Inteligência de Decisão</title>
+    <meta name="description" content="Estação MAPS: Do dado à decisão. Monitoramento de NPK, Clima e pH com guia de decisão inteligente (Semáforo Agro Plan).">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -24,6 +24,7 @@
                             brand: '#28a745',
                             dark: '#0f3d30',
                             alert: '#ff9800',
+                            danger: '#dc3545',
                             text: '#333333'
                         }
                     },
@@ -39,7 +40,7 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* CORREÇÃO: Link apontando para Totem-campo.jpeg (com E) */
+        /* Background Imagem Fixa */
         .hero-bg {
             background-color: #0f3d30;
             background-image: linear-gradient(rgba(15, 61, 48, 0.9), rgba(15, 61, 48, 0.7)), url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg');
@@ -115,35 +116,23 @@
         </div>
     </header>
 
-    <section class="py-24 bg-white overflow-hidden">
+    <section class="py-24 bg-white overflow-hidden border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
             <div class="md:w-1/2 order-2 md:order-1">
                 <div class="flex items-center gap-2 mb-4">
                     <i class="fa-solid fa-satellite-dish text-agro-brand text-2xl"></i>
                     <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Do Campo para a Nuvem</span>
                 </div>
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Reduza achismos. Melhore o manejo.</h2>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Seus dados na palma da mão.</h2>
                 <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                    A Estação MAPS realiza leituras locais e envia automaticamente para o sistema AgroPlan. Monitore os indicadores vitais para soja, milho, café e muito mais:
+                    A Estação MAPS realiza leituras locais e envia automaticamente para o sistema. O app organiza tudo em um painel simples e direto.
                 </p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-agro-brand font-bold">pH</div>
-                        <div><h4 class="font-bold text-gray-900 text-sm">pH do Solo</h4><p class="text-xs text-gray-500">Correção de acidez</p></div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">N</div>
-                        <div><h4 class="font-bold text-gray-900 text-sm">Nitrogênio</h4><p class="text-xs text-gray-500">Crescimento</p></div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">P</div>
-                        <div><h4 class="font-bold text-gray-900 text-sm">Fósforo</h4><p class="text-xs text-gray-500">Enraizamento</p></div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">K</div>
-                        <div><h4 class="font-bold text-gray-900 text-sm">Potássio</h4><p class="text-xs text-gray-500">Qualidade/Grão</p></div>
-                    </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100"><h4 class="font-bold text-gray-900">pH do Solo</h4><p class="text-xs text-gray-500">Correção de acidez</p></div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100"><h4 class="font-bold text-gray-900">Nitrogênio</h4><p class="text-xs text-gray-500">Crescimento</p></div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100"><h4 class="font-bold text-gray-900">Fósforo</h4><p class="text-xs text-gray-500">Enraizamento</p></div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100"><h4 class="font-bold text-gray-900">Potássio</h4><p class="text-xs text-gray-500">Qualidade</p></div>
                 </div>
             </div>
 
@@ -154,6 +143,82 @@
                         <img src="https://emersonreisdg.github.io/agroplan/dashboard-mobile.png.png" class="w-full h-full object-cover" alt="Agro Plan App">
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50" id="inteligencia">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Guia de Decisão Agro Plan</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-agro-dark mt-2">Do dado à decisão em 1 segundo.</h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                    O sistema processa Umidade, pH e Clima e traduz em um sinal simples. Você não precisa decifrar gráficos, apenas seguir o semáforo.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <div class="bg-white rounded-xl shadow-lg border-t-8 border-green-500 p-8 transform hover:-translate-y-2 transition duration-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center animate-pulse">
+                            <i class="fa-solid fa-check text-3xl text-green-600"></i>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">RISCO BAIXO</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Janela Aberta</h3>
+                    <p class="text-gray-600 text-sm mb-6">Condições ideais. Momento favorável para plantio, adubação ou colheita.</p>
+                    
+                    <div class="space-y-3 bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">Umidade:</span> <span class="text-green-600 font-bold">35% (Ideal)</span></div>
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">pH:</span> <span class="text-green-600 font-bold">6.2 (Estável)</span></div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 text-green-700 font-bold text-sm bg-green-50 p-3 rounded">
+                        <i class="fa-solid fa-thumbs-up"></i> OPERAR COM CONFIANÇA.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg border-t-8 border-yellow-500 p-8 transform hover:-translate-y-2 transition duration-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-triangle-exclamation text-3xl text-yellow-600"></i>
+                        </div>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">ATENÇÃO</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Condições Limitantes</h3>
+                    <p class="text-gray-600 text-sm mb-6">Monitorar de perto. Algum fator está próximo do limite ou variando.</p>
+                    
+                    <div class="space-y-3 bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">Umidade:</span> <span class="text-yellow-600 font-bold">25% (Baixa)</span></div>
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">pH:</span> <span class="text-yellow-600 font-bold">5.8 (Queda)</span></div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 text-yellow-700 font-bold text-sm bg-yellow-50 p-3 rounded">
+                        <i class="fa-solid fa-eye"></i> PLANEJAR & MONITORAR.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg border-t-8 border-red-500 p-8 transform hover:-translate-y-2 transition duration-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-hand text-3xl text-red-600"></i>
+                        </div>
+                        <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">RISCO ALTO</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Janela Fechada</h3>
+                    <p class="text-gray-600 text-sm mb-6">Evitar operações. Risco de perda de insumos ou ineficiência severa.</p>
+                    
+                    <div class="space-y-3 bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">Umidade:</span> <span class="text-red-600 font-bold">15% (Crítica)</span></div>
+                        <div class="flex justify-between text-sm"><span class="font-semibold text-gray-700">pH:</span> <span class="text-red-600 font-bold">5.0 (Ácido)</span></div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 text-red-700 font-bold text-sm bg-red-50 p-3 rounded">
+                        <i class="fa-solid fa-ban"></i> AGUARDAR OU CORRIGIR.
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -181,31 +246,16 @@
                 <div class="space-y-4 text-sm text-gray-300 mt-4">
                     <div class="flex gap-4">
                         <div class="w-10 h-10 rounded bg-gray-800 flex items-center justify-center text-white font-bold">1</div>
-                        <div>
-                            <h4 class="font-bold text-white">Instalação Fixa</h4>
-                            <p class="text-gray-400">Coleta contínua no mesmo ponto, gerando histórico real.</p>
-                        </div>
+                        <div><h4 class="font-bold text-white">Instalação Fixa</h4><p class="text-gray-400">Coleta contínua no mesmo ponto.</p></div>
                     </div>
                     <div class="flex gap-4">
                         <div class="w-10 h-10 rounded bg-gray-800 flex items-center justify-center text-white font-bold">2</div>
-                        <div>
-                            <h4 class="font-bold text-white">Arquitetura Modular</h4>
-                            <p class="text-gray-400">Atualize o sensor sem substituir toda a estrutura.</p>
-                        </div>
+                        <div><h4 class="font-bold text-white">Arquitetura Modular</h4><p class="text-gray-400">Atualize o sensor sem trocar a estrutura.</p></div>
                     </div>
                     <div class="flex gap-4">
                         <div class="w-10 h-10 rounded bg-gray-800 flex items-center justify-center text-white font-bold">3</div>
-                        <div>
-                            <h4 class="font-bold text-white">Rede Escalável</h4>
-                            <p class="text-gray-400">Comece com uma estação e expanda conforme a produção.</p>
-                        </div>
+                        <div><h4 class="font-bold text-white">Rede Escalável</h4><p class="text-gray-400">Comece com uma e expanda a rede.</p></div>
                     </div>
-                </div>
-                
-                <div class="pt-6 border-t border-gray-800 flex gap-4 grayscale opacity-60">
-                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="h-6 w-6">
-                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" class="h-6 w-6">
-                     <i class="fa-solid fa-brain text-pink-500 text-xl"></i>
                 </div>
             </div>
         </div>
@@ -229,30 +279,13 @@
                 <div class="md:w-7/12 p-8 md:p-10">
                     <form id="leadForm" onsubmit="enviarWhatsApp(event)">
                         <div class="space-y-5">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Nome Completo</label>
-                                <input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Seu Nome">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label>
-                                <input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="(34) 99999-9999">
-                            </div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Nome Completo</label><input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Seu Nome"></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label><input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="(34) 99999-9999"></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-1">Área (ha)</label>
-                                    <input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Ex: 500 ha">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-1">Perfil</label>
-                                    <select id="perfil" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white">
-                                        <option value="Produtor Rural">Produtor Rural</option>
-                                        <option value="Agrônomo">Agrônomo</option>
-                                    </select>
-                                </div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Área (ha)</label><input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Ex: 500 ha"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Perfil</label><select id="perfil" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white"><option value="Produtor Rural">Produtor Rural</option><option value="Agrônomo">Agrônomo</option></select></div>
                             </div>
-                            <button type="submit" class="w-full bg-agro-brand hover:bg-green-600 text-white font-bold py-4 rounded-lg transition shadow-lg text-lg flex justify-center items-center gap-2">
-                                <i class="fa-brands fa-whatsapp"></i> Solicitar Estação
-                            </button>
+                            <button type="submit" class="w-full bg-agro-brand hover:bg-green-600 text-white font-bold py-4 rounded-lg transition shadow-lg text-lg flex justify-center items-center gap-2"><i class="fa-brands fa-whatsapp"></i> Solicitar Estação</button>
                         </div>
                     </form>
                 </div>
@@ -261,41 +294,22 @@
     </section>
 
     <section id="dev-zone" class="py-20 bg-gray-900 border-t border-gray-800 relative overflow-hidden">
-        <div class="absolute top-10 right-10 opacity-5 font-mono text-green-500 text-sm hidden md:block select-none text-right">
-            class MAPSSensor(Hardware):<br>def __init__(self):<br>self.connect_base()
-        </div>
-
+        <div class="absolute top-10 right-10 opacity-5 font-mono text-green-500 text-sm hidden md:block select-none text-right">class MAPSSensor(Hardware):<br>def __init__(self):<br>self.connect_base()</div>
         <div class="max-w-7xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
                 <span class="bg-gray-800 text-green-400 text-xs font-mono py-1 px-3 rounded-full border border-green-500/30"><i class="fa-solid fa-terminal mr-2"></i>DEV_ZONE</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-4 mb-4">Contribua com a <span class="text-agro-brand">Estação MAPS</span></h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Colabore com a evolução do hardware e software. Stack: Python, PostgreSQL, IoT.</p>
             </div>
-
             <div class="max-w-2xl mx-auto bg-gray-800/50 backdrop-blur rounded-xl border border-gray-700 p-8 shadow-2xl">
                 <form id="devForm" onsubmit="enviarDevWhatsApp(event)">
                     <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-mono text-green-400 mb-2"><i class="fa-brands fa-github"></i> GITHUB_PROFILE_URL <span class="text-red-500">*</span></label>
-                            <input type="text" id="devGithub" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white font-mono focus:border-green-500 outline-none transition" placeholder="github.com/seu-usuario">
-                        </div>
+                        <div><label class="block text-sm font-mono text-green-400 mb-2"><i class="fa-brands fa-github"></i> GITHUB_PROFILE_URL <span class="text-red-500">*</span></label><input type="text" id="devGithub" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white font-mono focus:border-green-500 outline-none transition" placeholder="github.com/seu-usuario"></div>
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-mono text-gray-400 mb-2">DEV_NAME</label>
-                                <input type="text" id="devNome" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition" placeholder="Seu Nome">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-mono text-gray-400 mb-2">MAIN_SKILL</label>
-                                <select id="devSkill" class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition">
-                                    <option value="Fullstack (Python/JS)">Fullstack (Python/JS)</option>
-                                    <option value="Data Science / AI">Data Science / AI</option>
-                                    <option value="Hardware / IoT">Hardware / IoT</option>
-                                </select>
-                            </div>
+                            <div><label class="block text-sm font-mono text-gray-400 mb-2">DEV_NAME</label><input type="text" id="devNome" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition" placeholder="Seu Nome"></div>
+                            <div><label class="block text-sm font-mono text-gray-400 mb-2">MAIN_SKILL</label><select id="devSkill" class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition"><option value="Fullstack (Python/JS)">Fullstack (Python/JS)</option><option value="Data Science / AI">Data Science / AI</option><option value="Hardware / IoT">Hardware / IoT</option></select></div>
                         </div>
-                        <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-lg transition shadow-lg border-b-4 border-green-800 hover:border-green-700 flex justify-center items-center gap-2 group">
-                            <i class="fa-solid fa-code-branch group-hover:rotate-12 transition"></i> COMMIT APPLICATION
-                        </button>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-lg transition shadow-lg border-b-4 border-green-800 hover:border-green-700 flex justify-center items-center gap-2 group"><i class="fa-solid fa-code-branch group-hover:rotate-12 transition"></i> COMMIT APPLICATION</button>
                     </div>
                 </form>
             </div>
@@ -304,10 +318,7 @@
 
     <footer class="bg-black text-gray-500 py-10 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 opacity-70">
-                <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" class="h-6 filter grayscale">
-                <span class="text-white font-bold text-sm">AGRO PLAN</span>
-            </div>
+            <div class="flex items-center gap-2 opacity-70"><img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" class="h-6 filter grayscale"><span class="text-white font-bold text-sm">AGRO PLAN</span></div>
             <p class="text-xs">&copy; 2025 Uberaba, MG.</p>
         </div>
     </footer>
