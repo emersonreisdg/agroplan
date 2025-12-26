@@ -1,631 +1,311 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agro Plan MAPS | Sistema Integrado</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<style>
-/* --- ESTILOS GERAIS --- */
-:root { --verde: #28a745; --bg: #f4f6f9; --sidebar: #0f3d30; --white: #fff; --azul-tec: #2980b9; --zap: #25D366; --laranja: #ff9800; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
-
-/* BARRA LATERAL */
-.sidebar { width: 90px; background: var(--sidebar); display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 1000; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-.logo { margin-bottom: 20px; padding: 0 5px; display:flex; justify-content:center; width: 100%; cursor: pointer; transition: transform 0.2s; }
-.logo:active { transform: scale(0.95); }
-.logo-img { max-width: 100%; height: auto; border-radius: 6px; }
-.nav-item { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: #88a69d; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s; font-size: 20px; }
-.nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; transform: scale(1.05); }
-.nav-item.active { background: var(--verde); color: #fff; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4); }
-
-/* ÁREA PRINCIPAL */
-.main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
-.header { background: #fff; padding: 15px 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-.header-info h1 { font-size: 18px; font-weight: 800; color: var(--sidebar); text-transform: uppercase; }
-.header-info p { font-size: 12px; color: #666; font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 10px; }
-.status-badge { font-size: 11px; font-weight: 700; color: var(--verde); background: #e9f7ef; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid #c3e6cb; }
-
-/* ABAS */
-.view-section { display: none; height: 100%; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-out; }
-.view-section.active { display: flex; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* CARDS E GRIDS */
-.grid-dash { display: flex; gap: 20px; flex: 1; min-height: 400px; }
-.cards-col { min-width: 300px; max-width: 320px; display: flex; flex-direction: column; gap: 15px; } 
-.card { background: #fff; padding: 20px; border-radius: 12px; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.card-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.card-info h3 { font-size: 10px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
-.card-info span { font-size: 22px; font-weight: 700; color: #333; }
-.map-container { flex: 1; border-radius: 16px; overflow: hidden; border: 4px solid #fff; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-#map { width: 100%; height: 100%; min-height: 100%; background: #e0e0e0; }
-
-/* CLIMA */
-.weather-card { width: 100%; height: 250px; padding: 15px; display: flex; flex-direction: column; align-items: stretch; }
-
-/* --- EFEITOS ESPECIAIS NOS TOTENS --- */
-.custom-totem-icon { background: transparent !important; border: none !important; }
-.totem-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
-.totem-img { width: 35px; height: 55px; object-fit: contain; transition: all 0.3s ease; }
-.status-dot { position: absolute; bottom: 45px; right: -5px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 10; }
-
-.ativo .totem-img { filter: drop-shadow(0 0 8px rgba(40, 255, 69, 0.8)); animation: floating 3s infinite ease-in-out; }
-.ativo .status-dot { background-color: var(--verde); box-shadow: 0 0 10px var(--verde); animation: blink 1.5s infinite; }
-
-.inativo .totem-img { filter: grayscale(100%) drop-shadow(0 0 4px rgba(255, 0, 0, 0.6)); opacity: 0.8; }
-.inativo .status-dot { background-color: #dc3545; box-shadow: 0 0 5px #dc3545; }
-
-.alerta .totem-img { filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.8)); animation: pulse-orange 3s infinite ease-in-out; }
-.alerta .status-dot { background-color: var(--laranja); box-shadow: 0 0 10px var(--laranja); }
-
-@keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-@keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
-@keyframes pulse-orange { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.6)); transform: scale(1); } 50% { filter: drop-shadow(0 0 12px rgba(255, 152, 0, 1)); transform: scale(1.02); } }
-
-/* QUÍMICA */
-.chem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; padding-bottom: 20px; }
-.chem-card { background: #fff; padding: 25px; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.chem-header { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
-.chem-value { font-size: 28px; font-weight: 800; color: #333; margin-bottom: 5px; }
-.nutrient-bar { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin-top: 5px; display: flex; }
-.nutrient-fill { height: 100%; transition: width 1s ease-in-out; border-radius: 4px; }
-.bar-low { background: #dc3545; } .bar-ok { background: #28a745; } .bar-high { background: #ffc107; }
-.chem-chart-container { flex: 1; position: relative; min-height: 180px; margin-top: 15px; }
-
-/* BANNER */
-.banner { background: #fff; border-left: 8px solid #ccc; padding: 20px 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-.banner-content { display: flex; gap: 20px; align-items: center; }
-.banner-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #eee; color: #999; font-size: 24px; }
-.banner-text h2 { font-size: 16px; font-weight: 800; margin-bottom: 4px; color: #333; }
-.banner-text p { font-size: 13px; color: #666; }
-
-/* ROI */
-.roi-header { display: flex; justify-content: space-between; align-items: flex-end; background: linear-gradient(135deg, #0f3d30 0%, #1a5c48 100%); padding: 30px; border-radius: 16px; color: white; margin-bottom: 20px; }
-.roi-stat h3 { font-size: 32px; font-weight: 800; color: #2ecc71; }
-.roi-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; flex: 1; }
-.input-label { display: block; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 5px; text-transform: uppercase; }
-.input-field { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-weight: 600; font-size: 15px; color: #333; outline: none; margin-bottom: 15px; }
-.input-field:focus { border-color: var(--verde); }
-.score-circle { width: 140px; height: 140px; border-radius: 50%; border: 10px solid #eee; display: flex; align-items: center; justify-content: center; margin: 20px auto; position: relative; flex-direction: column; }
-
-/* TÉCNICA */
-.tec-header { background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%); padding: 25px; border-radius: 16px; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-.tec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
-.tec-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-.btn-tec { background: var(--azul-tec); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; transition:0.3s}
-.btn-tec:hover { background: #1f618d; }
-.btn-zap { background: var(--zap); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; display:flex; align-items:center; justify-content:center; gap:8px; }
-.btn-zap:hover { background: #20b858; }
-.history-list { list-style: none; margin-top: 15px; overflow-y: auto; max-height: 250px; }
-.history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
-.history-item:last-child { border-bottom: none; }
-.tag-cultura { background: #e3f2fd; color: #2980b9; padding: 4px 8px; border-radius: 12px; font-weight: 700; font-size: 10px; text-transform: uppercase; }
-
-/* MODAL */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 61, 48, 0.7); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-.modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
-.modal-box { background: #fff; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-
-/* MOBILE */
-@media (max-width: 768px) {
-  body { flex-direction: column; height: auto; overflow-y: auto; }
-  .sidebar { width: 100%; height: 70px; flex-direction: row; justify-content: space-evenly; padding: 0 5px; position: fixed; bottom: 0; left: 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 9999; }
-  .logo { display: flex !important; margin-bottom: 0; width: 45px; height: 45px; align-items: center; justify-content: center; }
-  .nav-item { width: 40px; height: 40px; margin-bottom: 0; font-size: 18px; }
-  .main { padding: 15px; padding-bottom: 100px; } 
-  .grid-dash { flex-direction: column; display: flex; } 
-  .cards-col { max-width: 100%; } /* No mobile, ocupa tudo */
-  .map-container { width: 100%; height: 400px !important; min-height: 400px; flex: none; background: #e0e0e0; margin-top: 10px; } 
-  .chem-grid, .roi-grid, .tec-grid { grid-template-columns: 1fr; }
-  .roi-header, .tec-header { flex-direction: column; align-items: flex-start; }
-}
-</style>
-</head>
-
-<body>
-
-<div id="configModal" class="modal-overlay">
-    <div class="modal-box">
-        <h2 style="margin-bottom:20px; color:#0f3d30"><i class="fas fa-magic"></i> Configurar Demo</h2>
-        <div style="margin-bottom:15px"><label class="input-label">NOME DO CLIENTE</label><input type="text" id="inputProdutor" class="input-field" placeholder="Ex: Sr. João Silva"></div>
-        <div style="margin-bottom:15px"><label class="input-label">FAZENDA</label><input type="text" id="inputFazenda" class="input-field" placeholder="Ex: Fazenda Santa Fé"></div>
-        <div style="margin-bottom:15px"><label class="input-label">CULTURA PRINCIPAL</label><input type="text" id="inputCulturaGeral" class="input-field" placeholder="Ex: Soja"></div>
-        <button onclick="salvarConfig()" style="width:100%; background:#28a745; color:white; padding:12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">APLICAR</button>
-        <button onclick="fecharConfig()" style="width:100%; background:transparent; color:#999; padding:10px; border:none; margin-top:5px; cursor:pointer;">Cancelar</button>
-    </div>
-</div>
-
-<nav class="sidebar">
-  <div class="logo" onclick="trocarAba('dash')" title="Início"><img src="https://i.ibb.co/zVJLBRCB/logo-dashboard.png" class="logo-img"></div>
-  <div id="btn-dash" class="nav-item active" onclick="trocarAba('dash')" title="Painel Físico"><i class="fas fa-th-large"></i></div>
-  <div id="btn-chem" class="nav-item" onclick="trocarAba('chem')" title="Análise Química"><i class="fas fa-flask"></i></div>
-  <div id="btn-roi" class="nav-item" onclick="trocarAba('roi')" title="Financeiro & ROI"><i class="fas fa-chart-line"></i></div>
-  <div id="btn-tec" class="nav-item" onclick="trocarAba('tec')" title="Área Técnica & Aplicação"><i class="fas fa-clipboard-check"></i></div>
-  <div class="nav-item" onclick="gerarRelatorioPDF()" title="Baixar Relatório PDF"><i class="fas fa-file-pdf"></i></div>
-  <div class="nav-item" onclick="abrirConfig()" title="Config"><i class="fas fa-cog"></i></div>
-</nav>
-
-<main class="main">
-  <header class="header">
-    <div class="header-info">
-        <h1 id="lblFazenda">AGRO PLAN MAPS</h1>
-        <p><i class="fas fa-user-circle" style="color:#28a745"></i> <span id="lblProdutor">Visitante</span> | <i class="fas fa-seedling" style="color:#f39c12"></i> <span id="lblCultura">Demonstração</span></p>
-        <p style="margin-top: 5px; font-size: 11px; color: #888;">
-            <i class="fas fa-map-marker-alt" style="color:#dc3545"></i> Localização: <b>Uberaba, MG</b> (Zona Rural - BR 050)
-        </p>
-        <p style="margin-top: 2px; font-size: 11px; color: #555;">
-            <i class="far fa-clock" style="color:#2980b9"></i> Última Análise: <b id="lblDataHora">Aguardando dados...</b>
-        </p>
-    </div>
-    <div class="status-badge"><i class="fas fa-wifi"></i> ONLINE</div>
-  </header>
-
-  <div id="view-dash" class="view-section active">
-    <div id="banner" class="banner">
-      <div class="banner-content">
-        <div id="bannerIcon" class="banner-icon"><i class="fas fa-sync fa-spin"></i></div>
-        <div class="banner-text"><h2 id="bannerTitle">SINCRONIZANDO...</h2><p id="bannerMsg">Conectando inteligência artificial...</p></div>
-      </div>
-    </div>
-    <div class="grid-dash">
-      <div class="cards-col">
-        <div class="card" style="border-left: 5px solid #28a745; background:#fff" id="cardStatusTotem">
-            <div class="card-icon" style="background:#e8f5e9; color:#28a745" id="cardStatusIcon">
-                <i class="fas fa-broadcast-tower"></i>
-            </div>
-            <div class="card-info">
-                <h3 id="lblTotemNome">BUSCANDO...</h3>
-                <span id="lblTotemStatus" style="font-size:14px; color:#28a745; font-weight:800; display:flex; align-items:center; gap:5px"><i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO</span>
-            </div>
-        </div>
-        <div class="card"><div class="card-icon" style="background:#f0fdf4;color:#28a745"><i class="fas fa-battery-three-quarters"></i></div><div class="card-info"><h3>Bateria</h3><span id="bateria">--</span> <small>V</small></div></div>
-        <div class="card"><div class="card-icon" style="background:#e3f2fd;color:#3498db"><i class="fas fa-temperature-high"></i></div><div class="card-info"><h3>Temp. Solo</h3><span id="temp">--</span> <small>°C</small></div></div>
-        <div class="card"><div class="card-icon" style="background:#fdf0e7;color:#e67e22"><i class="fas fa-tint"></i></div><div class="card-info"><h3>Umidade</h3><span id="umidade">--</span> <small>%</small></div></div>
-        
-        <div class="card weather-card">
-             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:#555; font-size:12px; font-weight:800;"><i class="fas fa-cloud-sun-rain" style="color:#2980b9"></i> CLIMA (7 DIAS)</h3>
-             </div>
-             <div style="flex:1; position:relative;">
-                <canvas id="chartWeather"></canvas>
-             </div>
-        </div>
-
-      </div>
-      <div class="map-container"><div id="map"></div></div>
-    </div>
-  </div>
-
-  <div id="view-chem" class="view-section">
-    <div class="chem-grid">
-        <div class="chem-card"><div class="chem-header"><h3>pH</h3><i class="fas fa-vial" style="color:#6c757d"></i></div><div class="chem-value" id="val-ph">--</div><div class="nutrient-bar"><div id="bar-ph" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartPH"></canvas></div></div>
-        <div class="chem-card"><div class="chem-header"><h3>Nitrogênio (N)</h3><i class="fas fa-leaf" style="color:#28a745"></i></div><div class="chem-value"><span id="val-n">--</span></div><div class="nutrient-bar"><div id="bar-n" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartN"></canvas></div></div>
-        <div class="chem-card"><div class="chem-header"><h3>Fósforo (P)</h3><i class="fas fa-dna" style="color:#3498db"></i></div><div class="chem-value"><span id="val-p">--</span></div><div class="nutrient-bar"><div id="bar-p" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartP"></canvas></div></div>
-        <div class="chem-card"><div class="chem-header"><h3>Potássio (K)</h3><i class="fas fa-bolt" style="color:#f39c12"></i></div><div class="chem-value"><span id="val-k">--</span></div><div class="nutrient-bar"><div id="bar-k" class="nutrient-fill bar-ok" style="width:0%"></div></div><div class="chem-chart-container"><canvas id="chartK"></canvas></div></div>
-    </div>
-  </div>
-
-  <div id="view-roi" class="view-section">
-    <div class="roi-header">
-        <div><h2>Relatório de Safra & ROI</h2><p>Projeção baseada na eficiência do solo.</p></div>
-        <div class="roi-stat"><h3 id="lblProjecaoLucro">R$ 0,00</h3><span>Lucro Extra Projetado</span></div>
-    </div>
-    <div class="roi-grid">
-        <div class="card" style="display:block">
-            <h3 style="margin-bottom:20px; color:#555">DADOS COMPARATIVOS</h3>
-            <label class="input-label">Produtividade Anterior (sc/ha)</label><input type="number" id="inputSafraAnt" class="input-field" value="60" oninput="calcularROI()">
-            <label class="input-label">Preço da Saca (R$)</label><input type="number" id="inputPreco" class="input-field" value="130" oninput="calcularROI()">
-            <label class="input-label">Área (ha)</label><input type="number" id="inputAreaRoi" class="input-field" value="100" oninput="calcularROI()">
-        </div>
-        <div class="card" style="display:flex; flex-direction:column; align-items:center;">
-            <h3 style="align-self:flex-start; font-size:14px; color:#777;">AGRO SCORE (SAÚDE DO SOLO)</h3>
-            <div class="score-circle" id="scoreCircle">
-                <span style="font-size:36px; font-weight:800; color:#333" id="lblScore">98</span>
-                <span style="font-size:10px; color:#777">PONTOS</span>
-            </div>
-            <div style="width:100%; height:180px; margin-top:10px;"><canvas id="chartROI"></canvas></div>
-        </div>
-    </div>
-  </div>
-
-  <div id="view-tec" class="view-section">
-    <div class="tec-header">
-        <i class="fas fa-clipboard-check" style="font-size:30px"></i>
-        <div><h2>Área Técnica & Registro de Manejo</h2><p>Controle de aplicações e caderno de campo digital.</p></div>
-    </div>
-    <div class="tec-grid">
-        <div class="tec-card">
-            <h3 style="margin-bottom:15px; color:#2980b9">NOVA APLICAÇÃO</h3>
-            <label class="input-label">Cultura / Talhão</label>
-            <input type="text" id="tecCultura" class="input-field" placeholder="Ex: Soja - Talhão 04">
-            <label class="input-label">Produto / Insumo</label>
-            <input type="text" id="tecProduto" class="input-field" placeholder="Ex: Cloreto de Potássio">
-            <div style="display:flex; gap:10px">
-                <div style="flex:1"><label class="input-label">Dose (kg/ha)</label><input type="number" class="input-field" id="tecDose"></div>
-                <div style="flex:1"><label class="input-label">Área (ha)</label><input type="number" class="input-field" id="tecArea"></div>
-            </div>
-            <button class="btn-tec" onclick="registrarAplicacao()"><i class="fas fa-save"></i> REGISTRAR NO SISTEMA</button>
-            <button class="btn-zap" onclick="enviarZap()"><i class="fab fa-whatsapp"></i> ENVIAR ORDEM DE COMPRA</button>
-        </div>
-        <div class="tec-card">
-            <h3 style="margin-bottom:15px; color:#555">HISTÓRICO DE MANEJO</h3>
-            <div style="background:#f8f9fa; padding:10px; border-radius:8px; font-size:12px; color:#777; margin-bottom:10px;">
-                <i class="fas fa-info-circle"></i> Registros sincronizados com o Totem 01.
-            </div>
-            <ul class="history-list" id="listaAplicacoes"></ul>
-        </div>
-    </div>
-  </div>
-
-</main>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-// --- CONFIGURAÇÃO ---
-function abrirConfig() { document.getElementById('configModal').classList.add('open'); }
-function fecharConfig() { document.getElementById('configModal').classList.remove('open'); }
-function salvarConfig() {
-    const p = document.getElementById('inputProdutor').value || "Visitante";
-    const f = document.getElementById('inputFazenda').value || "Agro Plan";
-    const c = document.getElementById('inputCulturaGeral').value || "Demonstração";
-    document.getElementById('lblProdutor').innerText = p;
-    document.getElementById('lblFazenda').innerText = f.toUpperCase();
-    document.getElementById('lblCultura').innerText = c;
-    fecharConfig();
-}
-
-// --- GERAÇÃO DE RELATÓRIO PDF ---
-function gerarRelatorioPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Plan MAPS | Monitoramento Inteligente</title>
+    <meta name="description" content="Sistema de monitoramento de precisão por assinatura. Tecnologia IoT para sua fazenda em Uberaba/MG.">
     
-    // Configurações
-    const dataHora = document.getElementById("lblDataHora").innerText;
-    const produtor = document.getElementById("lblProdutor").innerText;
-    const fazenda = document.getElementById("lblFazenda").innerText;
-    const bat = document.getElementById("bateria").innerText;
-    const temp = document.getElementById("temp").innerText;
-    const umid = document.getElementById("umidade").innerText;
-    const lucro = document.getElementById("lblProjecaoLucro").innerText;
-
-    // Cabeçalho
-    doc.setFillColor(15, 61, 48); // Verde escuro sidebar
-    doc.rect(0, 0, 210, 40, 'F');
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(22);
-    doc.text("AGRO PLAN MAPS", 105, 18, null, null, "center");
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.text("Relatório Técnico de Monitoramento", 105, 28, null, null, "center");
-
-    // Info Cliente
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(12);
-    doc.text(`Cliente: ${produtor}`, 20, 55);
-    doc.text(`Fazenda: ${fazenda}`, 20, 62);
-    doc.text(`Data do Relatório: ${dataHora}`, 20, 69);
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
-    doc.setLineWidth(0.5);
-    doc.line(20, 75, 190, 75);
-
-    // Dados Sensores
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(40, 167, 69); // Verde
-    doc.text("1. Status dos Sensores (Tempo Real)", 20, 85);
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    doc.setFontSize(12);
-    doc.setTextColor(0,0,0);
-    doc.setFont("helvetica", "normal");
-    doc.text(`• Bateria do Totem: ${bat} V`, 25, 95);
-    doc.text(`• Temperatura do Solo: ${temp} °C`, 25, 102);
-    doc.text(`• Umidade do Solo: ${umid} %`, 25, 109);
-
-    // Financeiro
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(40, 167, 69);
-    doc.text("2. Projeção Financeira (ROI)", 20, 125);
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    doc.setFontSize(12);
-    doc.setTextColor(0,0,0);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Com base na eficiência atual do solo, projeta-se um lucro extra de:`, 25, 135);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(lucro, 25, 145);
-
-    // Rodapé
-    doc.setFontSize(10);
-    doc.setTextColor(150);
-    doc.text("Relatório gerado automaticamente via sistema web Agro Plan.", 105, 280, null, null, "center");
-    doc.text("agroplan.emersonreisdg.com.br", 105, 285, null, null, "center");
-
-    // Salvar
-    doc.save(`Relatorio_AgroPlan_${fazenda}.pdf`);
-}
-
-// --- LÓGICA TÉCNICA (AGRÔNOMO) ---
-function registrarAplicacao() {
-    const cultura = document.getElementById('tecCultura').value || "Talhão Geral";
-    const produto = document.getElementById('tecProduto').value || "Correção de Solo";
-    const lista = document.getElementById('listaAplicacoes');
-    const dataHoje = new Date().toLocaleDateString();
-    const li = document.createElement('li');
-    li.className = 'history-item';
-    li.innerHTML = `<div><strong style="color:#333; display:block;">${produto}</strong><span style="color:#999; font-size:11px"><i class="far fa-clock"></i> ${dataHoje}</span></div><span class="tag-cultura">${cultura}</span>`;
-    lista.insertBefore(li, lista.firstChild);
-    alert("✅ Aplicação registrada com sucesso no Caderno de Campo Digital!");
-}
-
-function enviarZap() {
-    const produtor = document.getElementById('inputProdutor').value || "Sr. Produtor";
-    const fazenda = document.getElementById('inputFazenda').value || "Fazenda Modelo";
-    const produto = document.getElementById('tecProduto').value || "Insumos Gerais";
-    const dose = document.getElementById('tecDose').value || "--";
-    const area = document.getElementById('tecArea').value || "--";
-    const texto = `*AGRO PLAN MAPS - ORDEM DE COMPRA*%0A%0A` +
-                  `👤 *Cliente:* ${produtor}%0A` +
-                  `📍 *Fazenda:* ${fazenda}%0A` +
-                  `📦 *Produto Solicitado:* ${produto}%0A` +
-                  `⚖️ *Dose:* ${dose} kg/ha%0A` +
-                  `🚜 *Área:* ${area} ha%0A%0A` +
-                  `_Gerado automaticamente pelo sistema de monitoramento._`;
-    window.open(`https://wa.me/?text=${texto}`, '_blank');
-}
-
-// --- LÓGICA ROI (FINANCEIRO) ---
-let chartROI_Instance = null;
-function calcularROI() {
-    const safraAnt = parseFloat(document.getElementById('inputSafraAnt').value) || 0;
-    const preco = parseFloat(document.getElementById('inputPreco').value) || 0;
-    const area = parseFloat(document.getElementById('inputAreaRoi').value) || 0;
-    const ganho = 0.12;
-    const safraNova = safraAnt * (1 + ganho);
-    const lucro = (safraNova - safraAnt) * area * preco;
-    document.getElementById('lblProjecaoLucro').innerText = lucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    const ctx = document.getElementById('chartROI').getContext('2d');
-    if(chartROI_Instance) chartROI_Instance.destroy();
-    chartROI_Instance = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: ['Anterior', 'Projeção'], datasets: [{ label: 'sc/ha', data: [safraAnt, safraNova], backgroundColor: ['#bdc3c7', '#2ecc71'], borderRadius: 6 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display:false } }, scales: { y: { beginAtZero: true } } }
-    });
-}
-
-// --- PREVISÃO DO TEMPO (OPEN-METEO) ---
-let chartWeather_Instance = null;
-async function carregarPrevisao() {
-    // Coordenadas da fazenda (Uberaba)
-    const lat = -19.8654;
-    const lon = -47.9876;
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,precipitation_sum&timezone=America%2FSao_Paulo`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        // Pega os dados dos próximos 7 dias
-        const labels = data.daily.time.map(t => {
-            const d = new Date(t);
-            return d.toLocaleDateString('pt-BR', {weekday: 'short'}); // Seg, Ter, Qua...
-        });
-        const temps = data.daily.temperature_2m_max;
-        const rains = data.daily.precipitation_sum;
-
-        // Renderiza o Gráfico
-        const ctx = document.getElementById('chartWeather').getContext('2d');
-        if(chartWeather_Instance) chartWeather_Instance.destroy();
-
-        chartWeather_Instance = new Chart(ctx, {
-            type: 'bar', // Tipo principal: Barra (para chuva)
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        type: 'line', // Linha para temperatura
-                        label: 'Temp (°C)',
-                        data: temps,
-                        borderColor: '#ff9800',
-                        backgroundColor: '#ff9800',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        yAxisID: 'y1',
-                        pointRadius: 1 // Pontos menores
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agro: {
+                            light: '#f4f6f9',
+                            brand: '#28a745',
+                            dark: '#0f3d30',
+                            alert: '#ff9800',
+                            text: '#333333'
+                        }
                     },
-                    {
-                        type: 'bar', // Barra para chuva
-                        label: 'Chuva (mm)',
-                        data: rains,
-                        backgroundColor: '#3498db',
-                        borderRadius: 3,
-                        yAxisID: 'y'
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                scales: {
-                    x: { grid: { display: false }, ticks: { font: { size: 9 } } }, // Fonte menor no X
-                    y: { 
-                        type: 'linear', display: true, position: 'left', 
-                        grid: { display: false },
-                        ticks: { display: false } // Remove números do eixo Y da chuva para limpar visual
-                    },
-                    y1: { 
-                        type: 'linear', display: true, position: 'right', 
-                        grid: { display: false },
-                        ticks: { display: false } // Remove números do eixo Y da temp
-                    }
-                },
-                plugins: {
-                    legend: { display: false } // Remove legenda para economizar espaço lateral
                 }
             }
-        });
-
-    } catch (error) {
-        console.error("Erro ao carregar clima:", error);
-    }
-}
-
-// --- SISTEMA PADRÃO (MAPA E DADOS) ---
-const centroRural = [-19.8654, -47.9876];
-const map = L.map('map').setView(centroRural, 14);
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Agro Plan' }).addTo(map);
-
-setTimeout(function(){ map.invalidateSize(); }, 500);
-
-const totemImageUrl = 'totem.png'; 
-
-function criarIcone(status) {
-    let classeExtra = "";
-    if(status === "ativo") classeExtra = "ativo";
-    else if(status === "alerta") classeExtra = "alerta";
-    else classeExtra = "inativo";
+        }
+    </script>
     
-    const htmlInterno = `
-        <div class="totem-wrapper ${classeExtra}">
-            <img src="${totemImageUrl}" class="totem-img">
-            <div class="status-dot"></div>
-        </div>
-    `;
-    return L.divIcon({ className: 'custom-totem-icon', html: htmlInterno, iconSize: [40, 60], iconAnchor: [20, 55], popupAnchor: [0, -50] });
-}
-
-const totens = [
-    { id: "TOTEM-01 (PIVÔ CENTRAL)", coords: [-19.8654, -47.9876], status: "ativo" },
-    { id: "TOTEM-02 (TALHÃO SUL)", coords: [-19.8600, -47.9800], status: "alerta" }, 
-    { id: "TOTEM-03 (SEDE)", coords: [-19.8750, -47.9876], status: "inativo" },
-    { id: "TOTEM-04 (DIVISA LESTE)", coords: [-19.8654, -47.9750], status: "inativo" },
-    { id: "TOTEM-05 (RESERVA)", coords: [-19.8654, -48.0000], status: "inativo" }
-];
-
-let activeMarker = null;
-
-// Lógica segura para atualizar o card lateral
-const lblNome = document.getElementById('lblTotemNome');
-const lblStatus = document.getElementById('lblTotemStatus');
-const cardTotem = document.getElementById('cardStatusTotem');
-const iconTotem = document.getElementById('cardStatusIcon');
-let totemAtivo = totens.find(t => t.status === 'ativo');
-
-if(lblNome && lblStatus) {
-    if(totemAtivo) {
-        lblNome.innerText = totemAtivo.id.split('(')[0].trim();
-        lblStatus.innerHTML = '<i class="fas fa-circle" style="font-size:8px"></i> MONITORANDO ONLINE';
-    } else {
-        lblNome.innerText = "SEM SINAL";
-        lblStatus.innerHTML = "DESCONECTADO";
-        lblStatus.style.color = "#dc3545";
-        if(cardTotem) cardTotem.style.borderLeftColor = "#dc3545";
-        if(iconTotem) { iconTotem.style.color = "#dc3545"; iconTotem.style.background = "#f8d7da"; }
-    }
-}
-
-totens.forEach(t => {
-    const icone = criarIcone(t.status);
-    let statusTxt = "";
-    if(t.status === "ativo") statusTxt = "<b style='color:#28a745'>ONLINE E MONITORANDO</b>";
-    else if(t.status === "alerta") statusTxt = "<b style='color:#ff9800'>ALERTA: Trocar bateria em até 4 dias</b>";
-    else statusTxt = "<b style='color:#dc3545'>OFFLINE (Sem sinal)</b>";
-
-    const m = L.marker(t.coords, {icon: icone}).addTo(map).bindPopup(`<b>📍 ${t.id}</b><br>${statusTxt}`);
-    if(t.status === "ativo") { activeMarker = m; }
-});
-
-function trocarAba(aba) {
-    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    document.getElementById('view-'+aba).classList.add('active');
-    document.getElementById('btn-'+aba).classList.add('active');
-    if(aba === 'dash') {
-        setTimeout(() => { map.invalidateSize(); if(activeMarker) activeMarker.openPopup(); }, 100);
-    }
-    if(aba === 'roi') calcularROI();
-}
-
-const SUPABASE_URL = "https://mhbappxhnlpurfqhxpwa.supabase.co";
-const SUPABASE_KEY = "sb_publishable_XgU3v47C8GjZO7E3RURXYA_abPUYDzD";
-let charts = {};
-
-async function atualizar() {
-    try {
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/leituras?select=*&order=created_at.desc&limit=15`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
-        const dados = await r.json();
-        if(dados.length === 0) return;
-        const d = dados[0];
-
-        const dataObj = new Date(d.created_at);
-        document.getElementById("lblDataHora").innerText = dataObj.toLocaleString('pt-BR');
-
-        document.getElementById("bateria").innerText = d.bateria_v?.toFixed(1) || "--";
-        document.getElementById("temp").innerText = d.temperatura_solo?.toFixed(1) || "--";
-        document.getElementById("umidade").innerText = d.umidade_solo ? Math.round(d.umidade_solo) : "--";
+    <style>
+        html { scroll-behavior: smooth; }
         
-        document.getElementById("bannerTitle").innerText = d.status_titulo || "CONECTADO";
-        document.getElementById("bannerMsg").innerText = d.status_mensagem || "Operação normal.";
-        const cores = { VERDE:"#28a745", AMARELO:"#ffc107", VERMELHO:"#dc3545" };
-        document.getElementById("banner").style.borderLeftColor = cores[d.status_cor] || "#ccc";
+        /* Hero com a imagem do Totem no Campo */
+        .hero-bg {
+            /* Fallback se a imagem falhar */
+            background-color: #0f3d30;
+            /* Imagem real com overlay escuro para leitura do texto */
+            background-image: linear-gradient(rgba(15, 61, 48, 0.8), rgba(15, 61, 48, 0.6)), url('hero-totem.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-        atualizarNutriente("ph", d.ph_solo, 0, 14, 5.5, 6.5);
-        atualizarNutriente("n", d.n_solo, 0, 100, 40, 80);
-        atualizarNutriente("p", d.p_solo, 0, 30, 10, 20);
-        atualizarNutriente("k", d.k_solo, 0, 150, 60, 120);
+        /* Animação suave no iPhone */
+        .floating-mockup {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-agro-light font-sans text-agro-text antialiased">
 
-        let score = 98;
-        if(d.status_cor === "AMARELO") score = 85;
-        if(d.status_cor === "VERMELHO") score = 65;
-        document.getElementById("lblScore").innerText = score;
-        document.getElementById("scoreCircle").style.borderColor = cores[d.status_cor] || "#28a745";
+    <nav class="bg-agro-dark/95 backdrop-blur fixed w-full z-50 shadow-lg border-b border-white/10" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <img src="logo.png" alt="Agro Plan Logo" class="h-12 w-auto drop-shadow-md">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-xl leading-none tracking-wide text-white">AGRO PLAN</span>
+                        <span class="text-[10px] text-agro-brand font-bold tracking-[0.2em] uppercase">Maps System</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#como-funciona" class="text-gray-300 hover:text-agro-brand transition px-3 py-2 rounded-md font-medium">Como Funciona</a>
+                        <a href="#tecnologia" class="text-gray-300 hover:text-agro-brand transition px-3 py-2 rounded-md font-medium">Tecnologia</a>
+                        <a href="#planos" class="bg-agro-brand hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-bold transition shadow-lg transform hover:scale-105 border border-green-400">
+                            Ver Planos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-        const hist = dados.reverse();
-        const lbls = hist.map(i => new Date(i.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
-        renderChart("chartPH", lbls, hist.map(i => i.ph_solo), "#6c757d");
-        renderChart("chartN", lbls, hist.map(i => i.n_solo), "#28a745");
-        renderChart("chartP", lbls, hist.map(i => i.p_solo), "#3498db");
-        renderChart("chartK", lbls, hist.map(i => i.k_solo), "#f39c12");
+    <header class="hero-bg h-screen flex items-center justify-center text-center px-4 relative">
+        <div class="max-w-4xl mx-auto z-10 pt-16">
+            <div class="inline-flex items-center gap-2 bg-black/30 border border-white/20 backdrop-blur-md rounded-full px-4 py-1 mb-6 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="text-green-300 text-xs font-bold uppercase tracking-wider">Disponível em Uberaba/MG</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
+                Sua Fazenda Monitorada.<br>
+                <span class="text-agro-brand">Sem Dor de Cabeça.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Nós instalamos o totem, pagamos a internet e trocamos a bateria. 
+                Você só abre o celular e vê o lucro aumentar.
+                <br><strong>Modelo de Assinatura "Tudo Incluso".</strong>
+            </p>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#planos" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-whatsapp"></i> Assinar Agora
+                </a>
+                <a href="#tecnologia" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/30 text-white text-lg px-8 py-4 rounded-lg font-semibold transition flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-microchip"></i> Ver Tecnologia
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-white text-2xl opacity-50"></i>
+        </div>
+    </header>
 
-    } catch(e) { console.error(e); }
-}
+    <section class="py-24 bg-white overflow-hidden" id="como-funciona">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                
+                <div class="md:w-1/2 order-2 md:order-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-mobile-screen text-agro-brand text-2xl"></i>
+                        <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Controle Total</span>
+                    </div>
+                    <h2 class="text-4xl font-extrabold text-gray-900 mb-6">
+                        O escritório agora cabe<br> no seu bolso.
+                    </h2>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                        Esqueça cadernetas e planilhas complicadas. Nosso sistema envia os dados vitais do solo direto para o seu WhatsApp e para este Dashboard intuitivo.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-agro-brand text-xl">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Dados em Tempo Real</h4>
+                                <p class="text-sm text-gray-500">Bateria, Umidade e Temperatura atualizados instantaneamente.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-agro-brand text-xl">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Histórico de Safra</h4>
+                                <p class="text-sm text-gray-500">Acompanhe a evolução do pH e nutrientes dia após dia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-function atualizarNutriente(id, val, min, max, bMin, bMax) {
-    if(val==null) return;
-    document.getElementById(`val-${id}`).innerText = val.toFixed(1);
-    let pct = ((val - min) / (max - min)) * 100;
-    const bar = document.getElementById(`bar-${id}`);
-    bar.style.width = Math.min(100, Math.max(0, pct)) + "%";
-    bar.className = (val >= bMin && val <= bMax) ? "nutrient-fill bar-ok" : "nutrient-fill bar-low";
-}
+                <div class="md:w-1/2 flex justify-center relative order-1 md:order-2 floating-mockup">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-agro-brand/30 to-blue-500/30 rounded-full blur-[100px] opacity-60"></div>
+                    
+                    <div class="relative mx-auto border-gray-900 bg-gray-900 border-[12px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl z-10 ring-1 ring-gray-700">
+                        <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[15px] top-[72px] rounded-l-lg"></div>
+                        <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[124px] rounded-l-lg"></div>
+                        <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[15px] top-[142px] rounded-r-lg"></div>
+                        
+                        <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
+                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 h-[25px] w-[90px] bg-black rounded-b-xl z-20"></div>
+                            
+                            <img src="dashboard-mobile.png" class="w-full h-full object-cover" alt="Agro Plan App">
+                        </div>
+                    </div>
+                </div>
 
-function renderChart(id, lbls, data, color) {
-    const ctx = document.getElementById(id).getContext('2d');
-    if(charts[id]) { charts[id].data.labels = lbls; charts[id].data.datasets[0].data = data; charts[id].update(); }
-    else {
-        charts[id] = new Chart(ctx, {
-            type: 'line',
-            data: { labels: lbls, datasets: [{ data: data, borderColor: color, backgroundColor: color+'15', fill: true, tension: 0.4, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
-        });
-    }
-}
+            </div>
+        </div>
+    </section>
 
-// Inicializações
-setTimeout(() => { map.invalidateSize(); }, 2000);
-setInterval(atualizar, 3000);
-atualizar();
-carregarPrevisao(); // Carrega o clima ao iniciar
-</script>
+    <section class="py-20 bg-gray-900 text-white" id="tecnologia">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Engenharia Robusta</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold mt-2">O que tem dentro da caixa?</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Hardware industrial desenvolvido para resistir a sol, chuva e poeira.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="tech-totem.jpg" alt="Raio X do Totem" class="w-full transition duration-500 group-hover:scale-105">
+                    <div class="absolute bottom-0 left-0 bg-black/80 w-full p-4 border-t border-white/10">
+                        <p class="text-xs font-mono text-blue-300"><i class="fa-solid fa-code-branch"></i> SYSTEM_CORE: Raspberry Pi Zero W + SIM7600 (4G)</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-full bg-blue-900/50 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i class="fa-solid fa-wifi"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Conectividade 4G LTE</h3>
+                            <p class="text-gray-400 text-sm">Módulo industrial homologado. Garante envio de dados mesmo em áreas com sinal instável.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-full bg-green-900/50 border border-green-500/30 flex items-center justify-center text-green-400 shrink-0">
+                            <i class="fa-solid fa-battery-full"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Autonomia Estendida</h3>
+                            <p class="text-gray-400 text-sm">Bateria de longa duração gerenciada por software inteligente. Nós trocamos antes de acabar.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-full bg-orange-900/50 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Proteção IP65 (Água e Poeira)</h3>
+                            <p class="text-gray-400 text-sm">Corpo em aço inoxidável e vedação profissional. Feito para aguentar o campo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-6 border-t border-gray-800 flex gap-6 opacity-70">
+                        <div class="flex items-center gap-2" title="Banco de dados seguro">
+                            <i class="fa-solid fa-database text-blue-400"></i> <span class="text-xs font-bold">POSTGRESQL</span>
+                        </div>
+                        <div class="flex items-center gap-2" title="Linguagem de alta performance">
+                            <i class="fa-brands fa-python text-yellow-400"></i> <span class="text-xs font-bold">PYTHON CORE</span>
+                        </div>
+                        <div class="flex items-center gap-2" title="Padrão de segurança">
+                            <i class="fa-solid fa-lock text-green-400"></i> <span class="text-xs font-bold">SSL 256-BIT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-agro-light border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <img src="packing-totem.jpg" class="rounded-xl shadow-lg border border-gray-200 mx-auto mb-8 w-full md:w-2/3" alt="Qualidade de Acabamento">
+            <p class="text-gray-600 italic">"Não é só software. É hardware de precisão entregue pronto para uso."</p>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white relative" id="planos">
+        <div class="max-w-3xl mx-auto px-4 relative z-10">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 transform hover:scale-[1.01] transition duration-300">
+                <div class="bg-agro-dark p-8 text-center text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-agro-alert text-black text-xs font-extrabold px-3 py-1 rounded-bl-lg uppercase">Oferta de Lançamento</div>
+                    <h2 class="text-2xl font-bold uppercase tracking-widest text-gray-300 mb-2">Plano Safra Inteligente</h2>
+                    <div class="text-5xl font-extrabold mb-2">R$ 97<span class="text-lg font-normal text-gray-400">/sem</span></div>
+                    <p class="text-sm text-green-300 opacity-90">*Cobrança mensal simplificada.</p>
+                </div>
+
+                <div class="p-8 md:p-12">
+                    <div class="space-y-5 mb-10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-agro-brand text-xs"><i class="fa-solid fa-check"></i></div>
+                            <span class="text-gray-700 font-medium"><strong>Totem em Comodato</strong> (Equipamento incluso)</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-agro-brand text-xs"><i class="fa-solid fa-check"></i></div>
+                            <span class="text-gray-700 font-medium"><strong>Instalação Gratuita</strong> (Região Uberaba)</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-agro-brand text-xs"><i class="fa-solid fa-check"></i></div>
+                            <span class="text-gray-700 font-medium"><strong>Chip 4G Incluso</strong> (Internet por nossa conta)</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-agro-brand text-xs"><i class="fa-solid fa-check"></i></div>
+                            <span class="text-gray-700 font-medium"><strong>Manutenção Preventiva</strong> Semanal</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-agro-brand text-xs"><i class="fa-solid fa-check"></i></div>
+                            <span class="text-gray-700 font-medium">Acesso Ilimitado ao App/Dashboard</span>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/5534000000000?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20o%20monitoramento%20Agro%20Plan." target="_blank" class="block w-full bg-agro-brand hover:bg-green-600 text-white text-center font-bold py-5 rounded-xl text-xl shadow-lg transition transform hover:-translate-y-1">
+                        <i class="fa-brands fa-whatsapp mr-2"></i> Solicitar Visita Técnica
+                    </a>
+                    
+                    <p class="text-center text-xs text-red-500 mt-4 font-semibold bg-red-50 p-2 rounded">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Vagas limitadas para instalação nesta semana.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-500 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition">
+                <img src="logo.png" class="h-8">
+                <span class="text-white font-bold tracking-wide">AGRO PLAN</span>
+            </div>
+            <div class="text-sm text-center md:text-right">
+                <p>&copy; 2025 Agro Plan Systems. Uberaba, MG.</p>
+                <p class="text-xs mt-1">Desenvolvimento focado em eficiência agronômica.</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
