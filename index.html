@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Plan MAPS | Monitoramento Inteligente</title>
+    <title>Agro Plan MAPS | Monitoramento Inteligente & IoT</title>
+    <meta name="description" content="Sistema de monitoramento de precisão e IoT para o agronegócio. Projeto Open Tech em Uberaba/MG.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -24,6 +29,7 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     }
                 }
             }
@@ -32,40 +38,50 @@
     
     <style>
         html { scroll-behavior: smooth; }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-
-        /* Substitua a URL abaixo pelo LINK DA SUA IMAGEM NO GITHUB (Totem-campo.jpeg) */
+        
+        /* Hero Background com Imagem do GitHub */
         .hero-bg {
-            background-image: linear-gradient(rgba(15, 61, 48, 0.85), rgba(15, 61, 48, 0.7)), url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg'); 
+            background-color: #0f3d30;
+            background-image: linear-gradient(rgba(15, 61, 48, 0.85), rgba(15, 61, 48, 0.7)), url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
+        /* Animação do Celular */
         .floating-mockup { animation: float 6s ease-in-out infinite; }
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
+
+        /* Padrão pontilhado sutil */
+        .pattern-dots {
+            background-image: radial-gradient(#28a745 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
     </style>
 </head>
-<body class="bg-agro-light text-gray-800 antialiased">
+<body class="bg-agro-light text-gray-800 antialiased font-sans">
 
     <nav class="bg-agro-dark/95 backdrop-blur fixed w-full z-50 shadow-lg border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3">
-                    <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" alt="Agro Plan" class="h-10 w-auto">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" alt="Agro Plan" class="h-10 w-auto filter drop-shadow-md">
                     <div class="flex flex-col">
                         <span class="font-bold text-xl leading-none tracking-wide text-white">AGRO PLAN</span>
                         <span class="text-[10px] text-agro-brand font-bold tracking-[0.2em] uppercase">Maps System</span>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg">
-                        Tenho Interesse
+                
+                <div class="hidden md:flex gap-4">
+                    <a href="#dev-zone" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-mono border border-transparent hover:border-gray-600 rounded transition">
+                        &lt;Dev_Area /&gt;
+                    </a>
+                    <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg transform hover:scale-105">
+                        Agendar Demo
                     </a>
                 </div>
             </div>
@@ -78,55 +94,127 @@
                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
                 <span class="text-green-300 text-xs font-bold uppercase tracking-wider">Lançamento em Uberaba/MG</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-                Monitoramento de Precisão<br>
-                <span class="text-agro-brand">Acessível e Descomplicado.</span>
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
+                Sua Fazenda Monitorada.<br>
+                <span class="text-agro-brand text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Sem Dor de Cabeça.</span>
             </h1>
-            <p class="text-lg text-gray-200 mb-10 max-w-2xl mx-auto font-light">
-                Tecnologia IoT para produtores e agrônomos que querem dados reais, não "achismo". 
-                Cadastre-se para garantir sua vaga no programa piloto.
+            
+            <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Nós instalamos o totem, pagamos a internet e trocamos a bateria. 
+                Você só abre o celular e vê o lucro aumentar.
+                <br><strong class="text-white">Modelo de Assinatura "Tudo Incluso".</strong>
             </p>
-            <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl inline-flex items-center gap-2">
-                Quero Participar <i class="fa-solid fa-arrow-down"></i>
-            </a>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Tenho Interesse
+                </a>
+                <a href="#tecnologia" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/30 text-white text-lg px-8 py-4 rounded-lg font-semibold transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-microchip"></i> Ver Tecnologia
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-white text-2xl opacity-50"></i>
         </div>
     </header>
 
     <section class="py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
-            <div class="md:w-1/2">
-                <h2 class="text-4xl font-extrabold text-gray-900 mb-6">Sua fazenda no bolso.</h2>
-                <p class="text-gray-600 text-lg mb-8">
-                    Dashboard intuitivo com alertas via WhatsApp. Acompanhe Umidade, Clima e Nutrientes de onde estiver.
+            <div class="md:w-1/2 order-2 md:order-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-mobile-screen text-agro-brand text-2xl"></i>
+                    <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Controle Total</span>
+                </div>
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-6">O escritório agora cabe<br> no seu bolso.</h2>
+                <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                    Esqueça cadernetas e planilhas complicadas. Nosso sistema envia os dados vitais do solo direto para o seu WhatsApp e para este Dashboard intuitivo.
                 </p>
-                <ul class="space-y-4">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-agro-brand"></i> Dados em Tempo Real</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-agro-brand"></i> Histórico de Safra</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-agro-brand"></i> Alertas de Bateria e Clima</li>
-                </ul>
+                
+                <div class="space-y-6">
+                    <div class="flex gap-4 group hover:bg-gray-50 p-3 rounded-lg transition">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-agro-brand text-xl group-hover:bg-agro-brand group-hover:text-white transition">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Dados em Tempo Real</h4>
+                            <p class="text-sm text-gray-500">Bateria, Umidade e Temperatura atualizados via 4G.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 group hover:bg-gray-50 p-3 rounded-lg transition">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-agro-brand text-xl group-hover:bg-agro-brand group-hover:text-white transition">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Histórico de Safra</h4>
+                            <p class="text-sm text-gray-500">Acompanhe a evolução do pH e nutrientes dia após dia.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="md:w-1/2 flex justify-center relative floating-mockup">
+
+            <div class="md:w-1/2 flex justify-center relative order-1 md:order-2 floating-mockup">
+                <div class="absolute inset-0 bg-gradient-to-tr from-agro-brand/30 to-blue-500/30 rounded-full blur-[100px] opacity-60"></div>
                 <div class="relative border-gray-900 bg-gray-900 border-[12px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl z-10 ring-1 ring-gray-700">
+                    <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[15px] top-[72px] rounded-l-lg"></div>
+                    <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[124px] rounded-l-lg"></div>
+                    <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[15px] top-[142px] rounded-r-lg"></div>
                     <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
-                        <img src="https://emersonreisdg.github.io/agroplan/Captura%20de%20tela%202025-12-26%20134627.png" class="w-full h-full object-cover" alt="App Dashboard">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 h-[25px] w-[90px] bg-black rounded-b-xl z-20"></div>
+                        <img src="https://emersonreisdg.github.io/agroplan/Captura%20de%20tela%202025-12-26%20134627.png" class="w-full h-full object-cover" alt="Agro Plan App">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 bg-gray-900 text-white">
+    <section class="py-20 bg-gray-900 text-white" id="tecnologia">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
             <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-                <img src="https://emersonreisdg.github.io/agroplan/Totem-raiox.jpg" alt="Raio X" class="w-full">
+                <img src="https://emersonreisdg.github.io/agroplan/Totem-raiox.jpg" alt="Raio X do Totem" class="w-full transition duration-500 group-hover:scale-105">
+                <div class="absolute bottom-0 left-0 bg-black/80 w-full p-4 border-t border-white/10">
+                    <p class="text-xs font-mono text-blue-300"><i class="fa-solid fa-code-branch"></i> SYSTEM_CORE: Raspberry Pi Zero W + SIM7600 (4G)</p>
+                </div>
             </div>
-            <div>
-                <h2 class="text-3xl font-bold mb-6">Engenharia Robusta</h2>
-                <p class="text-gray-400 mb-6">Hardware desenvolvido para resistir ao campo. Conectividade 4G, Bateria de longa duração e Sensores industriais.</p>
-                <div class="flex gap-4 text-sm font-bold text-gray-500">
-                    <span><i class="fa-solid fa-microchip text-blue-500"></i> IOT CORE</span>
-                    <span><i class="fa-solid fa-wifi text-green-500"></i> 4G LTE</span>
-                    <span><i class="fa-solid fa-database text-yellow-500"></i> POSTGRESQL</span>
+
+            <div class="space-y-8">
+                <div>
+                    <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Engenharia Robusta</span>
+                    <h2 class="text-3xl font-bold mt-2">O que tem dentro da caixa?</h2>
+                    <p class="text-gray-400 mt-4">Hardware industrial desenvolvido para resistir a sol, chuva e poeira.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 rounded bg-blue-900/50 flex items-center justify-center text-blue-400 shrink-0"><i class="fa-solid fa-wifi"></i></div>
+                        <div>
+                            <h3 class="font-bold">Conectividade 4G LTE</h3>
+                            <p class="text-gray-400 text-sm">Módulo industrial homologado. Envia dados mesmo com sinal fraco.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 rounded bg-green-900/50 flex items-center justify-center text-green-400 shrink-0"><i class="fa-solid fa-battery-full"></i></div>
+                        <div>
+                            <h3 class="font-bold">Autonomia Inteligente</h3>
+                            <p class="text-gray-400 text-sm">Gerenciamento de energia otimizado via Python Core.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-gray-800">
+                    <p class="text-xs font-mono text-gray-500 uppercase mb-4">Powered by Open Tech:</p>
+                    <div class="flex flex-wrap gap-4 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition duration-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="h-8 w-8" title="Python">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" class="h-8 w-8" title="PostgreSQL">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" class="h-8 w-8" title="Raspberry Pi">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="h-8 w-8" title="Linux">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" class="h-8 w-8" title="Pandas">
+                        <div class="h-8 w-8 flex items-center justify-center bg-gray-800 rounded border border-gray-700" title="Machine Learning">
+                            <i class="fa-solid fa-brain text-pink-500"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,15 +222,17 @@
 
     <section class="py-20 bg-agro-light" id="cadastro">
         <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-agro-dark">Leve essa tecnologia para sua terra</h2>
+                <p class="text-gray-600 mt-2">Preencha para receber uma consultoria gratuita e disponibilidade na sua área.</p>
+            </div>
+
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
-                
-                <div class="md:w-5/12 bg-agro-dark p-8 text-white flex flex-col justify-center relative">
+                <div class="md:w-5/12 bg-agro-dark p-8 text-white flex flex-col justify-center relative overflow-hidden">
                     <div class="absolute inset-0 bg-agro-brand opacity-10 pattern-dots"></div>
-                    <h3 class="text-2xl font-bold mb-4 relative z-10">Entre na Lista de Espera</h3>
-                    <p class="text-gray-300 text-sm mb-6 relative z-10">
-                        Estamos selecionando produtores e agrônomos para as primeiras unidades em Uberaba. Preencha para receber uma consultoria gratuita.
-                    </p>
-                    <ul class="text-sm space-y-3 relative z-10">
+                    <img src="https://emersonreisdg.github.io/agroplan/Totem-embalado.jpeg" class="rounded-lg shadow-lg mb-6 relative z-10 border border-white/20" alt="Produto Pronto">
+                    <h3 class="text-xl font-bold mb-2 relative z-10">Entre na Lista de Espera</h3>
+                    <ul class="text-sm space-y-2 relative z-10 text-gray-300">
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-agro-brand"></i> Prioridade na instalação</li>
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-agro-brand"></i> Condição especial de lançamento</li>
                     </ul>
@@ -153,29 +243,26 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Nome Completo</label>
-                                <input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition" placeholder="Ex: João da Silva">
+                                <input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition bg-gray-50" placeholder="Ex: João da Silva">
                             </div>
-                            
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label>
-                                <input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition" placeholder="Ex: (34) 99999-9999">
+                                <input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition bg-gray-50" placeholder="Ex: (34) 99999-9999">
                             </div>
-
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Área (Hectares)</label>
-                                    <input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition" placeholder="Ex: 500 ha">
+                                    <input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition bg-gray-50" placeholder="Ex: 500 ha">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Perfil</label>
                                     <select id="perfil" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand focus:ring-2 focus:ring-green-100 outline-none transition bg-white">
                                         <option value="Produtor Rural">Produtor Rural</option>
                                         <option value="Agrônomo">Agrônomo</option>
-                                        <option value="Outro">Outro</option>
+                                        <option value="Consultor">Consultor</option>
                                     </select>
                                 </div>
                             </div>
-
                             <button type="submit" class="w-full bg-agro-brand hover:bg-green-600 text-white font-bold py-4 rounded-lg transition shadow-lg text-lg flex justify-center items-center gap-2">
                                 <i class="fa-brands fa-whatsapp"></i> Enviar Interesse
                             </button>
@@ -183,34 +270,134 @@
                     </form>
                 </div>
             </div>
-            
-            <p class="text-center text-gray-400 text-sm mt-8">
-                &copy; 2025 Agro Plan Systems. Uberaba, MG.
-            </p>
         </div>
     </section>
 
+    <section id="dev-zone" class="py-20 bg-gray-900 border-t border-gray-800 relative overflow-hidden">
+        <div class="absolute top-10 right-10 opacity-5 font-mono text-green-500 text-sm hidden md:block select-none text-right">
+            class AgroSensor(Entity):<br>
+            &nbsp;&nbsp;def __init__(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.connect_4g()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.start_stream()
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="bg-gray-800 text-green-400 text-xs font-mono py-1 px-3 rounded-full border border-green-500/30">
+                    <i class="fa-solid fa-terminal mr-2"></i>DEV_ZONE
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-4 mb-4">
+                    Construa o Futuro do Agro <span class="text-agro-brand">Com Código.</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Buscamos mentes brilhantes para escalar o Agro Plan. Se você domina nossa stack, junte-se ao time.
+                </p>
+            </div>
+
+            <div class="max-w-2xl mx-auto bg-gray-800/50 backdrop-blur rounded-xl border border-gray-700 p-8 shadow-2xl">
+                <form id="devForm" onsubmit="enviarDevWhatsApp(event)">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-mono text-green-400 mb-2">
+                                <i class="fa-brands fa-github"></i> GITHUB_PROFILE_URL <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 font-mono">https://</span>
+                                </div>
+                                <input type="text" id="devGithub" required 
+                                    class="w-full pl-20 pr-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white font-mono focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition placeholder-gray-600"
+                                    placeholder="github.com/seu-usuario">
+                            </div>
+                            <p class="text-[10px] text-gray-500 mt-1">Analisaremos seu código como critério principal.</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-mono text-gray-400 mb-2">DEV_NAME</label>
+                                <input type="text" id="devNome" required 
+                                    class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition"
+                                    placeholder="Seu Nome">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-mono text-gray-400 mb-2">MAIN_SKILL</label>
+                                <select id="devSkill" class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition">
+                                    <option value="Fullstack (Python/JS)">Fullstack (Python/JS)</option>
+                                    <option value="Data Science / AI">Data Science / AI</option>
+                                    <option value="Hardware / IoT">Hardware / IoT</option>
+                                    <option value="Mobile">Mobile App</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-lg transition shadow-lg border-b-4 border-green-800 hover:border-green-700 flex justify-center items-center gap-2 group">
+                            <i class="fa-solid fa-code-branch group-hover:rotate-12 transition"></i> COMMIT APPLICATION
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="mt-8 text-center">
+                 <a href="https://github.com/emersonreisdg/agroplan" target="_blank" class="inline-flex items-center text-xs text-gray-400 hover:text-white transition border-b border-gray-700 hover:border-white pb-1">
+                    <i class="fa-brands fa-github mr-2 text-lg"></i> Interessado no código? Veja nosso repositório.
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-gray-500 py-10 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 opacity-70">
+                <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" class="h-6 filter grayscale">
+                <span class="text-white font-bold tracking-wide text-sm">AGRO PLAN SYSTEMS</span>
+            </div>
+            <div class="text-xs text-center md:text-right">
+                <p>&copy; 2025 Open Tech Project. Uberaba, MG.</p>
+                <p class="mt-1">Desenvolvimento focado em eficiência agronômica.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
+        // CONFIGURAÇÃO: Coloque seu número aqui (com 55 e DDD)
+        const SEU_NUMERO = "5534000000000"; 
+
+        // 1. Envio do Produtor (Lead Comercial)
         function enviarWhatsApp(e) {
             e.preventDefault();
-            
-            // SEU NÚMERO AQUI (Mantenha o 55 antes do DDD)
-            const meuNumero = "5534000000000"; 
-            
             const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
+            const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
             const perfil = document.getElementById('perfil').value;
+            
+            const msg = `*🌱 Novo Lead Agro Plan:*%0A%0A` +
+                        `👤 *Nome:* ${nome}%0A` +
+                        `📱 *Tel:* ${tel}%0A` +
+                        `🚜 *Perfil:* ${perfil}%0A` +
+                        `🌾 *Área:* ${area}`;
+                        
+            window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
+        }
 
-            const mensagem = `*Olá! Tenho interesse no Agro Plan MAPS.*%0A%0A` +
-                             `👤 *Nome:* ${nome}%0A` +
-                             `📱 *Telefone:* ${telefone}%0A` +
-                             `🚜 *Perfil:* ${perfil}%0A` +
-                             `🌾 *Área:* ${area}`;
+        // 2. Envio do Desenvolvedor (Recrutamento)
+        function enviarDevWhatsApp(e) {
+            e.preventDefault();
+            const github = document.getElementById('devGithub').value;
+            const nome = document.getElementById('devNome').value;
+            const skill = document.getElementById('devSkill').value;
 
-            window.open(`https://wa.me/${meuNumero}?text=${mensagem}`, '_blank');
+            // Limpa a URL do GitHub para ficar bonitinha na mensagem
+            let githubUrl = github.replace('https://', '').replace('http://', '');
+            if (!githubUrl.includes('github.com')) { githubUrl = 'github.com/' + githubUrl; }
+
+            const msg = `*👾 Nova Aplicação DEV:*%0A%0A` +
+                        `👤 *Dev:* ${nome}%0A` +
+                        `💻 *Skill:* ${skill}%0A` +
+                        `🔗 *GitHub:* ${githubUrl}%0A%0A` +
+                        `_Gostaria de contribuir com o projeto Agro Plan._`;
+            
+            window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
         }
     </script>
-
 </body>
 </html>
