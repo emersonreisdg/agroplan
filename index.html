@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estação MAPS | Inteligência de Decisão</title>
-    <meta name="description" content="Estação MAPS: Infraestrutura inteligente de análise de solo. Dados reais no campo, decisões claras no AgroPlan.">
+    <title>Estação MAPS | Inteligência Financeira no Campo</title>
+    <meta name="description" content="Estação MAPS: Infraestrutura inteligente multi-safra. Soja, Milho, Café, Cana e Pasto com cálculo de ROI em tempo real.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -85,26 +85,28 @@
     <header class="hero-bg h-screen flex items-center justify-center text-center px-4 relative">
         <div class="max-w-5xl mx-auto z-10 pt-16">
             
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
+                🚀 Atualização V15: Sistema Multi-Safra
+            </div>
+
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
-                Estação MAPS<br>
-                <span class="text-agro-brand text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Dados reais do solo.</span><br>
-                Decisão clara no campo.
+                Inteligência Financeira no Campo.<br>
+                <span class="text-agro-brand text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Do Solo ao ROI em Tempo Real.</span>
             </h1>
             
             <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto font-light leading-relaxed">
-                Uma infraestrutura inteligente instalada no talhão que coleta dados do solo e transforma informação técnica em decisão prática no AgroPlan.
+                Monitore <strong>Soja, Milho, Café, Cana e Pasto</strong> com uma única estação. Cruzamos dados de sensores com a cotação da B3 e auditoria da Embrapa.
             </p>
             
-            <div class="flex flex-wrap justify-center gap-4 mb-10 opacity-80">
-                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold">🏛️ EMBRAPA</span>
-                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold">🌦️ INMET</span>
-                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold">📊 IBGE</span>
-                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold">🚜 CONAB</span>
+            <div class="flex flex-wrap justify-center gap-4 mb-10 opacity-90">
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> EMBRAPA</span>
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-chart-line text-green-400"></i> B3/CONAB</span>
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-cloud-sun-rain text-green-400"></i> ZARC/INMET</span>
             </div>
             
             <div class="flex flex-col md:flex-row justify-center gap-4">
                 <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp"></i> Solicitar Diagnóstico Inicial
+                    <i class="fa-brands fa-whatsapp"></i> Cotar Estação MAPS
                 </a>
             </div>
         </div>
@@ -113,33 +115,53 @@
         </div>
     </header>
 
+    <div class="bg-agro-dark py-6 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center flex-wrap gap-8 md:gap-16 text-gray-400">
+            <div class="flex flex-col items-center gap-2 hover:text-green-400 transition cursor-default">
+                <i class="fas fa-leaf text-2xl"></i><span class="text-xs font-bold uppercase">Soja</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-yellow-400 transition cursor-default">
+                <i class="fas fa-seedling text-2xl"></i><span class="text-xs font-bold uppercase">Milho</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-amber-700 transition cursor-default">
+                <i class="fas fa-coffee text-2xl"></i><span class="text-xs font-bold uppercase">Café</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-purple-400 transition cursor-default">
+                <i class="fab fa-pagelines text-2xl"></i><span class="text-xs font-bold uppercase">Cana</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-green-300 transition cursor-default">
+                <i class="fas fa-cow text-2xl"></i><span class="text-xs font-bold uppercase">Pasto</span>
+            </div>
+        </div>
+    </div>
+
     <section class="py-20 bg-white border-b border-gray-100">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Passo a Passo</span>
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-12 mt-2">Como a Estação MAPS funciona</h2>
+            <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">O Novo Padrão</span>
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-12 mt-2">Mais que Sensores: Inteligência de Mercado</h2>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold">1</div>
-                    <h3 class="font-bold text-xl mb-3 text-gray-900">Coleta no Campo</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        A Estação MAPS fica instalada fixa no talhão e realiza leituras contínuas (24/7) dos parâmetros do solo e bateria.
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-satellite-dish"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">Coleta Full-Stack</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        pH, NPK, Umidade, Temperatura e EC. A estação lê a saúde completa do solo 24/7.
                     </p>
                 </div>
                 
-                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold">2</div>
-                    <h3 class="font-bold text-xl mb-3 text-gray-900">Processamento</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Os dados locais são enviados via 4G e cruzados com bases oficiais (Embrapa/INMET) em nossa nuvem segura.
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-server"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">Validação Cruzada</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        O algoritmo Kairos compara seus dados com o manual da Embrapa e alerta riscos climáticos (ZARC).
                     </p>
                 </div>
                 
-                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold">3</div>
-                    <h3 class="font-bold text-xl mb-3 text-gray-900">Decisão Simples</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        O AgroPlan entrega um "Semáforo" claro (Verde/Vermelho) para você agir no momento certo.
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-dollar-sign"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">ROI Dinâmico</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Sua produtividade projetada multiplicada pela cotação da B3/Chicago no segundo exato.
                     </p>
                 </div>
             </div>
@@ -159,34 +181,34 @@
 
             <div class="md:w-1/2">
                 <div class="flex items-center gap-2 mb-4">
-                    <i class="fa-solid fa-traffic-light text-agro-brand text-2xl"></i>
-                    <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Inteligência de Decisão</span>
+                    <i class="fa-solid fa-mobile-screen text-agro-brand text-2xl"></i>
+                    <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Dashboard V15</span>
                 </div>
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Do dado à decisão em 1 segundo.</h2>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6">O Primeiro Dashboard Multi-Safra do Brasil.</h2>
                 <p class="text-gray-600 text-lg mb-8">
-                    Não perca tempo decifrando gráficos complexos. O sistema traduz a química do solo em sinais operacionais:
+                    Troque de cultura com um clique. A "Engrenagem Inteligente" ajusta automaticamente as metas do IBGE e os parâmetros de acidez da Embrapa.
                 </p>
 
                 <div class="space-y-4">
-                    <div class="bg-white p-5 rounded-lg border-l-8 border-green-500 shadow-sm flex items-start gap-4">
-                        <div class="mt-1"><i class="fa-solid fa-check-circle text-2xl text-green-500"></i></div>
+                    <div class="bg-white p-5 rounded-lg border-l-8 border-green-500 shadow-sm flex items-start gap-4 transform hover:translate-x-2 transition">
+                        <div class="mt-1"><i class="fa-solid fa-money-bill-trend-up text-2xl text-green-500"></i></div>
                         <div>
-                            <h4 class="font-bold text-gray-900">JANELA ABERTA (Verde)</h4>
-                            <p class="text-sm text-gray-600">Umidade (35%) e pH (6.2) ideais. Pode operar com confiança.</p>
+                            <h4 class="font-bold text-gray-900">ROI Conectado à Bolsa</h4>
+                            <p class="text-sm text-gray-600">Visualize seu lucro futuro em Reais, atualizado com o preço da saca/arroba do dia.</p>
                         </div>
                     </div>
-                    <div class="bg-white p-5 rounded-lg border-l-8 border-yellow-500 shadow-sm flex items-start gap-4">
-                        <div class="mt-1"><i class="fa-solid fa-triangle-exclamation text-2xl text-yellow-500"></i></div>
+                    <div class="bg-white p-5 rounded-lg border-l-8 border-blue-500 shadow-sm flex items-start gap-4 transform hover:translate-x-2 transition">
+                        <div class="mt-1"><i class="fa-solid fa-microscope text-2xl text-blue-500"></i></div>
                         <div>
-                            <h4 class="font-bold text-gray-900">ATENÇÃO (Amarelo)</h4>
-                            <p class="text-sm text-gray-600">Fatores limitantes identificados. Planeje correção.</p>
+                            <h4 class="font-bold text-gray-900">Auditoria Automática</h4>
+                            <p class="text-sm text-gray-600">O sistema diz se o seu pH está "Ideal" ou "Crítico" baseado na 5ª Aproximação (Cerrado).</p>
                         </div>
                     </div>
-                    <div class="bg-white p-5 rounded-lg border-l-8 border-red-500 shadow-sm flex items-start gap-4">
-                        <div class="mt-1"><i class="fa-solid fa-hand text-2xl text-red-500"></i></div>
+                    <div class="bg-white p-5 rounded-lg border-l-8 border-purple-500 shadow-sm flex items-start gap-4 transform hover:translate-x-2 transition">
+                        <div class="mt-1"><i class="fa-solid fa-layer-group text-2xl text-purple-500"></i></div>
                         <div>
-                            <h4 class="font-bold text-gray-900">JANELA FECHADA (Vermelho)</h4>
-                            <p class="text-sm text-gray-600">Risco alto. Evite operações para não desperdiçar insumo.</p>
+                            <h4 class="font-bold text-gray-900">5 Modos de Operação</h4>
+                            <p class="text-sm text-gray-600">Soja (sc), Milho (sc), Café (sc), Cana (ton) e Pecuária (@). Tudo na mesma assinatura.</p>
                         </div>
                     </div>
                 </div>
@@ -199,21 +221,21 @@
             <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl">
                 <img src="https://emersonreisdg.github.io/agroplan/Totem-raiox.jpeg" alt="Raio X da Estação MAPS" class="w-full transition duration-500 group-hover:scale-105">
                 <div class="absolute bottom-0 left-0 bg-black/90 w-full p-4 border-t border-white/10">
-                    <p class="text-xs font-mono text-blue-300 mb-1"><i class="fa-solid fa-microchip"></i> NÚCLEO: MAPS SENSOR</p>
+                    <p class="text-xs font-mono text-blue-300 mb-1"><i class="fa-solid fa-microchip"></i> HARDWARE: MAPS SENSOR V3</p>
                 </div>
             </div>
 
             <div class="space-y-6">
                 <div>
                     <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Tecnologia</span>
-                    <h2 class="text-3xl font-bold mt-2">Hardware Robusto e Modular</h2>
-                    <p class="text-gray-400 mt-4">Projetada para durar no campo e evoluir com o tempo.</p>
+                    <h2 class="text-3xl font-bold mt-2">Hardware Robusto. Software Vivo.</h2>
+                    <p class="text-gray-400 mt-4">Enquanto o hardware suporta sol e chuva, o software evolui toda semana via nuvem.</p>
                 </div>
                 
                 <ul class="space-y-4 text-sm text-gray-300">
                     <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Bateria de longa duração</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Conectividade 4G integrada (SIM7600)</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Sensor atualizável (Modular)</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Conectividade 4G nativa (SIM7600)</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Integração Python + Supabase (Real-time)</li>
                 </ul>
             </div>
         </div>
@@ -221,23 +243,23 @@
 
     <section class="py-20 bg-white">
         <div class="max-w-5xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Pensado para quem decide no campo</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Feito para o investidor rural</h2>
             <p class="text-gray-600 mb-10 max-w-2xl mx-auto">
-                A Estação MAPS foi desenhada para produtores e agrônomos que precisam reduzir risco, evitar desperdício e decidir com base em dados reais.
+                Você não planta no escuro. Por que investir no escuro? A Estação MAPS traz a clareza dos dados para a sua gestão.
             </p>
 
             <div class="grid md:grid-cols-3 gap-6 text-sm">
                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
-                    <i class="fa-solid fa-chart-pie text-3xl text-agro-brand mb-4"></i><br>
-                    Menos achismo<br><strong>Mais previsibilidade</strong>
+                    <i class="fa-solid fa-money-bill-wave text-3xl text-agro-brand mb-4"></i><br>
+                    Não é gasto<br><strong>É Investimento Auditável</strong>
                 </div>
                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
-                    <i class="fa-solid fa- screwdriver-wrench text-3xl text-agro-brand mb-4"></i><br>
-                    Infraestrutura fixa<br><strong>Sensor atualizável</strong>
+                    <i class="fa-solid fa-sliders text-3xl text-agro-brand mb-4"></i><br>
+                    Infraestrutura Flexível<br><strong>Adapta à sua Safra</strong>
                 </div>
                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
-                    <i class="fa-solid fa-network-wired text-3xl text-agro-brand mb-4"></i><br>
-                    Escalável para<br><strong>Grandes áreas</strong>
+                    <i class="fa-solid fa-shield-cat text-3xl text-agro-brand mb-4"></i><br>
+                    Menos Risco<br><strong>Validação ZARC/INMET</strong>
                 </div>
             </div>
         </div>
@@ -265,7 +287,14 @@
                             <div><label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label><input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="(34) 99999-9999"></div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Área (ha)</label><input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Ex: 500"></div>
-                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Perfil</label><select id="perfil" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white"><option value="Produtor Rural">Produtor Rural</option><option value="Agrônomo">Agrônomo</option></select></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Cultura Principal</label>
+                                    <select id="cultura" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white">
+                                        <option value="Soja/Milho">Soja/Milho</option>
+                                        <option value="Café">Café</option>
+                                        <option value="Cana">Cana</option>
+                                        <option value="Pecuária">Pecuária</option>
+                                    </select>
+                                </div>
                             </div>
                             <button type="submit" class="w-full bg-agro-brand hover:bg-green-600 text-white font-bold py-4 rounded-lg transition shadow-lg text-lg flex justify-center items-center gap-2"><i class="fa-brands fa-whatsapp"></i> Falar com Especialista</button>
                         </div>
@@ -313,14 +342,14 @@
             const nome = document.getElementById('nome').value;
             const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
-            const perfil = document.getElementById('perfil').value;
+            const cultura = document.getElementById('cultura').value; // Atualizado para pegar a cultura
             
-            const msg = `*🌱 Interesse Estação MAPS:*%0A%0A` +
+            const msg = `*🌱 Interesse Estação MAPS V15:*%0A%0A` +
                         `👤 *Nome:* ${nome}%0A` +
                         `📱 *Tel:* ${tel}%0A` +
-                        `🚜 *Perfil:* ${perfil}%0A` +
-                        `🌾 *Área:* ${area}%0A` +
-                        `_Solicito diagnóstico inicial e avaliação da área._`;
+                        `🚜 *Interesse:* ${cultura}%0A` +
+                        `🌾 *Área:* ${area} ha%0A` +
+                        `_Gostaria de saber mais sobre a inteligência multi-safra._`;
                         
             window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
         }
@@ -342,4 +371,3 @@
     </script>
 </body>
 </html>
-
