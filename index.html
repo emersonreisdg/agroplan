@@ -2,163 +2,316 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <title>Agro Plan | Inteligência Agrícola Validada</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Plan | Inteligência de Decisão no Campo</title>
-    <meta name="description" content="Agro Plan: Plataforma de inteligência agrícola que transforma dados de solo, clima e mercado em decisões claras e lucrativas.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        agro: {
-                            brand: '#28a745',
-                            dark: '#0f3d30',
-                            light: '#f4f6f9'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <meta name="description" content="Agro Plan é uma plataforma de inteligência agrícola que cruza dados oficiais, clima, solo e histórico produtivo para apoiar decisões reais no campo.">
 
     <style>
-        html { scroll-behavior: smooth; }
-        .hero-bg {
-            background: linear-gradient(rgba(15,61,48,.9), rgba(15,61,48,.7)), 
-            url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg') center/cover fixed;
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #0f172a;
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #020617, #0f172a);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #22c55e;
+        }
+
+        header p {
+            max-width: 820px;
+            margin: auto;
+            font-size: 18px;
+            color: #cbd5f5;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #22c55e;
+        }
+
+        h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #a7f3d0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: #020617;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #1e293b;
+        }
+
+        .card p {
+            color: #cbd5f5;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #020617, #020617);
+            border: 1px solid #22c55e;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #022c22;
+            color: #22c55e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background-color: #020617;
+            padding: 40px 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .image-placeholder {
+            background: #020617;
+            border: 1px dashed #334155;
+            border-radius: 12px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            margin-top: 30px;
         }
     </style>
 </head>
 
-<body class="font-sans bg-agro-light text-gray-800">
+<body>
 
-<nav class="fixed top-0 w-full bg-agro-dark/95 backdrop-blur z-50 border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-            <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" class="h-10">
-            <div>
-                <strong class="text-white text-xl">AGRO PLAN</strong><br>
-                <span class="text-xs tracking-widest text-agro-brand font-bold">ESTAÇÃO MAPS</span>
-            </div>
-        </div>
-        <a href="#cadastro" class="bg-agro-brand text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition">
-            Solicitar Diagnóstico
-        </a>
-    </div>
-</nav>
-
-<header class="hero-bg h-screen flex items-center justify-center text-center px-6">
-    <div class="max-w-4xl pt-20">
-        <span class="inline-block mb-4 px-4 py-1 rounded-full bg-white/10 text-green-300 text-xs font-bold uppercase">
-            Plataforma de Inteligência Agrícola
-        </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-            Menos achismo.<br>
-            <span class="text-agro-brand">Mais decisão no campo.</span>
-        </h1>
-        <p class="text-lg text-gray-200 mb-8">
-            O Agro Plan transforma dados de solo, clima e mercado em decisões claras para quem produz, investe e planeja safras.
-        </p>
-        <a href="#cadastro" class="inline-flex items-center gap-2 bg-agro-brand text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-green-600 transition">
-            <i class="fa-brands fa-whatsapp"></i> Falar com Especialista
-        </a>
-    </div>
+<header>
+    <h1>Agro Plan</h1>
+    <p>
+        Inteligência agrícola construída sobre dados reais, critérios técnicos
+        e validação oficial.  
+        Do solo ao satélite. Do dado à decisão.
+    </p>
 </header>
 
-<section class="py-20 bg-white">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-extrabold mb-6">O problema que ninguém resolve direito</h2>
-        <p class="text-gray-600 max-w-3xl mx-auto">
-            O produtor tem dados, sensores, relatórios e planilhas.  
-            O que falta é **clareza para decidir** antes do dinheiro ir para o chão.
-        </p>
+<section>
+    <h2>O problema que ninguém resolve direito</h2>
+    <p>
+        O produtor hoje recebe informação demais e decisão de menos.
+        Dados soltos, previsões genéricas e recomendações sem contexto
+        aumentam o risco em vez de reduzir.
+    </p>
+
+    <p>
+        O Agro Plan nasce para organizar esse caos.
+        Não como mais um painel bonito,
+        mas como um sistema que entende o campo,
+        valida o dado e só então sugere ação.
+    </p>
+
+    <div class="image-placeholder">
+        Imagem ilustrativa do campo + tecnologia
     </div>
 </section>
 
-<section class="py-20 bg-agro-light">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
-        <div class="bg-white p-8 rounded-xl shadow-sm">
-            <i class="fas fa-leaf text-3xl text-agro-brand mb-4"></i>
-            <h3 class="font-bold text-xl mb-2">Solo e Clima</h3>
-            <p class="text-gray-600 text-sm">
-                Leitura contínua de pH, NPK, umidade, temperatura e riscos climáticos.
+<section>
+    <h2>O que é o Agro Plan</h2>
+
+    <p>
+        O Agro Plan é uma plataforma de inteligência agrícola
+        que integra dados de solo, clima, histórico produtivo,
+        risco agronômico e viabilidade econômica.
+    </p>
+
+    <p>
+        Tudo isso conectado a fontes oficiais do Brasil
+        e organizado em um modelo único de decisão.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Solo e Sensores</h3>
+            <p>
+                Monitoramento de pH, NPK, umidade e temperatura,
+                servindo como base real para qualquer análise.
             </p>
         </div>
-        <div class="bg-white p-8 rounded-xl shadow-sm">
-            <i class="fas fa-brain text-3xl text-agro-brand mb-4"></i>
-            <h3 class="font-bold text-xl mb-2">Interpretação Inteligente</h3>
-            <p class="text-gray-600 text-sm">
-                Dados validados com Embrapa, ZARC e histórico real da cultura.
+
+        <div class="card">
+            <h3>Clima em tempo real</h3>
+            <p>
+                Dados observados do INMET,
+                não apenas previsão genérica de aplicativo.
             </p>
         </div>
-        <div class="bg-white p-8 rounded-xl shadow-sm">
-            <i class="fas fa-chart-line text-3xl text-agro-brand mb-4"></i>
-            <h3 class="font-bold text-xl mb-2">Impacto Financeiro</h3>
-            <p class="text-gray-600 text-sm">
-                Projeção de retorno baseada em produtividade e preço de mercado.
+
+        <div class="card">
+            <h3>Histórico produtivo</h3>
+            <p>
+                Séries do IBGE para entender o comportamento
+                real da cultura na região.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Risco e recomendação</h3>
+            <p>
+                Parâmetros técnicos e zoneamento da Embrapa,
+                usados como critério, não como opinião.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Custo e preço</h3>
+            <p>
+                Dados da CONAB para avaliar se a decisão
+                é agronomicamente correta e financeiramente viável.
             </p>
         </div>
     </div>
 </section>
 
-<section class="py-24 bg-gray-900 text-white">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-extrabold mb-6">Não é só monitorar. É decidir melhor.</h2>
-        <p class="text-gray-400 max-w-3xl mx-auto">
-            O Agro Plan funciona como um painel de decisão agrícola, conectando campo, mercado e planejamento em um único lugar.
-        </p>
-    </div>
-</section>
+<section class="highlight">
+    <span class="tag">MAPS</span>
+    <h2>MAPS: o cérebro do Agro Plan</h2>
 
-<section class="py-20 bg-white" id="cadastro">
-    <div class="max-w-4xl mx-auto px-6">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold">Solicite um diagnóstico inicial</h2>
-            <p class="text-gray-600">Sem compromisso. Avaliação rápida da sua área.</p>
+    <p>
+        MAPS é o motor agronômico preditivo e supervisório
+        responsável por validar cada decisão do sistema.
+    </p>
+
+    <p>
+        Ele não responde por padrão genérico.
+        Ele cruza dados, aplica critérios técnicos
+        e pondera risco antes de gerar qualquer orientação.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>1. Realidade do campo</h3>
+            <p>
+                Dados de sensores e clima observado
+                definem o ponto de partida.
+            </p>
         </div>
 
-        <form onsubmit="enviarWhatsApp(event)" class="bg-gray-50 p-8 rounded-2xl shadow-lg space-y-5">
-            <input id="nome" required placeholder="Seu nome" class="w-full p-4 rounded border">
-            <input id="telefone" required placeholder="WhatsApp" class="w-full p-4 rounded border">
-            <input id="area" required placeholder="Área (ha)" class="w-full p-4 rounded border">
-            <select id="cultura" class="w-full p-4 rounded border">
-                <option>Soja</option>
-                <option>Milho</option>
-                <option>Café</option>
-                <option>Cana</option>
-                <option>Pecuária</option>
-            </select>
-            <button class="w-full bg-agro-brand text-white py-4 rounded-lg font-bold hover:bg-green-600 transition">
-                Enviar pelo WhatsApp
-            </button>
-        </form>
+        <div class="card">
+            <h3>2. Contexto histórico</h3>
+            <p>
+                O comportamento produtivo da região
+                serve como referência comparativa.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>3. Validação técnica</h3>
+            <p>
+                Regras da Embrapa e zoneamento de risco
+                limitam e ajustam as decisões.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>4. Viabilidade econômica</h3>
+            <p>
+                Custos e preços evitam decisões
+                tecnicamente boas, mas economicamente ruins.
+            </p>
+        </div>
+    </div>
+
+    <p style="margin-top:40px;">
+        O MAPS trabalha com faixas, limites e gatilhos.
+        Não busca a resposta perfeita,
+        mas a decisão mais segura dentro do cenário real.
+    </p>
+</section>
+
+<section>
+    <h2>Chatbot técnico, não genérico</h2>
+
+    <p>
+        O chatbot do Agro Plan não é o cérebro do sistema.
+        Ele é a interface.
+    </p>
+
+    <p>
+        Cada resposta exibida é gerada a partir
+        das validações feitas pelo MAPS
+        e pode ser rastreada até fontes oficiais
+        como Embrapa, INMET, IBGE e CONAB.
+    </p>
+
+    <div class="image-placeholder">
+        Imagem ilustrativa do chatbot técnico
     </div>
 </section>
 
-<footer class="bg-black text-gray-500 py-8 text-center text-sm">
-    © 2026 Agro Plan • Uberaba MG
+<section>
+    <h2>Área Dev | Agro Plan Tech</h2>
+
+    <p>
+        O Agro Plan nasce como uma empresa de tecnologia.
+        A plataforma é construída com arquitetura modular,
+        integração via APIs e foco em evolução contínua.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Integração de APIs</h3>
+            <p>
+                Consumo de dados oficiais e serviços externos
+                com validação e versionamento.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Modelo Preditivo</h3>
+            <p>
+                Base preparada para machine learning,
+                séries temporais e aprendizado progressivo.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Escalável</h3>
+            <p>
+                Pensado para crescer do produtor local
+                a projetos regionais e cooperativas.
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    Agro Plan © 2025  
+    Tecnologia aplicada ao agro com critério, dado e responsabilidade.
 </footer>
-
-<script>
-const SEU_NUMERO = "5534997145335";
-function enviarWhatsApp(e){
-    e.preventDefault();
-    const msg =
-    `🌱 Interesse Agro Plan%0A`+
-    `Nome: ${nome.value}%0A`+
-    `WhatsApp: ${telefone.value}%0A`+
-    `Área: ${area.value} ha%0A`+
-    `Cultura: ${cultura.value}`;
-    window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
-}
-</script>
 
 </body>
 </html>
