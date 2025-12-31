@@ -2,348 +2,522 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Agro Plan | Inteligência Agrícola Validada</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação MAPS | Inteligência Financeira e Satelital</title>
+    <meta name="description" content="Estação MAPS: Infraestrutura inteligente multi-safra. Fusão de sensores IoT e Satélite com cálculo de ROI em tempo real.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <meta name="description" content="Agro Plan é uma plataforma de inteligência agrícola que cruza dados oficiais, clima, solo, histórico produtivo e viabilidade econômica para apoiar decisões reais no campo.">
-
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agro: {
+                            light: '#f4f6f9',
+                            brand: '#28a745',
+                            brandDark: '#218838',
+                            dark: '#0f3d30',
+                            alert: '#ff9800',
+                            danger: '#dc3545',
+                            text: '#333333',
+                            roxo: '#9b59b6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #0b1220;
-            color: #e5e7eb;
-            line-height: 1.6;
+        html { scroll-behavior: smooth; }
+        
+        /* HERO BACKGROUND */
+        .hero-bg {
+            background-color: #0f3d30;
+            background-image: linear-gradient(rgba(15, 61, 48, 0.9), rgba(15, 61, 48, 0.7)), url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        header {
-            background: linear-gradient(135deg, #020617, #0b1220);
-            padding: 90px 20px;
-            text-align: center;
+        .floating-mockup { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pattern-dots {
+            background-image: radial-gradient(#28a745 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        header h1 {
-            font-size: 44px;
-            margin-bottom: 20px;
-            color: #22c55e;
+        /* --- COMPONENTES INTERATIVOS (NOVO) --- */
+        
+        /* 1. SLIDER SATÉLITE */
+        .comparison-container {
+            position: relative; width: 100%; height: 400px; 
+            border-radius: 1rem; overflow: hidden; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            cursor: ew-resize;
+        }
+        .comp-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; 
+        }
+        .comp-img.real { 
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1600');
+            z-index: 1;
+        }
+        .comp-img.ndvi {
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1600'); 
+            filter: hue-rotate(280deg) invert(1) contrast(1.2); 
+            width: 50%; z-index: 2; border-right: 3px solid #fff;
+        }
+        .slider-control {
+            position: absolute; top: 50%; left: 0; width: 100%; 
+            transform: translateY(-50%); z-index: 10; opacity: 0; height: 100%; cursor: col-resize;
         }
 
-        header p {
-            max-width: 860px;
-            margin: auto;
-            font-size: 18px;
-            color: #cbd5f5;
-        }
+        /* 2. CHAT SIMULATOR */
+        .chat-sim { height: 350px; overflow: hidden; display: flex; flex-direction: column; gap: 15px; }
+        .msg { padding: 12px 18px; border-radius: 12px; font-size: 14px; max-width: 80%; opacity: 0; transform: translateY(20px); animation: popIn 0.5s forwards; }
+        .msg.user { align-self: flex-end; background: #28a745; color: white; border-bottom-right-radius: 2px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2); }
+        .msg.bot { align-self: flex-start; background: #fff; color: #333; border-bottom-left-radius: 2px; border: 1px solid #eee; }
+        @keyframes popIn { to { opacity: 1; transform: translateY(0); } }
 
-        section {
-            padding: 80px 20px;
-            max-width: 1150px;
-            margin: auto;
-        }
-
-        h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: #22c55e;
-        }
-
-        h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #a7f3d0;
-        }
-
-        p {
-            color: #d1d5f0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .card {
-            background-color: #020617;
-            border-radius: 14px;
-            padding: 30px;
-            border: 1px solid #1e293b;
-        }
-
-        .highlight {
-            background: linear-gradient(135deg, #020617, #020617);
-            border: 1px solid #22c55e;
-            border-radius: 18px;
-        }
-
-        .tag {
-            display: inline-block;
-            background-color: #022c22;
-            color: #22c55e;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 15px;
-        }
-
-        .image-placeholder {
-            background: #020617;
-            border: 1px dashed #334155;
-            border-radius: 16px;
-            height: 230px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            margin-top: 30px;
-            font-size: 14px;
-        }
-
-        footer {
-            background-color: #020617;
-            padding: 40px 20px;
-            text-align: center;
-            color: #94a3b8;
-            font-size: 14px;
-        }
     </style>
 </head>
+<body class="bg-agro-light text-gray-800 antialiased font-sans overflow-x-hidden">
 
-<body>
-
-<header>
-    <h1>Agro Plan</h1>
-    <p>
-        Inteligência agrícola construída sobre dados reais, critérios técnicos
-        e validação oficial.  
-        Do solo ao satélite. Do dado à decisão.
-    </p>
-</header>
-
-<section>
-    <h2>O problema no campo hoje</h2>
-    <p>
-        O produtor recebe cada vez mais informação,
-        mas continua tomando decisões com alto risco.
-        Dados fragmentados, previsões genéricas
-        e recomendações sem critério técnico claro
-        aumentam a incerteza.
-    </p>
-
-    <p>
-        O Agro Plan nasce para resolver isso
-        organizando o dado, validando a informação
-        e apoiando decisões reais, não teóricas.
-    </p>
-
-    <div class="image-placeholder">
-        Imagem ilustrativa: campo + tecnologia + dados
-    </div>
-</section>
-
-<section>
-    <h2>O que é o Agro Plan</h2>
-
-    <p>
-        O Agro Plan é uma plataforma de inteligência agrícola
-        que integra monitoramento de solo, clima real,
-        histórico produtivo, risco agronômico
-        e viabilidade econômica.
-    </p>
-
-    <p>
-        Tudo conectado a bases oficiais do Brasil,
-        formando um modelo único de apoio à decisão.
-    </p>
-
-    <div class="grid">
-        <div class="card">
-            <h3>IBGE</h3>
-            <p>
-                Produção histórica, rendimento médio
-                e comportamento regional das culturas.
-            </p>
+    <nav class="bg-agro-dark/95 backdrop-blur fixed w-full z-50 shadow-lg border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" alt="Agro Plan" class="h-10 w-auto filter drop-shadow-md">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-xl leading-none tracking-wide text-white">AGRO PLAN</span>
+                        <span class="text-[10px] text-agro-brand font-bold tracking-[0.2em] uppercase">Estação MAPS</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex gap-4">
+                    <a href="#tecnologia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Satélite</a>
+                    <a href="#ia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Inteligência</a>
+                    <a href="#dev-zone" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-mono border border-transparent hover:border-gray-600 rounded transition">&lt;Dev_Area /&gt;</a>
+                    <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg transform hover:scale-105">Solicitar Diagnóstico</a>
+                </div>
+            </div>
         </div>
+    </nav>
 
-        <div class="card">
-            <h3>INMET</h3>
-            <p>
-                Clima observado em tempo real,
-                usado como base e não apenas previsão.
+    <header class="hero-bg h-screen flex items-center justify-center text-center px-4 relative">
+        <div class="max-w-5xl mx-auto z-10 pt-16" data-aos="fade-up">
+            
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
+                🚀 Atualização V78: Sistema Multi-Safra
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
+                Inteligência Financeira no Campo.<br>
+                <span class="text-agro-brand text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Do Solo ao ROI em Tempo Real.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto font-light leading-relaxed">
+                Monitore <strong>Soja, Milho, Café, Cana e Pasto</strong> com uma única estação. Cruzamos dados de sensores com a cotação da B3 e auditoria da Embrapa.
             </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-10 opacity-90">
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> EMBRAPA</span>
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-chart-line text-green-400"></i> B3/CONAB</span>
+                <span class="px-3 py-1 bg-white/10 rounded border border-white/20 text-xs text-white font-bold flex items-center gap-2"><i class="fas fa-cloud-sun-rain text-green-400"></i> ZARC/INMET</span>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Cotar Estação MAPS
+                </a>
+            </div>
         </div>
-
-        <div class="card">
-            <h3>EMBRAPA</h3>
-            <p>
-                Zoneamento de risco climático,
-                critérios técnicos e recomendações oficiais.
-            </p>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-white text-2xl opacity-50"></i>
         </div>
+    </header>
 
-        <div class="card">
-            <h3>CONAB</h3>
-            <p>
-                Custos de produção e preços de referência
-                para análise de viabilidade econômica.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>Solo e sensores</h3>
-            <p>
-                pH, NPK, umidade e temperatura
-                como base real do sistema.
-            </p>
-        </div>
-    </div>
-</section>
-
-<section class="highlight">
-    <span class="tag">MAPS</span>
-    <h2>MAPS: o cérebro do Agro Plan</h2>
-
-    <p>
-        MAPS é o motor agronômico preditivo e supervisório
-        responsável por validar cada decisão do sistema.
-    </p>
-
-    <p>
-        Ele não responde por opinião,
-        nem replica respostas genéricas de IA.
-        Toda orientação passa por critérios técnicos claros.
-    </p>
-
-    <div class="grid">
-        <div class="card">
-            <h3>1. Realidade do campo</h3>
-            <p>
-                Sensores de solo e clima observado
-                definem o cenário real da área.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>2. Contexto histórico</h3>
-            <p>
-                Séries do IBGE evitam decisões
-                fora do padrão regional.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>3. Validação técnica</h3>
-            <p>
-                Parâmetros da Embrapa e ZARC
-                limitam riscos agronômicos.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>4. Viabilidade econômica</h3>
-            <p>
-                Custos e preços da CONAB
-                ajustam o retorno esperado.
-            </p>
+    <div class="bg-agro-dark py-6 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center flex-wrap gap-8 md:gap-16 text-gray-400">
+            <div class="flex flex-col items-center gap-2 hover:text-green-400 transition cursor-default">
+                <i class="fas fa-leaf text-2xl"></i><span class="text-xs font-bold uppercase">Soja</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-yellow-400 transition cursor-default">
+                <i class="fas fa-seedling text-2xl"></i><span class="text-xs font-bold uppercase">Milho</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-amber-700 transition cursor-default">
+                <i class="fas fa-coffee text-2xl"></i><span class="text-xs font-bold uppercase">Café</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-purple-400 transition cursor-default">
+                <i class="fab fa-pagelines text-2xl"></i><span class="text-xs font-bold uppercase">Cana</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 hover:text-green-300 transition cursor-default">
+                <i class="fas fa-cow text-2xl"></i><span class="text-xs font-bold uppercase">Pasto</span>
+            </div>
         </div>
     </div>
 
-    <p style="margin-top:40px;">
-        O MAPS trabalha com faixas, limites e gatilhos.
-        Ele não busca a resposta perfeita,
-        mas a decisão mais segura dentro do cenário real.
-    </p>
-</section>
+    <section class="py-20 bg-white border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">O Novo Padrão</span>
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-12 mt-2">Mais que Sensores: Inteligência de Mercado</h2>
 
-<section>
-    <h2>Chatbot técnico e validado</h2>
-
-    <p>
-        O chatbot do Agro Plan é apenas a interface.
-        Ele traduz decisões já validadas pelo MAPS
-        em linguagem simples para o produtor.
-    </p>
-
-    <p>
-        Nenhuma resposta é inventada.
-        Cada orientação pode ser rastreada
-        até dados oficiais e critérios técnicos.
-    </p>
-
-    <div class="image-placeholder">
-        Imagem ilustrativa: chatbot técnico agro
-    </div>
-</section>
-
-<section>
-    <h2>Monitoramento agronômico preditivo</h2>
-
-    <p>
-        O sistema não apenas observa.
-        Ele antecipa cenários, identifica risco
-        e ajusta projeções conforme o ambiente muda.
-    </p>
-
-    <div class="grid">
-        <div class="card">
-            <h3>Alertas inteligentes</h3>
-            <p>
-                Risco climático, solo fora de faixa
-                e custo elevado são sinalizados.
-            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-satellite-dish"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">Coleta Full-Stack</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        pH, NPK, Umidade, Temperatura e EC. A estação lê a saúde completa do solo 24/7.
+                    </p>
+                </div>
+                
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-server"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">Validação Cruzada</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        O algoritmo Kairos compara seus dados com o manual da Embrapa e alerta riscos climáticos (ZARC).
+                    </p>
+                </div>
+                
+                <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition border border-transparent hover:border-green-200" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-agro-dark rounded-full flex items-center justify-center text-white text-xl mx-auto mb-6 font-bold"><i class="fas fa-dollar-sign"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-900">ROI Dinâmico</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Sua produtividade projetada multiplicada pela cotação da B3/Chicago no segundo exato.
+                    </p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h3>Projeções ajustáveis</h3>
-            <p>
-                O modelo se adapta conforme novos dados
-                entram no sistema.
-            </p>
+    <section class="py-24 bg-agro-light overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2 flex justify-center relative floating-mockup" data-aos="zoom-in">
+                <div class="absolute inset-0 bg-gradient-to-tr from-agro-brand/30 to-blue-500/30 rounded-full blur-[100px] opacity-60"></div>
+                <div class="relative border-gray-900 bg-gray-900 border-[12px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl z-10 ring-1 ring-gray-700">
+                    <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
+                        <img src="https://emersonreisdg.github.io/agroplan/dashboard-mobile.png.png" class="w-full h-full object-cover" alt="Agro Plan App">
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:w-1/2" data-aos="fade-left">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-mobile-screen text-agro-brand text-2xl"></i>
+                    <span class="font-bold text-agro-dark uppercase tracking-widest text-sm">Dashboard V15</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6">O Primeiro Dashboard Multi-Safra do Brasil.</h2>
+                <p class="text-gray-600 text-lg mb-8">
+                    Troque de cultura com um clique. A "Engrenagem Inteligente" ajusta automaticamente as metas do IBGE e os parâmetros de acidez da Embrapa.
+                </p>
+
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-lg border-l-8 border-green-500 shadow-sm flex items-start gap-4 transform hover:translate-x-2 transition">
+                        <div class="mt-1"><i class="fa-solid fa-money-bill-trend-up text-2xl text-green-500"></i></div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">ROI Conectado à Bolsa</h4>
+                            <p class="text-sm text-gray-600">Visualize seu lucro futuro em Reais, atualizado com o preço da saca/arroba do dia.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg border-l-8 border-blue-500 shadow-sm flex items-start gap-4 transform hover:translate-x-2 transition">
+                        <div class="mt-1"><i class="fa-solid fa-microscope text-2xl text-blue-500"></i></div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Auditoria Automática</h4>
+                            <p class="text-sm text-gray-600">O sistema diz se o seu pH está "Ideal" ou "Crítico" baseado na 5ª Aproximação (Cerrado).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section>
-    <h2>Área Dev | Agro Plan Tech</h2>
+    <section id="tecnologia" class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-agro-roxo font-bold uppercase tracking-wider text-sm"><i class="fas fa-satellite"></i> Módulo SATVEG</span>
+                <h2 class="text-3xl font-extrabold text-gray-900 mt-2">Tecnologia de Validação (Raio-X)</h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                    Não confie apenas no que vê. Nossa IA cruza dados de sensores (terra) com imagens espectrais (céu). <br><strong>Arraste o slider abaixo para testar.</strong>
+                </p>
+            </div>
 
-    <p>
-        O Agro Plan nasce como empresa de tecnologia.
-        A plataforma é construída com arquitetura modular,
-        APIs, versionamento e base pronta para ML.
-    </p>
+            <div class="max-w-4xl mx-auto" data-aos="zoom-in">
+                <div class="comparison-container relative group">
+                    <div class="absolute top-4 left-4 z-20 bg-agro-roxo text-white text-xs font-bold px-3 py-1 rounded shadow">NDVI (SATÉLITE)</div>
+                    <div class="absolute top-4 right-4 z-20 bg-black/50 text-white text-xs font-bold px-3 py-1 rounded backdrop-blur-sm">VISÃO HUMANA</div>
+                    
+                    <div class="comp-img real"></div>
+                    <div id="landing-ndvi" class="comp-img ndvi"></div>
+                    
+                    <div id="slider-handle" class="absolute top-0 bottom-0 w-1 bg-white z-30 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center" style="left: 50%;">
+                        <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg text-agro-roxo">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                    </div>
 
-    <div class="grid">
-        <div class="card">
-            <h3>APIs oficiais</h3>
-            <p>
-                Integração com dados públicos,
-                validação e controle de origem.
-            </p>
+                    <input type="range" min="0" max="100" value="50" class="slider-control" oninput="updateLandingSlider(this.value)">
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h3>Base para Machine Learning</h3>
-            <p>
-                Séries temporais, modelos preditivos
-                e aprendizado progressivo.
-            </p>
+    <section id="ia" class="py-20 bg-agro-dark relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-64 h-64 bg-agro-brand/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-agro-roxo/10 rounded-full blur-3xl"></div>
+
+        <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center relative z-10">
+            <div data-aos="fade-right">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="https://cdn-icons-png.flaticon.com/512/6009/6009864.png" class="w-10 h-10 filter invert"> 
+                    <span class="font-bold text-white tracking-widest">KAIROS INTELLIGENCE</span>
+                </div>
+                <h3 class="text-4xl font-black mb-6 leading-tight text-white">Não é apenas um dashboard. <br> É um <span class="text-agro-brand">Consultor 24h.</span></h3>
+                <p class="text-gray-400 mb-6 text-lg">
+                    Dúvidas sobre o manejo? Pergunte. O Kairos cruza os dados do seu sensor com a biblioteca da Embrapa e te dá a resposta na hora.
+                </p>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center gap-3 text-gray-300">
+                        <div class="w-6 h-6 rounded-full bg-agro-brand/20 flex items-center justify-center text-agro-brand"><i class="fas fa-check text-xs"></i></div>
+                        Diagnóstico de Solo em Tempo Real
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-300">
+                        <div class="w-6 h-6 rounded-full bg-agro-brand/20 flex items-center justify-center text-agro-brand"><i class="fas fa-check text-xs"></i></div>
+                        Alertas de Correção de Acidez
+                    </li>
+                </ul>
+            </div>
+
+            <div data-aos="fade-left" class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
+                <div class="bg-gray-100 p-4 border-b flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    <span class="text-xs font-bold text-gray-500 ml-2">Chatbot - Fazenda Esperança</span>
+                </div>
+                <div class="p-6 bg-white chat-sim" id="chat-container">
+                    </div>
+                <div class="p-4 bg-gray-50 border-t flex gap-2">
+                    <div class="h-10 bg-gray-200 rounded-full w-full animate-pulse"></div>
+                    <div class="h-10 w-10 bg-agro-brand rounded-full"></div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h3>Escalável</h3>
-            <p>
-                Preparado para produtores,
-                cooperativas e projetos regionais.
-            </p>
+    <section class="py-20 bg-gray-900 text-white border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+            <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <img src="https://emersonreisdg.github.io/agroplan/Totem-raiox.jpeg" alt="Raio X da Estação MAPS" class="w-full transition duration-500 group-hover:scale-105">
+                <div class="absolute bottom-0 left-0 bg-black/90 w-full p-4 border-t border-white/10">
+                    <p class="text-xs font-mono text-blue-300 mb-1"><i class="fa-solid fa-microchip"></i> HARDWARE: MAPS SENSOR V3</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Engenharia</span>
+                    <h2 class="text-3xl font-bold mt-2">Hardware Robusto. Software Vivo.</h2>
+                    <p class="text-gray-400 mt-4">Enquanto o hardware suporta sol e chuva, o software evolui toda semana via nuvem.</p>
+                </div>
+                
+                <ul class="space-y-4 text-sm text-gray-300">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Bateria de longa duração</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Conectividade 4G nativa (SIM7600)</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Integração Python + Supabase (Real-time)</li>
+                </ul>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<footer>
-    Agro Plan © 2025  
-    Tecnologia aplicada ao agro com critério, dado e responsabilidade.
-</footer>
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Feito para o investidor rural</h2>
+            <p class="text-gray-600 mb-10 max-w-2xl mx-auto">
+                Você não planta no escuro. Por que investir no escuro? A Estação MAPS traz a clareza dos dados para a sua gestão.
+            </p>
 
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
+                    <i class="fa-solid fa-money-bill-wave text-3xl text-agro-brand mb-4"></i><br>
+                    Não é gasto<br><strong>É Investimento Auditável</strong>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
+                    <i class="fa-solid fa-sliders text-3xl text-agro-brand mb-4"></i><br>
+                    Infraestrutura Flexível<br><strong>Adapta à sua Safra</strong>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 shadow-sm hover:border-agro-brand transition">
+                    <i class="fa-solid fa-shield-cat text-3xl text-agro-brand mb-4"></i><br>
+                    Menos Risco<br><strong>Validação ZARC/INMET</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-agro-light" id="cadastro">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-agro-dark">Solicite a Estação MAPS</h2>
+                <p class="text-gray-600 mt-2">Retorno rápido. Sem compromisso. Avaliação inicial da sua área.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-5/12 bg-agro-dark p-8 text-white flex flex-col justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-agro-brand opacity-10 pattern-dots"></div>
+                    <img src="https://emersonreisdg.github.io/agroplan/Totem-embalado.jpeg" class="rounded-lg shadow-lg mb-6 relative z-10 border border-white/20" alt="Estação MAPS Pronta">
+                    <h3 class="text-xl font-bold mb-2 relative z-10">Pronta Entrega</h3>
+                    <p class="text-sm text-gray-300 relative z-10">Agende a instalação em Uberaba e região.</p>
+                </div>
+
+                <div class="md:w-7/12 p-8 md:p-10">
+                    <form id="leadForm" onsubmit="enviarWhatsApp(event)">
+                        <div class="space-y-5">
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Nome Completo</label><input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Seu Nome"></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label><input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="(34) 99999-9999"></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Área (ha)</label><input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Ex: 500"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Cultura Principal</label>
+                                    <select id="cultura" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white">
+                                        <option value="Soja/Milho">Soja/Milho</option>
+                                        <option value="Café">Café</option>
+                                        <option value="Cana">Cana</option>
+                                        <option value="Pecuária">Pecuária</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-agro-brand hover:bg-green-600 text-white font-bold py-4 rounded-lg transition shadow-lg text-lg flex justify-center items-center gap-2"><i class="fa-brands fa-whatsapp"></i> Falar com Especialista</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dev-zone" class="py-20 bg-gray-900 border-t border-gray-800 relative overflow-hidden">
+        <div class="absolute top-10 right-10 opacity-5 font-mono text-green-500 text-sm hidden md:block select-none text-right">class MAPSSensor(Hardware):<br>def __init__(self):<br>self.connect_base()</div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="text-center mb-12">
+                <span class="bg-gray-800 text-green-400 text-xs font-mono py-1 px-3 rounded-full border border-green-500/30"><i class="fa-solid fa-terminal mr-2"></i>DEV_ZONE</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-4 mb-4">Contribua com a <span class="text-agro-brand">Estação MAPS</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Colabore com a evolução do hardware e software.</p>
+            </div>
+            <div class="max-w-2xl mx-auto bg-gray-800/50 backdrop-blur rounded-xl border border-gray-700 p-8 shadow-2xl">
+                <form id="devForm" onsubmit="enviarDevWhatsApp(event)">
+                    <div class="space-y-6">
+                        <div><label class="block text-sm font-mono text-green-400 mb-2"><i class="fa-brands fa-github"></i> GITHUB_PROFILE_URL <span class="text-red-500">*</span></label><input type="text" id="devGithub" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white font-mono focus:border-green-500 outline-none transition" placeholder="github.com/seu-usuario"></div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-mono text-gray-400 mb-2">DEV_NAME</label><input type="text" id="devNome" required class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition" placeholder="Seu Nome"></div>
+                            <div><label class="block text-sm font-mono text-gray-400 mb-2">MAIN_SKILL</label><select id="devSkill" class="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white outline-none focus:border-green-500 transition"><option value="Fullstack (Python/JS)">Fullstack (Python/JS)</option><option value="Data Science / AI">Data Science / AI</option><option value="Hardware / IoT">Hardware / IoT</option></select></div>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-lg transition shadow-lg border-b-4 border-green-800 hover:border-green-700 flex justify-center items-center gap-2 group"><i class="fa-solid fa-code-branch group-hover:rotate-12 transition"></i> COMMIT APPLICATION</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-gray-500 py-10 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 opacity-70"><img src="https://emersonreisdg.github.io/agroplan/logo_dashboard.png" class="h-6 filter grayscale"><span class="text-white font-bold text-sm">AGRO PLAN</span></div>
+            <p class="text-xs">&copy; 2026 Uberaba, MG.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // 1. INICIAR ANIMAÇÕES
+        AOS.init({ duration: 800, once: true });
+
+        // 2. WHATSAPP LOGIC (LEAD)
+        const SEU_NUMERO = "5534997145335"; 
+        function enviarWhatsApp(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const tel = document.getElementById('telefone').value;
+            const area = document.getElementById('area').value;
+            const cultura = document.getElementById('cultura').value;
+            const msg = `*🌱 Interesse Estação MAPS V78:*%0A%0A` +
+                        `👤 *Nome:* ${nome}%0A` +
+                        `📱 *Tel:* ${tel}%0A` +
+                        `🚜 *Interesse:* ${cultura}%0A` +
+                        `🌾 *Área:* ${area} ha%0A` +
+                        `_Gostaria de saber mais sobre a inteligência multi-safra._`;
+            window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
+        }
+
+        // 3. WHATSAPP LOGIC (DEV)
+        function enviarDevWhatsApp(e) {
+            e.preventDefault();
+            const github = document.getElementById('devGithub').value.replace('https://', '').replace('http://', '');
+            const nome = document.getElementById('devNome').value;
+            const skill = document.getElementById('devSkill').value;
+            const msg = `*👾 Interesse - Corpo Técnico:*%0A%0A` +
+                        `👤 *Dev:* ${nome}%0A` +
+                        `💻 *Skill:* ${skill}%0A` +
+                        `🔗 *GitHub:* github.com/${github}%0A` +
+                        `_Tenho interesse em colaborar com a tecnologia da Estação MAPS._`;
+            window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
+        }
+
+        // 4. SLIDER LOGIC (SATÉLITE)
+        function updateLandingSlider(val) {
+            document.getElementById('landing-ndvi').style.width = val + "%";
+            document.getElementById('slider-handle').style.left = val + "%";
+        }
+
+        // 5. CHAT SIMULATOR LOGIC
+        const messages = [
+            { text: "Como está o pH do talhão Norte hoje?", type: "user", delay: 500 },
+            { text: "Analisando... O sensor indica pH 6.2. Está ideal para a soja.", type: "bot", delay: 1500 },
+            { text: "E o vigor da planta pelo satélite?", type: "user", delay: 3500 },
+            { text: "O NDVI está em 0.82 (Alto Vigor). Cruzando com a umidade de 44%, a previsão de produtividade é excelente.", type: "bot", delay: 5000 }
+        ];
+
+        const chatContainer = document.getElementById('chat-container');
+        let msgIndex = 0;
+        let chatStarted = false;
+
+        function runChatSim() {
+            if (msgIndex >= messages.length) return;
+            const m = messages[msgIndex];
+            setTimeout(() => {
+                const div = document.createElement('div');
+                div.className = `msg ${m.type}`;
+                div.innerText = m.text;
+                chatContainer.appendChild(div);
+                msgIndex++;
+                runChatSim();
+            }, m.delay);
+        }
+
+        // Trigger chat animation when scrolling into view
+        window.addEventListener('scroll', () => {
+            const chatSection = document.getElementById('ia');
+            if(chatSection) {
+                const rect = chatSection.getBoundingClientRect();
+                if (rect.top < window.innerHeight && !chatStarted) {
+                    chatStarted = true;
+                    runChatSim();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
