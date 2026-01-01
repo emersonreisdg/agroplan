@@ -144,7 +144,7 @@
         <div class="max-w-5xl mx-auto z-10 pt-16" data-aos="fade-up">
             
             <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
-                🚀 Atualização V84: Sistema Multi-Safra
+                🚀 Atualização V85: Sistema Multi-Safra
             </div>
 
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
@@ -406,11 +406,11 @@
                             <div class="ml-4 px-3 py-1 bg-gray-800 rounded text-[10px] text-gray-400 font-mono flex-1 text-center">agroplan.emersonreisdg.com.br/app</div>
                         </div>
                         <div class="relative w-full h-full bg-gray-900">
-                            <img src="01.jpg" id="img-01" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-100 absolute inset-0">
+                            <img src="01.png" id="img-01" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-100 absolute inset-0">
                             <img src="02.png" id="img-02" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             <img src="03.png" id="img-03" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
-                            <img src="04.jpg" id="img-04" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
-                            <img src="05.jpg" id="img-05" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="04.png" id="img-04" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="05.png" id="img-05" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             <img src="06.png" id="img-06" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             
                             <div class="absolute bottom-6 left-6 right-6 z-20">
@@ -543,7 +543,7 @@
             const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
             const cultura = document.getElementById('cultura').value;
-            const msg = `*🌱 Interesse Estação MAPS V84:*%0A%0A` +
+            const msg = `*🌱 Interesse Estação MAPS V85:*%0A%0A` +
                         `👤 *Nome:* ${nome}%0A` +
                         `📱 *Tel:* ${tel}%0A` +
                         `🚜 *Interesse:* ${cultura}%0A` +
@@ -636,11 +636,10 @@
                 activeImg.classList.add('opacity-100');
             }
 
-            // [NOVO] Trocar INFO CARD (Fade)
+            // Trocar INFO CARD (Fade)
             document.querySelectorAll('.info-card').forEach(card => {
                 card.classList.remove('opacity-100', 'translate-y-0');
                 card.classList.add('opacity-0', 'translate-y-4');
-                // Pequeno hack para garantir que o elemento saia da frente se usar pointer-events (opcional)
                 card.style.zIndex = 0;
             });
             const activeInfo = document.getElementById('info-' + id);
@@ -659,7 +658,7 @@
             tourStep++;
             if (tourStep > 6) tourStep = 1;
             switchTab('0' + tourStep);
-        }, 6000); // 6 segundos para dar tempo de ler
+        }, 6000); 
     </script>
 </body>
 </html>
