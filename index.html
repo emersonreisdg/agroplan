@@ -44,7 +44,7 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* HERO BG (Sua Imagem) */
+        /* HERO BG */
         .hero-bg {
             background-color: #0f3d30;
             background-image: linear-gradient(rgba(15, 61, 48, 0.9), rgba(15, 61, 48, 0.7)), url('https://emersonreisdg.github.io/agroplan/Totem-campo.jpeg');
@@ -66,6 +66,8 @@
         }
 
         /* --- COMPONENTES INTERATIVOS --- */
+        
+        /* SLIDER SATÉLITE */
         .comparison-container {
             position: relative; width: 100%; height: 450px; 
             border-radius: 1rem; overflow: hidden; 
@@ -90,11 +92,21 @@
             transform: translateY(-50%); z-index: 10; opacity: 0; height: 100%; cursor: col-resize;
         }
 
+        /* CHAT SIMULATOR */
         .chat-sim { height: 350px; overflow: hidden; display: flex; flex-direction: column; gap: 15px; }
         .msg { padding: 12px 18px; border-radius: 12px; font-size: 14px; max-width: 80%; opacity: 0; transform: translateY(20px); animation: popIn 0.5s forwards; }
         .msg.user { align-self: flex-end; background: #28a745; color: white; border-bottom-right-radius: 2px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2); }
         .msg.bot { align-self: flex-start; background: #fff; color: #333; border-bottom-left-radius: 2px; border: 1px solid #eee; }
         @keyframes popIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* TOUR INTERATIVO */
+        .tour-btn.active {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-color: #28a745;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .tour-btn.active i { color: #28a745; }
 
     </style>
 </head>
@@ -112,7 +124,7 @@
                 </div>
                 <div class="hidden md:flex gap-4">
                     <a href="#tecnologia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Satélite</a>
-                    <a href="#ia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Inteligência</a>
+                    <a href="#tour" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Tour do Sistema</a>
                     <a href="#dev-zone" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-mono border border-transparent hover:border-gray-600 rounded transition">&lt;Dev_Area /&gt;</a>
                     <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg transform hover:scale-105">Solicitar Diagnóstico</a>
                 </div>
@@ -124,7 +136,7 @@
         <div class="max-w-5xl mx-auto z-10 pt-16" data-aos="fade-up">
             
             <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
-                🚀 Atualização V81: Sistema Multi-Safra
+                🚀 Atualização V82: Sistema Multi-Safra
             </div>
 
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
@@ -139,6 +151,9 @@
             <div class="flex flex-col md:flex-row justify-center gap-4">
                 <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp"></i> Cotar Estação MAPS
+                </a>
+                <a href="#tour" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white text-lg px-8 py-4 rounded-lg font-bold transition backdrop-blur-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-play"></i> Ver o Sistema
                 </a>
             </div>
         </div>
@@ -311,8 +326,7 @@
                     <div class="w-3 h-3 rounded-full bg-green-400"></div>
                     <span class="text-xs font-bold text-gray-500 ml-2">Chatbot - Fazenda Esperança</span>
                 </div>
-                <div class="p-6 bg-white chat-sim" id="chat-container">
-                    </div>
+                <div class="p-6 bg-white chat-sim" id="chat-container"></div>
                 <div class="p-4 bg-gray-50 border-t flex gap-2">
                     <div class="h-10 bg-gray-200 rounded-full w-full animate-pulse"></div>
                     <div class="h-10 w-10 bg-agro-brand rounded-full"></div>
@@ -336,12 +350,64 @@
                     <h2 class="text-3xl font-bold mt-2">Hardware Robusto. Software Vivo.</h2>
                     <p class="text-gray-400 mt-4">Enquanto o hardware suporta sol e chuva, o software evolui toda semana via nuvem.</p>
                 </div>
-                
                 <ul class="space-y-4 text-sm text-gray-300">
                     <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Bateria de longa duração</li>
                     <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Conectividade 4G nativa (SIM7600)</li>
                     <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Integração Python + Supabase (Real-time)</li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-800 border-t border-gray-700" id="tour">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Experience Center</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-2">Navegue pela Estação MAPS</h2>
+                <p class="text-gray-400 mt-2">Selecione os módulos abaixo para ver a plataforma em ação.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                
+                <div class="w-full md:w-1/4 flex flex-col gap-2" data-aos="fade-right">
+                    <button onclick="switchTab('01')" id="btn-01" class="tour-btn active flex items-center gap-3 px-6 py-4 rounded-xl text-left transition-all duration-300 border border-transparent">
+                        <i class="fas fa-th-large text-xl"></i> <div><span class="block font-bold text-white text-sm">Dashboard Geral</span><span class="text-xs text-gray-400">Visão macro da operação</span></div>
+                    </button>
+                    <button onclick="switchTab('02')" id="btn-02" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
+                        <i class="fas fa-flask text-xl"></i> <div><span class="block font-bold text-sm">Química do Solo</span><span class="text-xs opacity-60">pH, NPK e Nutrientes</span></div>
+                    </button>
+                    <button onclick="switchTab('03')" id="btn-03" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
+                        <i class="fas fa-chart-line text-xl"></i> <div><span class="block font-bold text-sm">Financeiro (ROI)</span><span class="text-xs opacity-60">Lucro vs Cotação B3</span></div>
+                    </button>
+                    <button onclick="switchTab('04')" id="btn-04" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
+                        <i class="fas fa-clipboard-check text-xl"></i> <div><span class="block font-bold text-sm">Laudo Técnico</span><span class="text-xs opacity-60">Satélite + IA Embrapa</span></div>
+                    </button>
+                    <button onclick="switchTab('05')" id="btn-05" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
+                        <i class="fas fa-file-invoice text-xl"></i> <div><span class="block font-bold text-sm">Relatórios</span><span class="text-xs opacity-60">Projeção de Safra</span></div>
+                    </button>
+                    <button onclick="switchTab('06')" id="btn-06" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
+                        <i class="fas fa-cog text-xl"></i> <div><span class="block font-bold text-sm">Configurações</span><span class="text-xs opacity-60">Ajuste de Cultura/Meta</span></div>
+                    </button>
+                </div>
+
+                <div class="w-full md:w-3/4 relative group" data-aos="fade-left">
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-700 bg-gray-800 relative aspect-video">
+                        <div class="bg-gray-900 px-4 py-2 flex gap-2 items-center border-b border-gray-700">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <div class="ml-4 px-3 py-1 bg-gray-800 rounded text-[10px] text-gray-400 font-mono flex-1 text-center">agroplan.emersonreisdg.com.br/app</div>
+                        </div>
+                        <div class="relative w-full h-full bg-gray-900">
+                            <img src="01.jpg" id="img-01" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-100 absolute inset-0">
+                            <img src="02.png" id="img-02" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="03.png" id="img-03" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="04.jpg" id="img-04" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="05.jpg" id="img-05" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                            <img src="06.png" id="img-06" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -441,7 +507,7 @@
             const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
             const cultura = document.getElementById('cultura').value;
-            const msg = `*🌱 Interesse Estação MAPS V81:*%0A%0A` +
+            const msg = `*🌱 Interesse Estação MAPS V82:*%0A%0A` +
                         `👤 *Nome:* ${nome}%0A` +
                         `📱 *Tel:* ${tel}%0A` +
                         `🚜 *Interesse:* ${cultura}%0A` +
@@ -495,7 +561,6 @@
             }, m.delay);
         }
 
-        // Trigger chat animation when scrolling into view
         window.addEventListener('scroll', () => {
             const chatSection = document.getElementById('ia');
             if(chatSection) {
@@ -506,6 +571,43 @@
                 }
             }
         });
+
+        // 6. LOGICA DO TOUR INTERATIVO
+        let currentTourInterval;
+        function switchTab(id) {
+            // Resetar Botões
+            document.querySelectorAll('.tour-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-400');
+                btn.classList.remove('text-white');
+            });
+            // Ativar Botão
+            const activeBtn = document.getElementById('btn-' + id);
+            if(activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-white');
+            }
+            // Trocar Imagem
+            document.querySelectorAll('.tour-img').forEach(img => {
+                img.classList.remove('opacity-100');
+                img.classList.add('opacity-0');
+            });
+            const activeImg = document.getElementById('img-' + id);
+            if(activeImg) {
+                activeImg.classList.remove('opacity-0');
+                activeImg.classList.add('opacity-100');
+            }
+            clearInterval(currentTourInterval);
+        }
+
+        // Auto-Play Tour
+        let tourStep = 1;
+        currentTourInterval = setInterval(() => {
+            tourStep++;
+            if (tourStep > 6) tourStep = 1;
+            switchTab('0' + tourStep);
+        }, 5000);
     </script>
 </body>
 </html>
