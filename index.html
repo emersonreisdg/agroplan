@@ -108,13 +108,32 @@
         }
         .tour-btn.active i { color: #28a745; }
 
-        /* INFO CARD DO TOUR (MINI CURSO) */
+        /* INFO CARD DO TOUR */
         .info-card {
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
+
+        /* HARDWARE HOTSPOTS (V86) */
+        .hw-spot {
+            position: absolute; width: 24px; height: 24px;
+            background: rgba(40, 167, 69, 0.9);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
+            z-index: 20;
+        }
+        .hw-spot:hover { transform: scale(1.3); background: #fff; border-color: #28a745; }
+        .hw-spot::after {
+            content: ''; position: absolute; inset: -10px;
+            border-radius: 50%; border: 2px solid rgba(40, 167, 69, 0.5);
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
 
     </style>
 </head>
@@ -132,8 +151,8 @@
                 </div>
                 <div class="hidden md:flex gap-4">
                     <a href="#tecnologia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Satélite</a>
+                    <a href="#hardware" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Hardware</a>
                     <a href="#tour" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Tour</a>
-                    <a href="#dev-zone" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-mono border border-transparent hover:border-gray-600 rounded transition">&lt;Dev_Area /&gt;</a>
                     <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg transform hover:scale-105">Solicitar Diagnóstico</a>
                 </div>
             </div>
@@ -144,7 +163,7 @@
         <div class="max-w-5xl mx-auto z-10 pt-16" data-aos="fade-up">
             
             <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
-                🚀 Atualização V85: Sistema Multi-Safra
+                🚀 Atualização V86: Hardware Auditado
             </div>
 
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
@@ -160,8 +179,8 @@
                 <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white text-lg px-8 py-4 rounded-lg font-bold transition shadow-xl flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp"></i> Cotar Estação MAPS
                 </a>
-                <a href="#tour" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white text-lg px-8 py-4 rounded-lg font-bold transition backdrop-blur-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-play"></i> Ver o Sistema
+                <a href="#hardware" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white text-lg px-8 py-4 rounded-lg font-bold transition backdrop-blur-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-microchip"></i> Ver Hardware
                 </a>
             </div>
         </div>
@@ -343,33 +362,54 @@
         </div>
     </section>
 
-    <section class="py-20 bg-gray-900 text-white border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
-            <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl" data-aos="zoom-in">
-                <img src="Totem-raiox.jpeg" alt="Raio X da Estação MAPS" class="w-full transition duration-500 group-hover:scale-105">
-                <div class="absolute bottom-0 left-0 bg-black/90 w-full p-4 border-t border-white/10">
-                    <p class="text-xs font-mono text-blue-300 mb-1"><i class="fa-solid fa-microchip"></i> HARDWARE: MAPS SENSOR V3</p>
-                </div>
+    <section id="hardware" class="py-20 bg-gray-900 text-white border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <div class="text-center mb-16">
+                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Engenharia de Ponta</span>
+                <h2 class="text-3xl font-extrabold text-white mt-2">O Que Tem Dentro do MAPS V3?</h2>
+                <p class="text-gray-400 mt-2">Passe o mouse sobre os pontos para ver as especificações.</p>
             </div>
 
-            <div class="space-y-6" data-aos="fade-left">
-                <div>
-                    <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Engenharia</span>
-                    <h2 class="text-3xl font-bold mt-2">Hardware Robusto. Software Vivo.</h2>
-                    <p class="text-gray-400 mt-4">Enquanto o hardware suporta sol e chuva, o software evolui toda semana via nuvem.</p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <div class="relative group rounded-xl overflow-hidden border border-white/10 shadow-2xl" data-aos="zoom-in">
+                    <img src="Totem-raiox.jpeg" alt="Raio X da Estação MAPS" class="w-full transition duration-500 opacity-80 group-hover:opacity-100">
+                    
+                    <div class="hw-spot" style="top: 15%; left: 50%;" onmouseenter="showSpec('antena')" onclick="showSpec('antena')"></div>
+                    <div class="hw-spot" style="top: 40%; left: 50%;" onmouseenter="showSpec('cpu')" onclick="showSpec('cpu')"></div>
+                    <div class="hw-spot" style="top: 60%; left: 50%;" onmouseenter="showSpec('bateria')" onclick="showSpec('bateria')"></div>
+                    <div class="hw-spot" style="top: 85%; left: 50%;" onmouseenter="showSpec('sonda')" onclick="showSpec('sonda')"></div>
                 </div>
-                <ul class="space-y-4 text-sm text-gray-300">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Bateria de longa duração</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Conectividade 4G nativa (SIM7600)</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Integração Python + Supabase (Real-time)</li>
-                </ul>
+
+                <div class="space-y-6 bg-gray-800/50 p-8 rounded-2xl border border-gray-700 h-full flex flex-col justify-center" id="spec-panel">
+                    <div id="spec-default" class="text-center opacity-50">
+                        <i class="fas fa-search text-4xl mb-4 text-gray-500"></i>
+                        <p>Interaja com a imagem ao lado para ver os detalhes técnicos.</p>
+                    </div>
+
+                    <div id="spec-content" class="hidden animate-fade-in-up">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div id="spec-icon" class="w-12 h-12 rounded-full bg-agro-brand flex items-center justify-center text-white text-xl"></div>
+                            <div>
+                                <h3 id="spec-title" class="text-2xl font-bold text-white"></h3>
+                                <span id="spec-subtitle" class="text-xs font-mono text-agro-brand uppercase tracking-wider"></span>
+                            </div>
+                        </div>
+                        <p id="spec-desc" class="text-gray-300 leading-relaxed"></p>
+                        <div class="mt-6 border-t border-gray-700 pt-4">
+                            <h4 class="text-sm font-bold text-gray-400 mb-2">SPECS TÉCNICAS:</h4>
+                            <ul id="spec-list" class="space-y-2 text-sm text-gray-300 font-mono"></ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
     <section class="py-20 bg-gray-800 border-t border-gray-700" id="tour">
         <div class="max-w-7xl mx-auto px-4">
-            
             <div class="text-center mb-12" data-aos="fade-up">
                 <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Mini Curso Agro Plan</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-2">Navegue pela Estação MAPS</h2>
@@ -377,26 +417,13 @@
             </div>
 
             <div class="flex flex-col md:flex-row gap-8 items-start">
-                
                 <div class="w-full md:w-1/4 flex flex-col gap-2" data-aos="fade-right">
-                    <button onclick="switchTab('01')" id="btn-01" class="tour-btn active flex items-center gap-3 px-6 py-4 rounded-xl text-left transition-all duration-300 border border-transparent">
-                        <i class="fas fa-th-large text-xl"></i> <div><span class="block font-bold text-white text-sm">1. Visão Geral</span><span class="text-xs text-gray-400">O que é a dashboard?</span></div>
-                    </button>
-                    <button onclick="switchTab('02')" id="btn-02" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-flask text-xl"></i> <div><span class="block font-bold text-sm">2. Química</span><span class="text-xs opacity-60">Como medimos o solo?</span></div>
-                    </button>
-                    <button onclick="switchTab('03')" id="btn-03" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-chart-line text-xl"></i> <div><span class="block font-bold text-sm">3. Financeiro</span><span class="text-xs opacity-60">Onde está o dinheiro?</span></div>
-                    </button>
-                    <button onclick="switchTab('04')" id="btn-04" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-clipboard-check text-xl"></i> <div><span class="block font-bold text-sm">4. Satélite + IA</span><span class="text-xs opacity-60">Como validamos?</span></div>
-                    </button>
-                    <button onclick="switchTab('05')" id="btn-05" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-file-invoice text-xl"></i> <div><span class="block font-bold text-sm">5. Relatórios</span><span class="text-xs opacity-60">Gestão de Safra</span></div>
-                    </button>
-                    <button onclick="switchTab('06')" id="btn-06" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-cog text-xl"></i> <div><span class="block font-bold text-sm">6. Configuração</span><span class="text-xs opacity-60">Personalização</span></div>
-                    </button>
+                    <button onclick="switchTab('01')" id="btn-01" class="tour-btn active flex items-center gap-3 px-6 py-4 rounded-xl text-left transition-all duration-300 border border-transparent"><i class="fas fa-th-large text-xl"></i> <div><span class="block font-bold text-white text-sm">1. Visão Geral</span><span class="text-xs text-gray-400">O que é a dashboard?</span></div></button>
+                    <button onclick="switchTab('02')" id="btn-02" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent"><i class="fas fa-flask text-xl"></i> <div><span class="block font-bold text-sm">2. Química</span><span class="text-xs opacity-60">Como medimos o solo?</span></div></button>
+                    <button onclick="switchTab('03')" id="btn-03" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent"><i class="fas fa-chart-line text-xl"></i> <div><span class="block font-bold text-sm">3. Financeiro</span><span class="text-xs opacity-60">Onde está o dinheiro?</span></div></button>
+                    <button onclick="switchTab('04')" id="btn-04" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent"><i class="fas fa-clipboard-check text-xl"></i> <div><span class="block font-bold text-sm">4. Satélite + IA</span><span class="text-xs opacity-60">Como validamos?</span></div></button>
+                    <button onclick="switchTab('05')" id="btn-05" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent"><i class="fas fa-file-invoice text-xl"></i> <div><span class="block font-bold text-sm">5. Relatórios</span><span class="text-xs opacity-60">Gestão de Safra</span></div></button>
+                    <button onclick="switchTab('06')" id="btn-06" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent"><i class="fas fa-cog text-xl"></i> <div><span class="block font-bold text-sm">6. Configuração</span><span class="text-xs opacity-60">Personalização</span></div></button>
                 </div>
 
                 <div class="w-full md:w-3/4 relative group" data-aos="fade-left">
@@ -439,11 +466,9 @@
                                     <p class="text-sm text-gray-300">Trocou de Soja para Milho? É só clicar aqui. O sistema recalibra todas as metas de adubação e alertas automaticamente.</p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -532,10 +557,8 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 1. INICIAR ANIMAÇÕES (AOS)
         AOS.init({ duration: 800, once: true });
 
-        // 2. WHATSAPP LOGIC (LEAD)
         const SEU_NUMERO = "5534997145335"; 
         function enviarWhatsApp(e) {
             e.preventDefault();
@@ -543,7 +566,7 @@
             const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
             const cultura = document.getElementById('cultura').value;
-            const msg = `*🌱 Interesse Estação MAPS V85:*%0A%0A` +
+            const msg = `*🌱 Interesse Estação MAPS V86:*%0A%0A` +
                         `👤 *Nome:* ${nome}%0A` +
                         `📱 *Tel:* ${tel}%0A` +
                         `🚜 *Interesse:* ${cultura}%0A` +
@@ -552,7 +575,6 @@
             window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
         }
 
-        // 3. WHATSAPP LOGIC (DEV)
         function enviarDevWhatsApp(e) {
             e.preventDefault();
             const github = document.getElementById('devGithub').value.replace('https://', '').replace('http://', '');
@@ -566,24 +588,21 @@
             window.open(`https://wa.me/${SEU_NUMERO}?text=${msg}`, '_blank');
         }
 
-        // 4. SLIDER LOGIC (SATÉLITE)
         function updateLandingSlider(val) {
             document.getElementById('landing-ndvi').style.width = val + "%";
             document.getElementById('slider-handle').style.left = val + "%";
         }
 
-        // 5. CHAT SIMULATOR LOGIC
+        // CHAT SIMULATOR
         const messages = [
             { text: "Como está o pH do talhão Norte hoje?", type: "user", delay: 500 },
             { text: "Analisando... O sensor indica pH 6.2. Está ideal para a soja.", type: "bot", delay: 1500 },
             { text: "E o vigor da planta pelo satélite?", type: "user", delay: 3500 },
             { text: "O NDVI está em 0.82 (Alto Vigor). Cruzando com a umidade de 44%, a previsão de produtividade é excelente.", type: "bot", delay: 5000 }
         ];
-
         const chatContainer = document.getElementById('chat-container');
         let msgIndex = 0;
         let chatStarted = false;
-
         function runChatSim() {
             if (msgIndex >= messages.length) return;
             const m = messages[msgIndex];
@@ -596,7 +615,6 @@
                 runChatSim();
             }, m.delay);
         }
-
         window.addEventListener('scroll', () => {
             const chatSection = document.getElementById('ia');
             if(chatSection) {
@@ -608,24 +626,46 @@
             }
         });
 
-        // 6. LOGICA DO TOUR EDUCATIVO (MINI CURSO)
+        // HARDWARE SPECS LOGIC (V86)
+        const hwSpecs = {
+            'antena': { title: 'Módulo LoRaWAN + 4G', sub: 'CONECTIVIDADE', desc: 'Sistema híbrido de longo alcance (15km) com backup 4G LTE. Garante envio de dados mesmo em áreas sem sinal de celular convencional.', items: ['Freq: 915 MHz (BR)', 'Chip: SIM7600G', 'Antena: 5dBi Externa'] },
+            'cpu': { title: 'Edge Computing Unit', sub: 'PROCESSAMENTO', desc: 'Microcontrolador ESP32 Dual Core industrial. Processa os dados brutos dos sensores localmente antes de enviar para a nuvem, economizando bateria.', items: ['Core: Xtensa® LX6', 'Flash: 16MB', 'Criptografia: AES-256'] },
+            'bateria': { title: 'Power Bank Industrial', sub: 'AUTONOMIA', desc: 'Conjunto de células LiFePO4 de alta densidade, recarregadas por painel solar 12V. Opera por até 7 dias sem incidência solar direta.', items: ['Capacidade: 20.000mAh', 'Ciclos: >2000', 'Proteção: BMS Ativo'] },
+            'sonda': { title: 'Sonda Capacitiva 5-em-1', sub: 'SENSORES', desc: 'Haste de titânio de nível militar. Mede pH, Nitrogênio, Fósforo, Potássio e Umidade em três profundidades diferentes simultaneamente.', items: ['Precisão: ±2%', 'Profundidade: 0-60cm', 'Certificação: IP68'] }
+        };
+
+        function showSpec(id) {
+            const data = hwSpecs[id];
+            document.getElementById('spec-default').classList.add('hidden');
+            const content = document.getElementById('spec-content');
+            content.classList.remove('hidden');
+            
+            // Icon logic
+            const icons = { 'antena': 'fa-wifi', 'cpu': 'fa-microchip', 'bateria': 'fa-bolt', 'sonda': 'fa-flask' };
+            document.getElementById('spec-icon').innerHTML = `<i class="fas ${icons[id]}"></i>`;
+            
+            document.getElementById('spec-title').innerText = data.title;
+            document.getElementById('spec-subtitle').innerText = data.sub;
+            document.getElementById('spec-desc').innerText = data.desc;
+            
+            const list = document.getElementById('spec-list');
+            list.innerHTML = data.items.map(i => `<li><i class="fas fa-caret-right text-agro-brand mr-2"></i>${i}</li>`).join('');
+        }
+
+        // TOUR INTERATIVO LOGIC
         let currentTourInterval;
         function switchTab(id) {
-            // Resetar Botões
             document.querySelectorAll('.tour-btn').forEach(btn => {
                 btn.classList.remove('active');
                 btn.classList.add('text-gray-400');
                 btn.classList.remove('text-white');
             });
-            // Ativar Botão
             const activeBtn = document.getElementById('btn-' + id);
             if(activeBtn) {
                 activeBtn.classList.add('active');
                 activeBtn.classList.remove('text-gray-400');
                 activeBtn.classList.add('text-white');
             }
-            
-            // Trocar Imagem (Fade)
             document.querySelectorAll('.tour-img').forEach(img => {
                 img.classList.remove('opacity-100');
                 img.classList.add('opacity-0');
@@ -635,8 +675,6 @@
                 activeImg.classList.remove('opacity-0');
                 activeImg.classList.add('opacity-100');
             }
-
-            // Trocar INFO CARD (Fade)
             document.querySelectorAll('.info-card').forEach(card => {
                 card.classList.remove('opacity-100', 'translate-y-0');
                 card.classList.add('opacity-0', 'translate-y-4');
@@ -648,11 +686,9 @@
                 activeInfo.classList.remove('opacity-0', 'translate-y-4');
                 activeInfo.classList.add('opacity-100', 'translate-y-0');
             }
-
             clearInterval(currentTourInterval);
         }
 
-        // Auto-Play Tour
         let tourStep = 1;
         currentTourInterval = setInterval(() => {
             tourStep++;
