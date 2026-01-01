@@ -47,7 +47,7 @@
         /* HERO BG */
         .hero-bg {
             background-color: #0f3d30;
-            background-image: linear-gradient(rgba(15, 61, 48, 0.9), rgba(15, 61, 48, 0.7)), url('Totem-campo.jpeg'); /* Confirme se este arquivo está no repo */
+            background-image: linear-gradient(rgba(15, 61, 48, 0.9), rgba(15, 61, 48, 0.7)), url('Totem-campo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -79,7 +79,7 @@
             background-size: cover; background-position: center; 
         }
         .comp-img.real { 
-            background-image: url('Totem-raiox.jpeg'); /* Usando uma imagem que já existe no repo como placeholder */
+            background-image: url('Totem-raiox.jpeg');
             z-index: 1;
         }
         .comp-img.ndvi {
@@ -108,6 +108,14 @@
         }
         .tour-btn.active i { color: #28a745; }
 
+        /* INFO CARD DO TOUR (MINI CURSO) */
+        .info-card {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
     </style>
 </head>
 <body class="bg-agro-light text-gray-800 antialiased font-sans overflow-x-hidden">
@@ -124,7 +132,7 @@
                 </div>
                 <div class="hidden md:flex gap-4">
                     <a href="#tecnologia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Satélite</a>
-                    <a href="#tour" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Tour do Sistema</a>
+                    <a href="#tour" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-semibold transition">Tour</a>
                     <a href="#dev-zone" class="text-gray-300 hover:text-white px-4 py-2 text-sm font-mono border border-transparent hover:border-gray-600 rounded transition">&lt;Dev_Area /&gt;</a>
                     <a href="#cadastro" class="bg-agro-brand hover:bg-green-600 text-white px-6 py-2 rounded-full font-bold transition shadow-lg transform hover:scale-105">Solicitar Diagnóstico</a>
                 </div>
@@ -136,7 +144,7 @@
         <div class="max-w-5xl mx-auto z-10 pt-16" data-aos="fade-up">
             
             <div class="inline-block mb-4 px-4 py-1 rounded-full bg-green-900/50 border border-green-500/50 text-green-400 text-xs font-bold tracking-widest uppercase">
-                🚀 Atualização V83: Sistema Multi-Safra
+                🚀 Atualização V84: Sistema Multi-Safra
             </div>
 
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
@@ -300,7 +308,7 @@
         <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div data-aos="fade-right">
                 <div class="flex items-center gap-3 mb-4">
-                    <i class="fas fa-robot text-4xl text-white"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/512/6009/6009864.png" class="w-10 h-10 filter invert"> 
                     <span class="font-bold text-white tracking-widest">KAIROS INTELLIGENCE</span>
                 </div>
                 <h3 class="text-4xl font-black mb-6 leading-tight text-white">Não é apenas um dashboard. <br> É um <span class="text-agro-brand">Consultor 24h.</span></h3>
@@ -363,31 +371,31 @@
         <div class="max-w-7xl mx-auto px-4">
             
             <div class="text-center mb-12" data-aos="fade-up">
-                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Experience Center</span>
+                <span class="text-agro-brand font-bold uppercase tracking-wider text-sm">Mini Curso Agro Plan</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-2">Navegue pela Estação MAPS</h2>
-                <p class="text-gray-400 mt-2">Selecione os módulos abaixo para ver a plataforma em ação.</p>
+                <p class="text-gray-400 mt-2">Selecione os módulos para aprender como a tecnologia funciona.</p>
             </div>
 
             <div class="flex flex-col md:flex-row gap-8 items-start">
                 
                 <div class="w-full md:w-1/4 flex flex-col gap-2" data-aos="fade-right">
                     <button onclick="switchTab('01')" id="btn-01" class="tour-btn active flex items-center gap-3 px-6 py-4 rounded-xl text-left transition-all duration-300 border border-transparent">
-                        <i class="fas fa-th-large text-xl"></i> <div><span class="block font-bold text-white text-sm">Dashboard Geral</span><span class="text-xs text-gray-400">Visão macro da operação</span></div>
+                        <i class="fas fa-th-large text-xl"></i> <div><span class="block font-bold text-white text-sm">1. Visão Geral</span><span class="text-xs text-gray-400">O que é a dashboard?</span></div>
                     </button>
                     <button onclick="switchTab('02')" id="btn-02" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-flask text-xl"></i> <div><span class="block font-bold text-sm">Química do Solo</span><span class="text-xs opacity-60">pH, NPK e Nutrientes</span></div>
+                        <i class="fas fa-flask text-xl"></i> <div><span class="block font-bold text-sm">2. Química</span><span class="text-xs opacity-60">Como medimos o solo?</span></div>
                     </button>
                     <button onclick="switchTab('03')" id="btn-03" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-chart-line text-xl"></i> <div><span class="block font-bold text-sm">Financeiro (ROI)</span><span class="text-xs opacity-60">Lucro vs Cotação B3</span></div>
+                        <i class="fas fa-chart-line text-xl"></i> <div><span class="block font-bold text-sm">3. Financeiro</span><span class="text-xs opacity-60">Onde está o dinheiro?</span></div>
                     </button>
                     <button onclick="switchTab('04')" id="btn-04" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-clipboard-check text-xl"></i> <div><span class="block font-bold text-sm">Laudo Técnico</span><span class="text-xs opacity-60">Satélite + IA Embrapa</span></div>
+                        <i class="fas fa-clipboard-check text-xl"></i> <div><span class="block font-bold text-sm">4. Satélite + IA</span><span class="text-xs opacity-60">Como validamos?</span></div>
                     </button>
                     <button onclick="switchTab('05')" id="btn-05" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-file-invoice text-xl"></i> <div><span class="block font-bold text-sm">Relatórios</span><span class="text-xs opacity-60">Projeção de Safra</span></div>
+                        <i class="fas fa-file-invoice text-xl"></i> <div><span class="block font-bold text-sm">5. Relatórios</span><span class="text-xs opacity-60">Gestão de Safra</span></div>
                     </button>
                     <button onclick="switchTab('06')" id="btn-06" class="tour-btn flex items-center gap-3 px-6 py-4 rounded-xl text-left text-gray-400 hover:bg-white/5 transition-all duration-300 border border-transparent">
-                        <i class="fas fa-cog text-xl"></i> <div><span class="block font-bold text-sm">Configurações</span><span class="text-xs opacity-60">Ajuste de Cultura/Meta</span></div>
+                        <i class="fas fa-cog text-xl"></i> <div><span class="block font-bold text-sm">6. Configuração</span><span class="text-xs opacity-60">Personalização</span></div>
                     </button>
                 </div>
 
@@ -398,7 +406,6 @@
                             <div class="ml-4 px-3 py-1 bg-gray-800 rounded text-[10px] text-gray-400 font-mono flex-1 text-center">agroplan.emersonreisdg.com.br/app</div>
                         </div>
                         <div class="relative w-full h-full bg-gray-900">
-                            
                             <img src="01.jpg" id="img-01" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-100 absolute inset-0">
                             <img src="02.png" id="img-02" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             <img src="03.png" id="img-03" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
@@ -406,6 +413,33 @@
                             <img src="05.jpg" id="img-05" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             <img src="06.png" id="img-06" class="tour-img w-full h-full object-cover object-top transition-opacity duration-500 opacity-0 absolute inset-0">
                             
+                            <div class="absolute bottom-6 left-6 right-6 z-20">
+                                <div id="info-01" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-100 translate-y-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-th-large"></i> Visão de Comando</h4>
+                                    <p class="text-sm text-gray-300">Aqui você vê a saúde instantânea da fazenda. O sistema te diz se a bateria está boa, se a conexão está estável e dá um resumo rápido dos alertas de IA.</p>
+                                </div>
+                                <div id="info-02" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-0 translate-y-4 absolute inset-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-flask"></i> Laboratório Digital</h4>
+                                    <p class="text-sm text-gray-300">Esqueça esperar dias pelo laboratório. Acompanhe os níveis de Macronutrientes (N, P, K) e pH em tempo real para corrigir o solo antes de perder produtividade.</p>
+                                </div>
+                                <div id="info-03" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-0 translate-y-4 absolute inset-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-chart-line"></i> ROI em Tempo Real</h4>
+                                    <p class="text-sm text-gray-300">A mágica acontece aqui. O sistema multiplica sua produção estimada pela cotação atual da B3. Você sabe exatamente quanto está ganhando agora.</p>
+                                </div>
+                                <div id="info-04" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-0 translate-y-4 absolute inset-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-satellite"></i> Validação Cruzada</h4>
+                                    <p class="text-sm text-gray-300">Aqui cruzamos a verdade do solo (sensor) com a verdade do céu (satélite). Se o NDVI cair e o solo estiver bom, sabemos que é praga, não seca.</p>
+                                </div>
+                                <div id="info-05" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-0 translate-y-4 absolute inset-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-file-invoice"></i> Relatório de Safra</h4>
+                                    <p class="text-sm text-gray-300">Veja a evolução da biomassa e a performance acumulada. É o documento perfeito para apresentar ao banco na hora de renovar o crédito.</p>
+                                </div>
+                                <div id="info-06" class="info-card p-6 rounded-xl border border-white/10 text-white transition-all duration-500 opacity-0 translate-y-4 absolute inset-0">
+                                    <h4 class="text-agro-brand font-bold text-lg mb-1 flex items-center gap-2"><i class="fas fa-cog"></i> Personalização Total</h4>
+                                    <p class="text-sm text-gray-300">Trocou de Soja para Milho? É só clicar aqui. O sistema recalibra todas as metas de adubação e alertas automaticamente.</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -447,7 +481,7 @@
                         <div class="space-y-5">
                             <div><label class="block text-sm font-bold text-gray-700 mb-1">Nome Completo</label><input type="text" id="nome" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Seu Nome"></div>
                             <div><label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label><input type="tel" id="telefone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="(34) 99999-9999"></div>
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-2 gap-6">
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Área (ha)</label><input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-gray-50" placeholder="Ex: 500"></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Cultura Principal</label>
                                     <select id="cultura" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-agro-brand outline-none transition bg-white">
@@ -509,7 +543,7 @@
             const tel = document.getElementById('telefone').value;
             const area = document.getElementById('area').value;
             const cultura = document.getElementById('cultura').value;
-            const msg = `*🌱 Interesse Estação MAPS V83:*%0A%0A` +
+            const msg = `*🌱 Interesse Estação MAPS V84:*%0A%0A` +
                         `👤 *Nome:* ${nome}%0A` +
                         `📱 *Tel:* ${tel}%0A` +
                         `🚜 *Interesse:* ${cultura}%0A` +
@@ -574,7 +608,7 @@
             }
         });
 
-        // 6. LOGICA DO TOUR INTERATIVO (AGORA COM OS NOMES CERTOS)
+        // 6. LOGICA DO TOUR EDUCATIVO (MINI CURSO)
         let currentTourInterval;
         function switchTab(id) {
             // Resetar Botões
@@ -590,7 +624,8 @@
                 activeBtn.classList.remove('text-gray-400');
                 activeBtn.classList.add('text-white');
             }
-            // Trocar Imagem
+            
+            // Trocar Imagem (Fade)
             document.querySelectorAll('.tour-img').forEach(img => {
                 img.classList.remove('opacity-100');
                 img.classList.add('opacity-0');
@@ -600,6 +635,21 @@
                 activeImg.classList.remove('opacity-0');
                 activeImg.classList.add('opacity-100');
             }
+
+            // [NOVO] Trocar INFO CARD (Fade)
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.classList.remove('opacity-100', 'translate-y-0');
+                card.classList.add('opacity-0', 'translate-y-4');
+                // Pequeno hack para garantir que o elemento saia da frente se usar pointer-events (opcional)
+                card.style.zIndex = 0;
+            });
+            const activeInfo = document.getElementById('info-' + id);
+            if(activeInfo) {
+                activeInfo.style.zIndex = 10;
+                activeInfo.classList.remove('opacity-0', 'translate-y-4');
+                activeInfo.classList.add('opacity-100', 'translate-y-0');
+            }
+
             clearInterval(currentTourInterval);
         }
 
@@ -609,7 +659,7 @@
             tourStep++;
             if (tourStep > 6) tourStep = 1;
             switchTab('0' + tourStep);
-        }, 5000);
+        }, 6000); // 6 segundos para dar tempo de ler
     </script>
 </body>
 </html>
